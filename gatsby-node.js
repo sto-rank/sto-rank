@@ -4,4 +4,8 @@
  * See: https://www.gatsbyjs.org/docs/node-apis/
  */
 
-// You can delete this file if you're not using it
+const serviceConfig = require('./src/templates/service/gatsby-node')
+
+exports.createPages = async ({ actions, graphql }) => {
+  await serviceConfig({ graphql, actions })
+}

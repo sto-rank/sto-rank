@@ -1,0 +1,12 @@
+[
+  {
+    "name": "service1",
+    "coordinates": "324324",
+    "pagePath": "/service-1"
+  },
+  {
+    "name": "service2",
+    "coordinates": "5645",
+    "pagePath": "/service-2"
+  }
+]
