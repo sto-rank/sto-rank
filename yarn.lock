@@ -1082,6 +1082,11 @@
   dependencies:
     core-js "^2.5.7"
 
+"@mapbox/point-geometry@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@mapbox/point-geometry/-/point-geometry-0.1.0.tgz#8a83f9335c7860effa2eeeca254332aa0aeed8f2"
+  integrity sha1-ioP5M1x4YO/6Lu7KJUMyqgru2PI=
+
 "@mikaelkristiansson/domready@^1.0.9":
   version "1.0.9"
   resolved "https://registry.yarnpkg.com/@mikaelkristiansson/domready/-/domready-1.0.9.tgz#b2b85d8ac7bb2797e577050b61aeaf1b26fbd906"
@@ -4534,6 +4539,11 @@ event-source-polyfill@^1.0.11:
   resolved "https://registry.yarnpkg.com/event-source-polyfill/-/event-source-polyfill-1.0.11.tgz#37b5d37161b8980bbbacb29081b7c8e501909e3a"
   integrity sha512-fbo96OutP0Bb+gIYTTy8LGhNWySdetsFElCn/vhOzQL3cXWsS70TP/aRUe32U7F+PuOZH/tvb40tZgoJV8/Ilw==
 
+eventemitter3@^1.1.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-1.2.0.tgz#1c86991d816ad1e504750e73874224ecf3bec508"
+  integrity sha1-HIaZHYFq0eUEdQ5zh0Ik7PO+xQg=
+
 eventemitter3@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-4.0.0.tgz#d65176163887ee59f386d64c82610b696a4a74eb"
@@ -4796,6 +4806,11 @@ fast-deep-equal@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-2.0.1.tgz#7b05218ddf9667bf7f370bf7fdb2cb15fdd0aa49"
   integrity sha1-ewUhjd+WZ79/Nwv3/bLLFf3Qqkk=
+
+fast-deep-equal@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-3.1.1.tgz#545145077c501491e33b15ec408c294376e94ae4"
+  integrity sha512-8UEa58QDLauDNfpbrX55Q9jrGHThw2ZMdOky5Gl1CDtVeJDPVrG4Jxx1N8jw2gkWaff5UUuX1KJd+9zGe2B+ZA==
 
 fast-glob@^2.0.2:
   version "2.2.7"
@@ -5366,6 +5381,11 @@ gatsby-plugin-react-helmet@^3.1.16:
   dependencies:
     "@babel/runtime" "^7.7.4"
 
+gatsby-plugin-react-leaflet@^2.0.11:
+  version "2.0.11"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-react-leaflet/-/gatsby-plugin-react-leaflet-2.0.11.tgz#1247bf96dba47aed9043238dd924f2436b7617a8"
+  integrity sha512-1ZmSkfc6a58ax3eek7b4OpCgKH0u2Rb+iqdVRsX9gFMqOXiQWXUPAOWYJXIMzXP0yYsTKLtNyR60deXLVoMplQ==
+
 gatsby-plugin-sharp@^2.3.5:
   version "2.3.5"
   resolved "https://registry.yarnpkg.com/gatsby-plugin-sharp/-/gatsby-plugin-sharp-2.3.5.tgz#1346e9746937ac20aacc3d11d550226303c1c73c"
@@ -5859,6 +5879,16 @@ globby@^8.0.1:
     pify "^3.0.0"
     slash "^1.0.0"
 
+google-map-react@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/google-map-react/-/google-map-react-1.1.5.tgz#ad88caa88085c6292dbb1f890c70ff75fbee3d47"
+  integrity sha512-VgqEIo1DGEvSa8aP6Iy7F41r3K+h0h8hLO2Rqv5hKGO4TE2fRErWvGDr5oVGPJWBaNrXe1rmNrw772AqLgjUsg==
+  dependencies:
+    "@mapbox/point-geometry" "^0.1.0"
+    eventemitter3 "^1.1.0"
+    prop-types "^15.5.6"
+    scriptjs "^2.5.7"
+
 got@8.3.2, got@^8.3.1, got@^8.3.2:
   version "8.3.2"
   resolved "https://registry.yarnpkg.com/got/-/got-8.3.2.tgz#1d23f64390e97f776cac52e5b936e5f514d2e937"
@@ -6240,7 +6270,7 @@ hmac-drbg@^1.0.0:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.1"
 
-hoist-non-react-statics@^3.3.0:
+hoist-non-react-statics@^3.3.0, hoist-non-react-statics@^3.3.1:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.3.1.tgz#101685d3aff3b23ea213163f6e8e12f4f111e19f"
   integrity sha512-wbg3bpgA/ZqWrZuMOeJi8+SKMhr7X9TesL/rXMjTzh0p0JUBo3II8DHboYbuIXWRlttrUFxwcu/5kygrCw8fJw==
@@ -7476,6 +7506,11 @@ lcid@^2.0.0:
   integrity sha512-avPEb8P8EGnwXKClwsNUgryVjllcRqtMYa49NTsbQagYuT1DcXnl1915oxWjoyGrXR6zH/Y0Zc96xWsPcoDKeA==
   dependencies:
     invert-kv "^2.0.0"
+
+leaflet@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.6.0.tgz#aecbb044b949ec29469eeb31c77a88e2f448f308"
+  integrity sha512-CPkhyqWUKZKFJ6K8umN5/D2wrJ2+/8UIpXppY7QDnUZW5bZL5+SEI2J7GBpwh4LIupOKqbNSQXgqmrEJopHVNQ==
 
 leven@^3.1.0:
   version "3.1.0"
@@ -9766,7 +9801,7 @@ prompts@^2.3.0:
     kleur "^3.0.3"
     sisteransi "^1.0.3"
 
-prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -10041,6 +10076,16 @@ react-is@^16.7.0, react-is@^16.8.1:
   version "16.8.3"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.8.3.tgz#4ad8b029c2a718fc0cfc746c8d4e1b7221e5387d"
   integrity sha512-Y4rC1ZJmsxxkkPuMLwvKvlL1Zfpbcu+Bf4ZigkHup3v9EfdYhAlWAaVyA19olXq2o2mGn0w+dFKvk3pVVlYcIA==
+
+react-leaflet@^2.6.1:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/react-leaflet/-/react-leaflet-2.6.1.tgz#e5d6514d2358c51a28e614b8a0ddf8dca56e7179"
+  integrity sha512-pqXQegdX4EL4R+zL33J92aLUcznp5TksNdW6CerwEwmi5m6CHt5k2YTkvyPVroZPA7pLAPB3ZAjmLLEmZh7yLw==
+  dependencies:
+    "@babel/runtime" "^7.7.6"
+    fast-deep-equal "^3.1.1"
+    hoist-non-react-statics "^3.3.1"
+    warning "^4.0.3"
 
 react-lifecycles-compat@^3.0.4:
   version "3.0.4"
@@ -10677,6 +10722,11 @@ schema-utils@^1.0.0:
     ajv "^6.1.0"
     ajv-errors "^1.0.0"
     ajv-keywords "^3.1.0"
+
+scriptjs@^2.5.7:
+  version "2.5.9"
+  resolved "https://registry.yarnpkg.com/scriptjs/-/scriptjs-2.5.9.tgz#343915cd2ec2ed9bfdde2b9875cd28f59394b35f"
+  integrity sha512-qGVDoreyYiP1pkQnbnFAUIS5AjenNwwQBdl7zeos9etl+hYKWahjRTfzAZZYBv5xNHx7vNKCmaLDQZ6Fr2AEXg==
 
 scroll-behavior@^0.9.10:
   version "0.9.10"
@@ -12441,6 +12491,13 @@ warning@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/warning/-/warning-3.0.0.tgz#32e5377cb572de4ab04753bdf8821c01ed605b7c"
   integrity sha1-MuU3fLVy3kqwR1O9+IIcAe1gW3w=
+  dependencies:
+    loose-envify "^1.0.0"
+
+warning@^4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/warning/-/warning-4.0.3.tgz#16e9e077eb8a86d6af7d64aa1e05fd85b4678ca3"
+  integrity sha512-rpJyN222KWIvHJ/F53XSZv0Zl/accqHR8et1kpaMTD/fLCRxtV8iX8czMzY7sVZupTI3zcUTg8eycS2kNF9l6w==
   dependencies:
     loose-envify "^1.0.0"
 

@@ -6,9 +6,7 @@ module.exports = async ({ graphql, actions: { createPage } }) => {
       allServicesJson {
         edges {
           node {
-            name
             pagePath
-            coordinates
           }
         }
       }

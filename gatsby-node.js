@@ -4,7 +4,7 @@
  * See: https://www.gatsbyjs.org/docs/node-apis/
  */
 
-const serviceConfig = require('./src/templates/service/gatsby-node')
+const serviceConfig = require('./src/gatsby-nodes/services')
 
 exports.createPages = async ({ actions, graphql }) => {
   await serviceConfig({ graphql, actions })

@@ -1,12 +1,46 @@
 [
   {
-    "name": "service1",
-    "coordinates": "324324",
-    "pagePath": "/service-1"
-  },
-  {
-    "name": "service2",
-    "coordinates": "5645",
-    "pagePath": "/service-2"
+    "name": "мактранс",
+    "description": "СТО Мактранс – предприятие, которое специализируется на ремонте автоматических коробок передач, диагностике и ремонте гидротрансформаторов АКПП, гидроблоков и мехатроников АКПП.",
+    "coordinates": {
+      "lat": 50.406322,
+      "lng": 30.5291244
+    },
+    "address": "Залізничне шосе, 4, Київ, 02000",
+    "workingHours": [
+      {
+        "day": "mondayToFriday",
+        "time": "9:00 - 18:00"
+      }
+    ],
+    "website": "https://akpp.com.ua/",
+    "sideServicesRank": [
+      {
+        "name": "Google Maps",
+        "link": "https://goo.gl/maps/Xga2yUfCTvG1uuja9",
+        "rank": 4.7
+      },
+      {
+        "name": "Vse STO",
+        "link": "https://vse-sto.com.ua/sto/8839-maktrans/",
+        "rank": 3
+      }
+    ],
+    "mainSpecialties": [
+      "ремонт акпп"
+    ],
+    "otherSpecialties": [
+      "ремонт DSG",
+      "ремонт Power Shift",
+      "ремонт и прошивка элоктронного блока управления (ЭБУ)",
+      "ремонт маслянного насоса",
+      "ремонт маслянного соленоидов",
+      "ремонт маслянного гидротрансформатора",
+      "ремонт маслянного гидроблока"
+    ],
+    "feedbackWithClientsDirection": 0,
+    "forumReviewsDirection": 0,
+    "fakeReviews": true,
+    "pagePath": "/maktrans"
   }
 ]
