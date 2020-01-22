@@ -17,9 +17,11 @@ export default {
     justifyContent: 'center',
   },
   title: {
+    zIndex: 200000,
     marginTop: 185,
     fontSize: 120,
     textTransform: 'capitalize',
+    textAlign: 'center',
     color: 'black'
   },
   mapOverlay: {
@@ -53,5 +55,7 @@ export default {
     marginTop: 10,
     fontSize: '20px',
     display: 'block'
-  }
+  },
+  listWrapper: { display: 'flex' },
+  rankListWrapper: { alignSelf: 'flex-end' }
 }

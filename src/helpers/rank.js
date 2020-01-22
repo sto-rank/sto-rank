@@ -17,3 +17,8 @@ export const calcRank = ({ fakeReviews, feedbackWithClientsDirection, forumRevie
 
   return rank / 4;
 };
+export const rankToStatus = (rank) => {
+  if (rank <= 3.5) return 'danger'
+  if (rank <= 4.5) return 'warning'
+  return 'safe'
+}

@@ -19,7 +19,7 @@ module.exports = async ({ graphql, actions: { createPage } }) => {
   servicesResult.data.allServicesJson.edges.forEach(({ node }) => {
     createPage({
       path: node.pagePath,
-      component: path.resolve(`${__dirname}/index.js`),
+      component: path.resolve(`src/templates/service/index.js`),
     })
   })
 }
