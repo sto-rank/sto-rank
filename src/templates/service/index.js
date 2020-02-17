@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { graphql } from 'gatsby'
-import { List, Table, Typography } from 'antd';
+import { List, Table } from 'antd';
 import { Map, TileLayer, Popup, Marker } from 'react-leaflet'
 
 import { calcRank, rankToStatus } from '../../helpers/rank'
@@ -8,8 +8,7 @@ import ColoredText from '../../components/ColoredText'
 
 import styles from './styles'
 import RankBlockTitle from './RankBlockTitle'
-
-const { Text } = Typography
+import { mapDayToLabel } from '../../helpers/days'
 
 const ZOOM = 15;
 
@@ -24,6 +23,9 @@ export default function Service({ data: { servicesJson } }) {
     feedbackWithClientsDirection,
     forumReviewsDirection,
     address,
+    phones,
+    workingHours,
+    website,
   } = servicesJson;
 
   const rank = useMemo(() => calcRank({
@@ -35,23 +37,25 @@ export default function Service({ data: { servicesJson } }) {
 
   const rankData = useMemo(() => [
     {
-      title: <RankBlockTitle title="Наш рейтинг" strong description="Мы собираем данные по атосервису представленые в открытых источних и анлизируем их по различным факторам, на основе чего, выводим наш собственный рейтинг автосервиса" />,
-      value: <ColoredText type={rankToStatus(rank)} strong>{rank.toFixed(1)}</ColoredText>,
+      title: <RankBlockTitle style={styles.ourRatingTitleStyle} title="Итоговый рейтинг СТО" strong description="Мы собираем данные по атосервису представленые в открытых источних и анлизируем их по различным факторам, на основе чего, выводим наш собственный рейтинг автосервиса" />,
+      value: <ColoredText style={styles.ourRatingValueStyle} type={rankToStatus(rank)} strong>{rank}</ColoredText>,
     },
     {
-      title: <RankBlockTitle title="Решение спорных ситуаций" description="Как часто представители автосервиса реагируют и решают спорные ситуации с клиентами. Мыы собираем эту информацию с сайтов отзовиков" />,
+      title: <RankBlockTitle title="Решение спорных ситуаций" description="Как часто представители автосервиса реагируют и решают спорные ситуации с клиентами. Эта информация собирается с сайтов отзовиков" />,
       value: <>
-        {feedbackWithClientsDirection === 1 && <ColoredText type="safe" strong>Всегда</ColoredText>}
-        {feedbackWithClientsDirection === 0 && <ColoredText type="warning" strong>Выборочно</ColoredText>}
-        {feedbackWithClientsDirection === -1 && <ColoredText type="danger" strong>Никогда</ColoredText>}
+        {feedbackWithClientsDirection === 2 && <ColoredText type="safe" strong>Всегда</ColoredText>}
+        {feedbackWithClientsDirection === 1 && <ColoredText type="warning" strong>Выборочно</ColoredText>}
+        {feedbackWithClientsDirection === 0 && <ColoredText type="danger" strong>Никогда</ColoredText>}
+        {feedbackWithClientsDirection === -1 && <ColoredText disabled strong>Нет данных</ColoredText>}
       </>,
     },
     {
       title: <RankBlockTitle title="Отзывы авторитетных пользователей на форумах" description="Мы ищем отзывы от авторитетных пользователей на различных тематических форумах, таких как toyota-club.com.ua, drive2.ru и тд." />,
       value: <>
-        {forumReviewsDirection === 1 && <ColoredText type="safe" strong>Положительные</ColoredText>}
-        {forumReviewsDirection === 0 && <ColoredText type="warning" strong>Отсутствуют</ColoredText>}
-        {forumReviewsDirection === -1 && <ColoredText type="danger" strong>Отрицательные</ColoredText>}
+        {forumReviewsDirection === 2 && <ColoredText type="safe" strong>Положительные</ColoredText>}
+        {forumReviewsDirection === 1 && <ColoredText type="warning" strong>Смешанные</ColoredText>}
+        {forumReviewsDirection === 0 && <ColoredText type="danger" strong>Отрицательные</ColoredText>}
+        {forumReviewsDirection === -1 && <ColoredText disabled strong>Отсутсвуют</ColoredText>}
       </>,
     },
     {
@@ -67,8 +71,8 @@ export default function Service({ data: { servicesJson } }) {
       </>,
     },
     ...sideServicesRank.map(o => ({
-          title: <RankBlockTitle title={<span>Рейтинг <a>{o.name}</a></span>} />,
-          value: <ColoredText type={rankToStatus(o.rank)} strong>{o.rank.toFixed(1)}</ColoredText>
+          title: <RankBlockTitle title={<span>Рейтинг <span>{o.name}</span></span>} />,
+          value: <ColoredText type={rankToStatus(o.rank)} strong>{o.rank}</ColoredText>
     }))
   ], [servicesJson]);
 
@@ -87,32 +91,78 @@ export default function Service({ data: { servicesJson } }) {
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.title}>{name}</h1>
+      <h1 style={styles.title}>
+        <div style={styles.titleText}>{name}</div>
+      </h1>
       <div style={styles.content}>
-        <div style={{ ...styles.contentSide, ...styles.specializationsBlock }}>
-          <div>
-            <h3 className="list-heading">Основные виды работ:</h3>
-            <div style={styles.listWrapper}>
+        <div style={{ ...styles.contentSide}}>
+          <section style={styles.addressBlock}>
+            <h3 className="list-heading">Вебсайт:</h3>
+            <div>
+              <a href={website} rel="noopener noreferrer" target="_blank">{website}</a>
+            </div>
+          </section>
+          <section>
+            <h3 className="list-heading">Телефоны для связи:</h3>
+            <div style={{ ...styles.listWrapper, ...styles.listWithoutBorder }}>
               <List
-                dataSource={mainSpecialties}
+                dataSource={phones}
                 renderItem={item => (
-                  <List.Item>
+                  <List.Item style={styles.listItemWithoutBorder}>
                     {item}
                   </List.Item>
                 )}
               />
             </div>
-          </div>
-          <h3 className="list-heading">Так же выполняют:</h3>
-          <div style={styles.listWrapper}>
-            <List
-              dataSource={otherSpecialties}
-              renderItem={item => (
-                <List.Item>
-                  {item}
-                </List.Item>
-              )}
-            />
+          </section>
+          <section>
+            <h3 className="list-heading">Время работы:</h3>
+            <div>
+              <div style={{ ...styles.listWrapper, ...styles.listWithoutBorder }}>
+                <List
+                  dataSource={workingHours}
+                  renderItem={({ day, time }) => (
+                    <List.Item style={styles.listItemWithoutBorder}>
+                      {mapDayToLabel(day)}: <b>{time}</b>
+                    </List.Item>
+                  )}
+                />
+              </div>
+            </div>
+          </section>
+          <section style={styles.addressBlock}>
+            <h3 className="list-heading">Адрес:</h3>
+            <div>
+              {address}
+            </div>
+          </section>
+          <div style={styles.specialtiesBlock}>
+            <section>
+              <h3 className="list-heading">Основные виды работ:</h3>
+              <div style={styles.listWrapper}>
+                <List
+                  dataSource={mainSpecialties}
+                  renderItem={item => (
+                    <List.Item>
+                      {item}
+                    </List.Item>
+                  )}
+                />
+              </div>
+            </section>
+            <section>
+              <h3 className="list-heading">Так же выполняют:</h3>
+              <div style={styles.listWrapper}>
+                <List
+                  dataSource={otherSpecialties}
+                  renderItem={item => (
+                    <List.Item>
+                      {item}
+                    </List.Item>
+                  )}
+                />
+              </div>
+            </section>
           </div>
         </div>
         <div style={{ ...styles.contentSide, ...styles.rankBlock }}>
@@ -146,6 +196,7 @@ export const pageQuery = graphql`
     servicesJson(pagePath: { eq: $path }) {
       name
       description
+      phones
       coordinates {
         lat
         lng
@@ -156,13 +207,13 @@ export const pageQuery = graphql`
         time
       }
       website
+      mainSpecialties
+      otherSpecialties
       sideServicesRank {
         name
         link
         rank
       }
-      mainSpecialties
-      otherSpecialties
       fakeReviews
       feedbackWithClientsDirection
       forumReviewsDirection

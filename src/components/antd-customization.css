@@ -1,0 +1,18 @@
+div.ant-card-head {
+    background: yellow;
+}
+
+.ant-card-head-title > * {
+    font-size: 25px;
+    font-weight: bold;
+    background: yellow;
+}
+.ant-card-head-title, .ant-card-head-title > * {
+    font-size: 25px;
+    font-weight: bold;
+    background: yellow;
+    color: black;
+}
+.ant-card-body {
+    background: #fbfbf9;
+}

@@ -1,3 +1,5 @@
+const MAX_WIDTH = 1200;
+
 export default {
   container: {
     flexDirection: 'column',
@@ -17,12 +19,18 @@ export default {
     justifyContent: 'center',
   },
   title: {
+    display: 'inline-block',
     zIndex: 200000,
-    marginTop: 185,
-    fontSize: 120,
+    marginTop: 280,
+    fontSize: 50,
     textTransform: 'capitalize',
     textAlign: 'center',
-    color: 'black'
+    color: 'black',
+    fontWeight: 'bold',
+  },
+  titleText: {
+    maxWidth: MAX_WIDTH,
+    display: 'inline-block',
   },
   mapOverlay: {
     position: 'absolute',
@@ -35,10 +43,10 @@ export default {
     opacity: .2,
   },
   content: {
-    maxWidth: 1200,
+    maxWidth: MAX_WIDTH,
     display: 'flex',
     width: '100%',
-    margin: '50px auto 0'
+    margin: '100px auto 0'
   },
   contentSide: {
     flexDirection: 'column',
@@ -57,5 +65,22 @@ export default {
     display: 'block'
   },
   listWrapper: { display: 'flex' },
-  rankListWrapper: { alignSelf: 'flex-end' }
+  rankListWrapper: { alignSelf: 'flex-end' },
+  listItemWithoutBorder: { border: 'none', margin: 0 },
+  listWithoutBorder: {
+    marginBottom: 20,
+  },
+  addressBlock: {
+    marginBottom: 20,
+  },
+  specialtiesBlock: {
+    marginTop: 20,
+  },
+  ourRatingTitleStyle: {
+    fontSize: 25,
+    verticalAlign: -3,
+  },
+  ourRatingValueStyle: {
+    fontSize: 25,
+  },
 }
