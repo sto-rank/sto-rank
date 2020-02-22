@@ -5,15 +5,12 @@ export default {
     flexDirection: 'row',
     display: 'flex',
     height: '100vh',
-    paddingTop: HEADER_HEIGHT,
 },
   services: {
-    width: 'calc(50% - 40px)',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    marginLeft: 20,
-    marginRight: 20,
+
     overflow: 'auto',
   },
   map: {
@@ -21,18 +18,27 @@ export default {
   },
   header: {
     height: HEADER_HEIGHT,
-    position: 'fixed',
     backgroundColor: 'white',
     zIndex: 2222,
-    left: 0,
-    right: 0,
-    top: 0,
     display: 'flex',
     alignItems: 'center',
+    paddingTop: 50,
+    paddingBottom: 50,
   },
   title: {
     width: '100%',
     textAlign: 'center',
     marginBottom: 0,
+  },
+  actionsBlock: {
+    textAlign: 'left',
+    width: '100%',
+  },
+  listBlock: {
+    boxSizing: 'border-box',
+    paddingLeft: 20,
+    paddingRight: 20,
+    display: 'flex',
+    flexDirection: 'column'
   }
 }

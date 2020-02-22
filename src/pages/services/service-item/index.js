@@ -13,18 +13,9 @@ export const ServiceItem = ({
                               workingHours,
                               mainSpecialties,
                               otherSpecialties,
-                              fakeReviews,
-                              feedbackWithClientsDirection,
-                              forumReviewsDirection,
-                              sideServicesRank,
+                              rank,
   onHeaderPress,
 }) => {
-  const rank = useMemo(() => calcRank({
-    fakeReviews,
-    feedbackWithClientsDirection,
-    forumReviewsDirection,
-    sideServicesRank: sideServicesRank.map(o => o.rank),
-  }), [fakeReviews, feedbackWithClientsDirection, forumReviewsDirection, sideServicesRank]);
   const onHeaderPressCb = useCallback(() => {
     onHeaderPress({ pagePath });
   }, [onHeaderPress, pagePath]);

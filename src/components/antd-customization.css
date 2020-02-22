@@ -16,3 +16,6 @@ div.ant-card-head {
 .ant-card-body {
     background: #fbfbf9;
 }
+.ant-form-item .ant-form-item-label {
+    line-height: 1;
+}

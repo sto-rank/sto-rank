@@ -1,13 +1,17 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { graphql, useStaticQuery } from 'gatsby'
+import { Input, Form } from 'antd'
 import { Element, scroller } from 'react-scroll'
 import { Map, Popup, TileLayer } from 'react-leaflet'
 
 import ExtendedMarker from '../../components/extended-marker'
+import CreateFilterSortingForm from './filter-sorting-form'
 import styles from './styles'
 import ServiceItem from './service-item'
+import useEnchancedServices from './hooks/useEnchancedServices'
+import { calcRank } from '../../helpers/rank'
 
-const ZOOM = 15
+const ZOOM = 11
 const defaultCenter = [
   50.4851493,
   30.4721233
@@ -19,6 +23,7 @@ export default function Services() {
       allServicesJson {
         edges {
           node {
+            specialized
             pagePath
             name
             description
@@ -47,18 +52,22 @@ export default function Services() {
       }
     }
   `);
-  const [selectedServiceId, setSelectedServiceId] = useState();
 
-  const selectedServiceEdge = useMemo(() => edges.find(edge => edge.node.pagePath === selectedServiceId), [edges, selectedServiceId]);
+  const [selectedServiceId, setSelectedServiceId] = useState();
+  const [filterSorting, setFilterSorting] = useState();
+
+  const enchancedServices = useEnchancedServices({ serviceItems: edges.map(({ node }) => node), filterSorting });
+
+  const selectedService = useMemo(() => enchancedServices.find(o => o.pagePath === selectedServiceId), [enchancedServices, selectedServiceId]);
 
   const mapCenter = useMemo(() => {
-    if (selectedServiceEdge && selectedServiceEdge.node.coordinates) {
-      const { lat, lng } = selectedServiceEdge.node.coordinates;
+    if (selectedService && selectedService.coordinates) {
+      const { lat, lng } = selectedService.coordinates;
       return [lat, lng];
     }
 
     return defaultCenter
-  }, [selectedServiceEdge]);
+  }, [selectedService]);
 
   const onMarkerPress = useCallback(({ pagePath }) => {
     setSelectedServiceId(pagePath);
@@ -66,6 +75,11 @@ export default function Services() {
   const onListItemPress = useCallback(({ pagePath }) => {
     setSelectedServiceId(pagePath);
   }, []);
+  const onFilterValuesChange = useCallback((a, b, allValues) => {
+    setFilterSorting(allValues)
+  }, []);
+
+  const FilterSortingForm = useMemo(() => CreateFilterSortingForm({ onValuesChange: onFilterValuesChange }), [onFilterValuesChange]);
 
   useEffect(() => {
     scroller.scrollTo(selectedServiceId, { containerId: 'servicesList', smooth: true })
@@ -73,21 +87,24 @@ export default function Services() {
 
   return (
     <div>
-      <div style={styles.header}>
-        <h1 style={styles.title}>СТО Киева  <br/> сепциализирующиеся на ремонте АКПП</h1>
-      </div>
       <div style={styles.container}>
-        <Element style={styles.services} id="servicesList">
-          {
-            edges.map(({
-              node: serviceItem,
-            }) => (
-              <Element key={serviceItem.pagePath} name={serviceItem.pagePath} style={{ width: '100%' }}>
-                <ServiceItem {...serviceItem} onHeaderPress={onListItemPress} />
-              </Element>
-            ))
-          }
-        </Element>
+        <div style={styles.listBlock}>
+          <Element style={styles.services} id="servicesList">
+            <div style={styles.header}>
+              <h1 style={styles.title}>СТО Киева  <br/> сепциализирующиеся на ремонте АКПП</h1>
+            </div>
+            <div style={styles.actionsBlock}>
+              <FilterSortingForm />
+            </div>
+            {
+              enchancedServices.map(serviceItem => (
+                <Element key={serviceItem.pagePath} name={serviceItem.pagePath} style={{ width: '100%' }}>
+                  <ServiceItem {...serviceItem} onHeaderPress={onListItemPress} />
+                </Element>
+              ))
+            }
+          </Element>
+        </div>
         <div style={styles.map}>
           {
             typeof window !== 'undefined' && (
@@ -97,8 +114,8 @@ export default function Services() {
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
                 {
-                  edges.map(({
-                    node: { coordinates: { lat, lng }, name, pagePath }
+                  enchancedServices.map(({
+                    coordinates: { lat, lng }, name, pagePath
                   }) => (
                     <ExtendedMarker
                       key={pagePath}
