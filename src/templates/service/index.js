@@ -1,18 +1,21 @@
 import React, { useMemo } from 'react'
 import { graphql } from 'gatsby'
-import { List, Table } from 'antd';
+import { List, Table, Icon } from 'antd';
 import { Map, TileLayer, Popup, Marker } from 'react-leaflet'
 
-import { calcRank, rankToStatus } from '../../helpers/rank'
+import { calcRank, rankToStatus, rankToColor } from '../../helpers/rank'
 import ColoredText from '../../components/ColoredText'
 
 import styles from './styles'
 import RankBlockTitle from './RankBlockTitle'
 import { mapDayToLabel } from '../../helpers/days'
+import useEnchancedServices from '../../pages/services/hooks/useEnchancedServices'
 
 const ZOOM = 15;
 
 export default function Service({ data: { servicesJson } }) {
+  const enchancedServices = useEnchancedServices({ serviceItems: [servicesJson] });
+
   const {
     name,
     coordinates,
@@ -26,19 +29,24 @@ export default function Service({ data: { servicesJson } }) {
     phones,
     workingHours,
     website,
-  } = servicesJson;
+    incomplete,
+  } = enchancedServices[0];
 
   const rank = useMemo(() => calcRank({
     fakeReviews,
     feedbackWithClientsDirection,
     forumReviewsDirection,
-    sideServicesRank: sideServicesRank.map(o => o.rank),
+    sideServicesRank,
   }), [fakeReviews, feedbackWithClientsDirection, forumReviewsDirection, sideServicesRank]);
 
   const rankData = useMemo(() => [
     {
       title: <RankBlockTitle style={styles.ourRatingTitleStyle} title="Итоговый рейтинг СТО" strong description="Мы собираем данные по атосервису представленые в открытых источних и анлизируем их по различным факторам, на основе чего, выводим наш собственный рейтинг автосервиса" />,
-      value: <ColoredText style={styles.ourRatingValueStyle} type={rankToStatus(rank)} strong>{rank}</ColoredText>,
+      value: (
+        <span style={{ ...styles.ourRatingValueStyle, color: !incomplete ? rankToColor(rank) : 'gray' }}>
+          {rank}
+        </span>
+      ),
     },
     {
       title: <RankBlockTitle title="Решение спорных ситуаций" description="Как часто представители автосервиса реагируют и решают спорные ситуации с клиентами. Эта информация собирается с сайтов отзовиков" />,
@@ -71,7 +79,7 @@ export default function Service({ data: { servicesJson } }) {
       </>,
     },
     ...sideServicesRank.map(o => ({
-          title: <RankBlockTitle title={<span>Рейтинг <span>{o.name}</span></span>} />,
+          title: <RankBlockTitle title={<a href={o.link} target="_blank">Рейтинг <span>{o.name}</span></a>} />,
           value: <ColoredText type={rankToStatus(o.rank)} strong>{o.rank}</ColoredText>
     }))
   ], [servicesJson]);
@@ -167,6 +175,11 @@ export default function Service({ data: { servicesJson } }) {
         </div>
         <div style={{ ...styles.contentSide, ...styles.rankBlock }}>
           <div style={{ ...styles.listWrapper, ...styles.rankListWrapper }}>
+            {
+              incomplete && (
+                <p style={styles.textUnderTable}>По данному автосервису нет достаточно информации для точной оценки!</p>
+              )
+            }
             <Table dataSource={rankData} columns={rankColumns} showHeader={false} pagination={false} />
           </div>
         </div>

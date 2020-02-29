@@ -102,13 +102,13 @@
     "name": "АКПП сервис",
     "description": "АКПП сервис предоставляет услуги ремонта АКПП, DSG, вариаторов и гидроблоков. О СТО мы нашли не так много информации, однако, и жалоб на работу сервиса тоже нет.",
     "coordinates": {
-      "lat": 50.5081149,
-      "lng": 30.4482677
+      "lat": 50.415473,
+      "lng": 30.6847178
     },
     "address": "Киев, ул.Николая Хвылёвого 15",
     "workingHours": [
       {
-        "day": "mondayToSunday",
+        "day": "mondayToFriday",
         "time": "10:00-20:00"
       }
     ],
@@ -359,6 +359,10 @@
       {
         "day": "mondayToFriday",
         "time": "09:00-18:00"
+      },
+      {
+        "day": "saturday",
+        "time": "10:00-18:00"
       }
     ],
     "phones": [
@@ -388,7 +392,7 @@
     "feedbackWithClientsDirection": 2,
     "forumReviewsDirection": -1,
     "personalOpinionRank": 4,
-    "fakeReviews":  false,
+    "fakeReviews": true,
     "pagePath": "/Автоматик",
     "specialized": ["TRANSMISSION_REPAIR"]
   },
@@ -628,8 +632,8 @@
     "name": "Mechatronik",
     "description": "Mechatronik начали свою работу недавно и специализируются на ремонте DSG. Ничего плохого об СТО не могу сказать так, как сервис не успел наработать отзывы о своей работе.",
     "coordinates": {
-      "lat":50.4375842,
-      "lng":30.4159269
+      "lat":50.4962092,
+      "lng":30.3703079
     },
     "address": "Киев, улица Стеценка 30",
     "workingHours": [
@@ -649,6 +653,11 @@
         "name": "Google Maps",
         "link": "https://g.page/mechatronik_sto?share",
         "rank": 4.0
+      },
+      {
+        "name": "Vse Sto",
+        "link": "https://vse-sto.com.ua/sto/17796-mehatronik/",
+        "rank": 5.0
       }
     ],
     "mainSpecialties": [

@@ -1,9 +1,8 @@
 import React, { useCallback, useMemo } from 'react'
-import { Card, Col, List, Progress, Row } from 'antd'
-import { Link } from 'gatsby'
+import { Card, Col, List, Progress, Row, Icon, Tooltip } from 'antd'
 import styles from './styles'
 import { mapDayToLabel } from '../../../helpers/days'
-import { calcRank, MAX_RANK, rankToColor } from '../../../helpers/rank'
+import { MAX_RANK, rankToColor } from '../../../helpers/rank'
 
 export const ServiceItem = ({
                               website,
@@ -15,10 +14,12 @@ export const ServiceItem = ({
                               otherSpecialties,
                               rank,
   onHeaderPress,
+                              incomplete,
 }) => {
   const onHeaderPressCb = useCallback(() => {
     onHeaderPress({ pagePath });
   }, [onHeaderPress, pagePath]);
+  const color = useMemo(() => !incomplete ? rankToColor(rank) : 'gray', [rank, incomplete]);
   return (
     <Card style={{ width: '100%', marginBottom: 20 }} title={<span onClick={onHeaderPressCb}>{name}</span>} bordered={false}>
       <Row>
@@ -37,15 +38,16 @@ export const ServiceItem = ({
             </span>
           </div>
         </Col>
-        <Col span={12} style={{ textAlign: 'right' }}>
+        <Col span={12} style={styles.rankBlock}>
+          { incomplete && <p style={styles.incompleteText}>По данному автосервису нет достаточно информации для точной оценки!</p>}
           <Progress
             strokeLinecap="square"
             strokeWidth={10}
             type="circle"
             percent={rank / MAX_RANK * 100}
             width={80}
-            format={() => <b style={{ color: rankToColor(rank) }}>{rank}</b>}
-            strokeColor={rankToColor(rank)}
+            format={() => <b style={{ color }}>{rank}</b>}
+            strokeColor={color}
           />
         </Col>
       </Row>
@@ -73,7 +75,7 @@ export const ServiceItem = ({
           )}
         />
       </div>
-      <Link to={pagePath}>Перейти</Link>
+      <a href={pagePath} target="_blank">Перейти</a>
     </Card>
   );
 };

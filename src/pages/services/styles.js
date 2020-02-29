@@ -35,10 +35,17 @@ export default {
     width: '100%',
   },
   listBlock: {
+    width: '50%',
     boxSizing: 'border-box',
     paddingLeft: 20,
     paddingRight: 20,
     display: 'flex',
     flexDirection: 'column'
+  },
+  listSeparator: {
+    fontSize: 20,
+    padding: 20,
+    textAlign: 'center',
+    fontWeight: 'bold'
   }
 }

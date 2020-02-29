@@ -64,7 +64,7 @@ export default {
     fontSize: '20px',
     display: 'block'
   },
-  listWrapper: { display: 'flex' },
+  listWrapper: { display: 'flex', flexDirection: 'column' },
   rankListWrapper: { alignSelf: 'flex-end' },
   listItemWithoutBorder: { border: 'none', margin: 0 },
   listWithoutBorder: {
@@ -82,5 +82,12 @@ export default {
   },
   ourRatingValueStyle: {
     fontSize: 25,
+    fontWeight: 'bold',
   },
+  textUnderTable: {
+    fontWeight: 'bold',
+    maxWidth: 300,
+    alignSelf: 'flex-end',
+    color: 'orange'
+  }
 }

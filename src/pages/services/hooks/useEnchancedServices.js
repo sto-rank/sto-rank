@@ -1,22 +1,20 @@
-import { calcRank } from '../../../helpers/rank'
+import { calcRank, calcIncomopleteCoefficient } from '../../../helpers/rank'
 
-export default ({ serviceItems, filterSorting: { specialized, search } = {} }) => {
-  return serviceItems.map(serviceItem => {
+const INCOMPLETED_COEFFICIENT_TRESHOLD = 0.7
+
+export default ({ serviceItems }) => {
+  const enchancedServiceItems = serviceItems.map(serviceItem => {
     const { fakeReviews, feedbackWithClientsDirection, forumReviewsDirection, sideServicesRank } = serviceItem;
     const rank = calcRank({
       fakeReviews,
       feedbackWithClientsDirection,
       forumReviewsDirection,
-      sideServicesRank: sideServicesRank.map(o => o.rank),
+      sideServicesRank,
     });
-    return ({ ...serviceItem, rank });
-  })
-    .filter(o => {
-      return (
-        !specialized || o.specialized.includes('TRANSMISSION_REPAIR')
-      ) && (
-        !search || o.name.toLowerCase().includes(search.toLowerCase())
-      )
-    })
-    .sort((a, b) => b.rank - a.rank)
+    const incomopleteCoefficient = calcIncomopleteCoefficient({ feedbackWithClientsDirection, forumReviewsDirection, sideServicesRank });
+    const incomplete = incomopleteCoefficient <= INCOMPLETED_COEFFICIENT_TRESHOLD;
+    return ({ ...serviceItem, rank, incomopleteCoefficient, incomplete });
+  });
+
+  return enchancedServiceItems;
 }

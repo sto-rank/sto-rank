@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { graphql, useStaticQuery } from 'gatsby'
-import { Input, Form } from 'antd'
 import { Element, scroller } from 'react-scroll'
 import { Map, Popup, TileLayer } from 'react-leaflet'
 
@@ -9,7 +8,6 @@ import CreateFilterSortingForm from './filter-sorting-form'
 import styles from './styles'
 import ServiceItem from './service-item'
 import useEnchancedServices from './hooks/useEnchancedServices'
-import { calcRank } from '../../helpers/rank'
 
 const ZOOM = 11
 const defaultCenter = [
@@ -54,11 +52,32 @@ export default function Services() {
   `);
 
   const [selectedServiceId, setSelectedServiceId] = useState();
-  const [filterSorting, setFilterSorting] = useState();
+  const [filterSorting, setFilterSorting] = useState({});
+
+  const { specialized, search } = filterSorting;
 
   const enchancedServices = useEnchancedServices({ serviceItems: edges.map(({ node }) => node), filterSorting });
 
-  const selectedService = useMemo(() => enchancedServices.find(o => o.pagePath === selectedServiceId), [enchancedServices, selectedServiceId]);
+  const filteredEnchancedServiceItems = enchancedServices.filter(o => {
+    return (
+      !specialized || o.specialized.includes('TRANSMISSION_REPAIR')
+    ) && (
+      !search || o.name.toLowerCase().includes(search.toLowerCase())
+    )
+  })
+
+  const completedEnchancedServiceItems = filteredEnchancedServiceItems
+    .filter(o => !o.incomplete)
+    .sort((a, b) => {
+      return b.rank - a.rank
+    });
+  const incompletedEnchancedServiceItems = filteredEnchancedServiceItems
+    .filter(o => o.incomplete)
+    .sort((a, b) => {
+      return b.rank - a.rank
+    });
+
+  const selectedService = useMemo(() => filteredEnchancedServiceItems.find(o => o.pagePath === selectedServiceId), [filteredEnchancedServiceItems, selectedServiceId]);
 
   const mapCenter = useMemo(() => {
     if (selectedService && selectedService.coordinates) {
@@ -97,7 +116,15 @@ export default function Services() {
               <FilterSortingForm />
             </div>
             {
-              enchancedServices.map(serviceItem => (
+              completedEnchancedServiceItems.map(serviceItem => (
+                <Element key={serviceItem.pagePath} name={serviceItem.pagePath} style={{ width: '100%' }}>
+                  <ServiceItem {...serviceItem} onHeaderPress={onListItemPress} />
+                </Element>
+              ))
+            }
+            <p style={styles.listSeparator}>Автосервисы по которым нет достаточно информации для точной оценки:</p>
+            {
+              incompletedEnchancedServiceItems.map(serviceItem => (
                 <Element key={serviceItem.pagePath} name={serviceItem.pagePath} style={{ width: '100%' }}>
                   <ServiceItem {...serviceItem} onHeaderPress={onListItemPress} />
                 </Element>
@@ -114,8 +141,8 @@ export default function Services() {
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
                 {
-                  enchancedServices.map(({
-                    coordinates: { lat, lng }, name, pagePath
+                  filteredEnchancedServiceItems.map(({
+                    coordinates: { lat, lng }, name, pagePath, address
                   }) => (
                     <ExtendedMarker
                       key={pagePath}
@@ -125,6 +152,8 @@ export default function Services() {
                     >
                       <Popup>
                         {name}
+                        <br/>
+                        {address}
                       </Popup>
                     </ExtendedMarker>
                   ))
