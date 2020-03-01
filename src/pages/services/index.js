@@ -4,10 +4,10 @@ import { Element, scroller } from 'react-scroll'
 import { Map, Popup, TileLayer } from 'react-leaflet'
 
 import ExtendedMarker from '../../components/extended-marker'
-import CreateFilterSortingForm from './filter-sorting-form'
-import styles from './styles'
-import ServiceItem from './service-item'
-import useEnchancedServices from './hooks/useEnchancedServices'
+import CreateFilterSortingForm from '../../components/services/filter-sorting-form'
+import styles from '../../components/services/styles'
+import ServiceItem from '../../components/services/service-item'
+import useEnchancedServices from '../../hooks/useEnchancedServices'
 
 const ZOOM = 11
 const defaultCenter = [
@@ -55,8 +55,7 @@ export default function Services() {
   const [filterSorting, setFilterSorting] = useState({});
 
   const { specialized, search } = filterSorting;
-
-  const enchancedServices = useEnchancedServices({ serviceItems: edges.map(({ node }) => node), filterSorting });
+  const enchancedServices = useEnchancedServices({ serviceItems: edges.map(({ node }) => node) });
 
   const filteredEnchancedServiceItems = enchancedServices.filter(o => {
     return (

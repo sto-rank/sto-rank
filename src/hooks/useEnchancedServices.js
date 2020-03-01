@@ -1,4 +1,4 @@
-import { calcRank, calcIncomopleteCoefficient } from '../../../helpers/rank'
+import { calcRank, calcIncomopleteCoefficient } from '../helpers/rank'
 
 const INCOMPLETED_COEFFICIENT_TRESHOLD = 0.7
 

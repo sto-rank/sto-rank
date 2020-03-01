@@ -9,12 +9,14 @@ import ColoredText from '../../components/ColoredText'
 import styles from './styles'
 import RankBlockTitle from './RankBlockTitle'
 import { mapDayToLabel } from '../../helpers/days'
-import useEnchancedServices from '../../pages/services/hooks/useEnchancedServices'
+import useEnchancedServices from '../../hooks/useEnchancedServices'
 import ExtendedMarker from '../../components/extended-marker'
 
 const ZOOM = 15;
 
-export default function Service({ data: { servicesJson } }) {
+export default function Service(ar) {
+
+  const { data: { servicesJson } } = ar
   const enchancedServices = useEnchancedServices({ serviceItems: [servicesJson] });
 
   const {
