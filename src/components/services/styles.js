@@ -1,3 +1,5 @@
+import { GREEN_COLOR, ORANGE_COLOR } from '../../constants/colors'
+
 const HEADER_HEIGHT = 200;
 
 export default {
@@ -14,7 +16,7 @@ export default {
     overflow: 'auto',
   },
   map: {
-    width: '50%',
+    width: '60%',
   },
   header: {
     height: HEADER_HEIGHT,
@@ -28,6 +30,8 @@ export default {
   title: {
     width: '100%',
     textAlign: 'center',
+    display: 'inline-block',
+    color: 'rgba(0, 0, 0, 0.85)',
     marginBottom: 0,
   },
   actionsBlock: {
@@ -35,7 +39,7 @@ export default {
     width: '100%',
   },
   listBlock: {
-    width: '50%',
+    width: '40%',
     boxSizing: 'border-box',
     paddingLeft: 20,
     paddingRight: 20,
@@ -47,5 +51,17 @@ export default {
     padding: 20,
     textAlign: 'center',
     fontWeight: 'bold'
-  }
+  },
+  infoText: {
+    fontWeight: 'bold',
+    maxWidth: 300,
+    alignSelf: 'flex-end',
+    fontSize: 12,
+  },
+  warningText: {
+    color: ORANGE_COLOR,
+  },
+  successText: {
+    color: GREEN_COLOR,
+  },
 }

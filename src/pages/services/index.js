@@ -8,12 +8,16 @@ import CreateFilterSortingForm from '../../components/services/filter-sorting-fo
 import styles from '../../components/services/styles'
 import ServiceItem from '../../components/services/service-item'
 import useEnchancedServices from '../../hooks/useEnchancedServices'
+import { MAX_RANK, rankToColor } from '../../helpers/rank'
+import { AUTOMATIC_TRANSMISSION_REPAIR } from '../../constants/specialized-keywords'
+import { Col, Icon, Progress } from 'antd'
+import { mapDayToLabel } from '../../helpers/days'
 
 const ZOOM = 11
 const defaultCenter = [
   50.4851493,
   30.4721233
-]
+];
 
 export default function Services() {
   const { allServicesJson: { edges } } = useStaticQuery(graphql`
@@ -59,7 +63,7 @@ export default function Services() {
 
   const filteredEnchancedServiceItems = enchancedServices.filter(o => {
     return (
-      !specialized || o.specialized.includes('TRANSMISSION_REPAIR')
+      !specialized || o.specialized.includes(AUTOMATIC_TRANSMISSION_REPAIR)
     ) && (
       !search || o.name.toLowerCase().includes(search.toLowerCase())
     )
@@ -109,7 +113,7 @@ export default function Services() {
         <div style={styles.listBlock}>
           <Element style={styles.services} id="servicesList">
             <div style={styles.header}>
-              <h1 style={styles.title}>СТО Киева  <br/> сепциализирующиеся на ремонте АКПП</h1>
+              <h1><a href="/" style={styles.title}>СТО Киева  <br/> сепциализирующиеся на ремонте АКПП</a></h1>
             </div>
             <div style={styles.actionsBlock}>
               <FilterSortingForm />
@@ -121,7 +125,7 @@ export default function Services() {
                 </Element>
               ))
             }
-            <p style={styles.listSeparator}>Автосервисы по которым нет достаточно информации для точной оценки:</p>
+            <p style={styles.listSeparator}>Далее представлены автосервисы по которым нет достаточно информации для точной оценки:</p>
             {
               incompletedEnchancedServiceItems.map(serviceItem => (
                 <Element key={serviceItem.pagePath} name={serviceItem.pagePath} style={{ width: '100%' }}>
@@ -141,7 +145,14 @@ export default function Services() {
                 />
                 {
                   filteredEnchancedServiceItems.map(({
-                    coordinates: { lat, lng }, name, pagePath, address
+                                                       coordinates: { lat, lng },
+                                                       name,
+                                                       pagePath,
+                                                       address,
+                                                       rank,
+                                                       incomplete,
+                                                       workingHours,
+                    specialized
                   }) => (
                     <ExtendedMarker
                       key={pagePath}
@@ -150,9 +161,15 @@ export default function Services() {
                       onClick={() => onMarkerPress({ pagePath })}
                     >
                       <Popup>
-                        {name}
-                        <br/>
-                        {address}
+                        <p><b style={{ color: !incomplete ? rankToColor(rank) : 'gray' }}>{rank} из {MAX_RANK}</b></p>
+                        <p>{ incomplete && <span style={{ ...styles.infoText, ...styles.warningText }}><Icon type="warning" /> По данному автосервису нет достаточно информации для точной оценки!</span>}</p>
+                        <p>{ specialized.includes(AUTOMATIC_TRANSMISSION_REPAIR) && <span style={{ ...styles.infoText, ...styles.successText }}><Icon type="check" /> Узкопрофильное СТО по ремонту АКПП</span>}</p>
+                        <p><b>{name}</b></p>
+                        <p>{address}</p>
+                        {
+                          workingHours.map(({ day, time }) => <div key={`${day}${time}`}>{mapDayToLabel(day)}, {time}</div>)
+                        }
+                        <p><a href={pagePath} target="_blank">Детальнее</a></p>
                       </Popup>
                     </ExtendedMarker>
                   ))

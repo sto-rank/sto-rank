@@ -1,3 +1,5 @@
+import { GREEN_COLOR, ORANGE_COLOR, RED_COLOR } from '../constants/colors'
+
 export const MAX_RANK = 5;
 const MIN_RANK = 1;
 const directionToRankMap = {
@@ -52,9 +54,9 @@ export const rankToStatus = (rank) => {
 }
 
 export const rankToColor = (rank) => {
-  if (rank < 3.5) return 'red'
-  if (rank < 4.3) return '#FF7F50'
-  return '#00804f'
+  if (rank < 3.5) return RED_COLOR
+  if (rank < 4.3) return ORANGE_COLOR
+  return GREEN_COLOR
 }
 
 export const calcIncomopleteCoefficient = ({ feedbackWithClientsDirection, forumReviewsDirection, sideServicesRank }) => {

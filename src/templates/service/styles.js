@@ -1,3 +1,5 @@
+import { ORANGE_COLOR } from '../../constants/colors'
+
 const MAX_WIDTH = 1200;
 
 export default {
@@ -89,7 +91,7 @@ export default {
     fontWeight: 'bold',
     maxWidth: 300,
     alignSelf: 'flex-end',
-    color: 'orange'
+    color: ORANGE_COLOR
   },
   goBack: {
     marginBottom: 50,

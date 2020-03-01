@@ -1,8 +1,9 @@
 import React, { useCallback, useMemo } from 'react'
-import { Card, Col, List, Progress, Row } from 'antd'
+import { Card, Col, List, Progress, Row, Icon } from 'antd'
 import styles from './styles'
 import { mapDayToLabel } from '../../../helpers/days'
 import { MAX_RANK, rankToColor } from '../../../helpers/rank'
+import { AUTOMATIC_TRANSMISSION_REPAIR } from '../../../constants/specialized-keywords'
 
 export const ServiceItem = ({
                               website,
@@ -15,6 +16,7 @@ export const ServiceItem = ({
                               rank,
   onHeaderPress,
                               incomplete,
+  specialized,
 }) => {
   const onHeaderPressCb = useCallback(() => {
     onHeaderPress({ pagePath });
@@ -24,7 +26,7 @@ export const ServiceItem = ({
     <div>
       <Card
         style={{ width: '100%', marginBottom: 20 }}
-        title={<span>{name}</span>}
+        title={<span>{name}<span style={styles.cardHeadLink} onClick={onHeaderPressCb} /></span>}
         bordered={false}
         actions={[
           <a href={pagePath} target="_blank" style={styles.detailsBtn}>Датеальнее</a>,
@@ -48,7 +50,8 @@ export const ServiceItem = ({
             </div>
           </Col>
           <Col span={12} style={styles.rankBlock}>
-            { incomplete && <p style={styles.incompleteText}>По данному автосервису нет достаточно информации для точной оценки!</p>}
+            { incomplete && <p style={{ ...styles.infoText, ...styles.warningText }}><Icon type="warning" /> По данному автосервису нет достаточно информации для точной оценки!</p>}
+            { specialized.includes(AUTOMATIC_TRANSMISSION_REPAIR) && <p style={{ ...styles.infoText, ...styles.successText }}><Icon type="check" /> Узкопрофильное СТО по ремонту АКПП</p>}
             <Progress
               strokeLinecap="square"
               strokeWidth={10}
@@ -73,17 +76,19 @@ export const ServiceItem = ({
           />
         </div>
         <br/>
-        <div style={styles.line}>
-          <label style={styles.label}>Так же выполняют:</label>
-          <List
-            dataSource={otherSpecialties}
-            renderItem={item => (
-              <List.Item style={styles.listItemWithoutBorder}>
-                {item}
-              </List.Item>
-            )}
-          />
-        </div>
+        {
+          otherSpecialties.length ? <div style={styles.line}>
+            <label style={styles.label}>Так же выполняют:</label>
+            <List
+              dataSource={otherSpecialties}
+              renderItem={item => (
+                <List.Item style={styles.listItemWithoutBorder}>
+                  {item}
+                </List.Item>
+              )}
+            />
+          </div> : null
+        }
       </Card>
     </div>
   );

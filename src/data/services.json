@@ -49,7 +49,7 @@
     "personalOpinionRank": 4.1,
     "fakeReviews": true,
     "pagePath": "/maktrans",
-    "specialized": ["TRANSMISSION_REPAIR"]
+    "specialized": ["AUTOMATIC_TRANSMISSION_REPAIR"]
   },
   {
     "name": "АКПП Expert - ремонт и диагностика АКПП",
@@ -96,7 +96,7 @@
     "personalOpinionRank": 3.6,
     "fakeReviews": true,
     "pagePath": "/АКПП-Expert",
-    "specialized": ["TRANSMISSION_REPAIR"]
+    "specialized": ["AUTOMATIC_TRANSMISSION_REPAIR"]
   },
   {
     "name": "АКПП сервис",
@@ -141,7 +141,7 @@
     "personalOpinionRank": 4.0,
     "fakeReviews":  false,
     "pagePath": "/АКПП-сервис",
-    "specialized": ["TRANSMISSION_REPAIR"]
+    "specialized": ["AUTOMATIC_TRANSMISSION_REPAIR"]
   },
   {
     "name": "Ремонт АКПП в городе Киеве",
@@ -190,7 +190,7 @@
     "personalOpinionRank": 3.2,
     "fakeReviews": true,
     "pagePath": "/Ремонт-АКПП-в-городе-Киеве",
-    "specialized": ["TRANSMISSION_REPAIR"]
+    "specialized": ["AUTOMATIC_TRANSMISSION_REPAIR"]
   },
   {
     "name": "Ukrainian Transmission Centre — Украинский Центр Трансмиссий",
@@ -243,7 +243,7 @@
       "http://forum.detroit.in.ua/viewtopic.php?f=20&t=6279&sid=5d5e2368ac3a33e76a3b6df51edf3ed1",
       "http://forum.autoua.net/showflat.php?Number=11047878"
     ],
-    "specialized": ["TRANSMISSION_REPAIR"]
+    "specialized": ["AUTOMATIC_TRANSMISSION_REPAIR"]
   },
   {
     "name": "Discovery",
@@ -293,7 +293,7 @@
     "personalOpinionRank": 4.7,
     "fakeReviews":  false,
     "pagePath": "/Discovery",
-    "specialized": ["TRANSMISSION_REPAIR"]
+    "specialized": ["AUTOMATIC_TRANSMISSION_REPAIR"]
   },
   {
     "name": "АКПП № 1",
@@ -345,7 +345,7 @@
     "personalOpinionRank": 2.5,
     "fakeReviews": true,
     "pagePath": "/АКПП-№1",
-    "specialized": ["TRANSMISSION_REPAIR"]
+    "specialized": ["AUTOMATIC_TRANSMISSION_REPAIR"]
   },
   {
     "name": "Автоматик",
@@ -394,7 +394,7 @@
     "personalOpinionRank": 4,
     "fakeReviews": true,
     "pagePath": "/Автоматик",
-    "specialized": ["TRANSMISSION_REPAIR"]
+    "specialized": ["AUTOMATIC_TRANSMISSION_REPAIR"]
   },
   {
     "name": "АКПП центр",
@@ -434,7 +434,7 @@
     "personalOpinionRank": 4,
     "fakeReviews":  false,
     "pagePath": "/АКПП-центр",
-    "specialized": ["TRANSMISSION_REPAIR"]
+    "specialized": ["AUTOMATIC_TRANSMISSION_REPAIR"]
   },
   {
     "name": "Центр ремонта коробок передач",
@@ -494,7 +494,7 @@
     "personalOpinionRank": 4.2,
     "fakeReviews": true,
     "pagePath": "/Центр-ремонта-коробок-передач",
-    "specialized": ["TRANSMISSION_REPAIR"]
+    "specialized": ["AUTOMATIC_TRANSMISSION_REPAIR"]
   },
   {
     "name": "АКПП центр Матир",
@@ -534,7 +534,7 @@
     "personalOpinionRank": 3.5,
     "fakeReviews":  true,
     "pagePath": "/АКПП-центр-Матир",
-    "specialized": ["TRANSMISSION_REPAIR"]
+    "specialized": ["AUTOMATIC_TRANSMISSION_REPAIR"]
   },
   {
     "name": "Ремонт АКПП и вариаторов",
@@ -572,7 +572,7 @@
     "personalOpinionRank": 0,
     "fakeReviews":  false,
     "pagePath": "/Ремонт-АКПП-и-вариаторов",
-    "specialized": ["TRANSMISSION_REPAIR"]
+    "specialized": ["AUTOMATIC_TRANSMISSION_REPAIR"]
   },
   {
     "name": "Бест-Экспресс",
@@ -626,7 +626,7 @@
     "forumReviews": [
       "http://forum.fregat.club/%D0%B0%D0%B2%D1%82%D0%BE%D0%BC%D0%BE%D0%B1%D0%B8%D0%BB%D0%B8/17529-%D1%81%D0%B8%D0%BC%D0%BF%D1%82%D0%BE%D0%BC%D1%8B-%D0%B4%D0%BB%D1%8F-%D1%80%D0%B5%D0%BC%D0%BE%D0%BD%D1%82%D0%B0-%D0%B0%D0%BA%D0%BF%D0%BF.html"
     ],
-    "specialized": ["TRANSMISSION_REPAIR"]
+    "specialized": ["AUTOMATIC_TRANSMISSION_REPAIR"]
   },
   {
     "name": "Mechatronik",
@@ -675,7 +675,7 @@
     "personalOpinionRank": 4.1,
     "fakeReviews": false,
     "pagePath": "/Mechatronik",
-    "specialized": ["TRANSMISSION_REPAIR"]
+    "specialized": ["AUTOMATIC_TRANSMISSION_REPAIR"]
   },
 
 
@@ -732,7 +732,7 @@
     "personalOpinionRank": 2.5,
     "fakeReviews":  false,
     "pagePath": "/Ремонт-АКПП-и-МКПП-в-Киеве",
-    "specialized": []
+    "specialized": ["AUTOMATIC_TRANSMISSION_REPAIR"]
   },
   {
     "name": "Garages",
@@ -802,12 +802,12 @@
     ],
     "mainSpecialties": [
       "ремонт АКПП",
-      "ремонт КПП"
-    ],
-    "otherSpecialties": [
+      "ремонт КПП",
       "диагностика автомобиля",
       "ремонт ходовой",
       "моторист"
+    ],
+    "otherSpecialties": [
     ],
     "feedbackWithClientsDirection": 1,
     "forumReviewsDirection": -1,

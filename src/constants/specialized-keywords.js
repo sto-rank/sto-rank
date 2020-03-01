@@ -1,4 +1,1 @@
-export const AUTOMATIC_TRANSMISSION_REPAIR = [
-  'акпп',
-  'вариатор',
-]
+export const AUTOMATIC_TRANSMISSION_REPAIR = 'AUTOMATIC_TRANSMISSION_REPAIR'

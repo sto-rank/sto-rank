@@ -1,3 +1,5 @@
+import { BLUE_COLOR, GREEN_COLOR, ORANGE_COLOR } from '../../../constants/colors'
+
 export default {
   label: {
     fontWeight: 'bold',
@@ -16,11 +18,17 @@ export default {
     fontSize: 50,
     color: 'gray',
   },
-  incompleteText: {
+  infoText: {
     fontWeight: 'bold',
     maxWidth: 300,
     alignSelf: 'flex-end',
-    color: 'orange'
+    fontSize: 12,
+  },
+  warningText: {
+    color: ORANGE_COLOR,
+  },
+  successText: {
+    color: GREEN_COLOR,
   },
   rankBlock: {
     textAlign: 'right',
@@ -29,9 +37,17 @@ export default {
     alignItems: 'flex-end',
   },
   detailsBtn: {
-    color: '#1890ff',
+    color: BLUE_COLOR,
     fontWeight: 'bold',
     padding: 5,
     width: '100%',
+  },
+  cardHeadLink: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    cursor: 'pointer',
   }
 }
