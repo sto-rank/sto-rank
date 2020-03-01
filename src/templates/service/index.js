@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { graphql } from 'gatsby'
-import { List, Table, Icon } from 'antd';
+import { List, Table, Icon, Button } from 'antd';
 import { Map, TileLayer, Popup, Marker } from 'react-leaflet'
 
 import { calcRank, rankToStatus, rankToColor } from '../../helpers/rank'
@@ -10,6 +10,7 @@ import styles from './styles'
 import RankBlockTitle from './RankBlockTitle'
 import { mapDayToLabel } from '../../helpers/days'
 import useEnchancedServices from '../../pages/services/hooks/useEnchancedServices'
+import ExtendedMarker from '../../components/extended-marker'
 
 const ZOOM = 15;
 
@@ -174,6 +175,9 @@ export default function Service({ data: { servicesJson } }) {
           </div>
         </div>
         <div style={{ ...styles.contentSide, ...styles.rankBlock }}>
+          <div>
+            <a style={styles.goBack} href="/services"><Button type="primary"><Icon type="left" /> Назад к списку</Button></a>
+          </div>
           <div style={{ ...styles.listWrapper, ...styles.rankListWrapper }}>
             {
               incomplete && (
@@ -192,11 +196,14 @@ export default function Service({ data: { servicesJson } }) {
                 attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-              <Marker position={coordinates} sh>
+              <ExtendedMarker
+                isOpen
+                position={coordinates}
+              >
                 <Popup>
                   {name} <br /> {address}
                 </Popup>
-              </Marker>
+              </ExtendedMarker>
             </Map>
           )
         }

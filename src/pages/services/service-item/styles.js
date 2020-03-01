@@ -27,5 +27,11 @@ export default {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-end',
+  },
+  detailsBtn: {
+    color: '#1890ff',
+    fontWeight: 'bold',
+    padding: 5,
+    width: '100%',
   }
 }

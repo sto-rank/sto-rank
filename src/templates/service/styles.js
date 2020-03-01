@@ -49,6 +49,7 @@ export default {
     margin: '100px auto 0'
   },
   contentSide: {
+    position: 'relative',
     flexDirection: 'column',
     display: 'flex',
     width: '50%',
@@ -89,5 +90,9 @@ export default {
     maxWidth: 300,
     alignSelf: 'flex-end',
     color: 'orange'
+  },
+  goBack: {
+    marginBottom: 50,
+    display: 'inline-block'
   }
 }
