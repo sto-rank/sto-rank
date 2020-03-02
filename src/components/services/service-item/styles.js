@@ -1,4 +1,6 @@
+import { css } from '@emotion/core'
 import { BLUE_COLOR, GREEN_COLOR, ORANGE_COLOR } from '../../../constants/colors'
+import { MOBILE_DEVICE_LAYOUT_TRASHOLD } from '../../../constants/layout'
 
 export default {
   label: {
@@ -49,5 +51,10 @@ export default {
     left: 0,
     right: 0,
     cursor: 'pointer',
-  }
+  },
+  cardTitle: css`
+    @media(max-width: ${MOBILE_DEVICE_LAYOUT_TRASHOLD}px) {
+      font-size: 18px;
+    }
+  `,
 }

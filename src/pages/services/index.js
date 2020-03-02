@@ -1,23 +1,16 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { graphql, useStaticQuery } from 'gatsby'
-import { Element, scroller } from 'react-scroll'
-import { Map, Popup, TileLayer } from 'react-leaflet'
+import { Tabs, Icon } from 'antd';
+import Media from 'react-media';
 
-import ExtendedMarker from '../../components/extended-marker'
-import CreateFilterSortingForm from '../../components/services/filter-sorting-form'
 import styles from '../../components/services/styles'
-import ServiceItem from '../../components/services/service-item'
 import useEnchancedServices from '../../hooks/useEnchancedServices'
-import { MAX_RANK, rankToColor } from '../../helpers/rank'
 import { AUTOMATIC_TRANSMISSION_REPAIR } from '../../constants/specialized-keywords'
-import { Col, Icon, Progress } from 'antd'
-import { mapDayToLabel } from '../../helpers/days'
+import ServicesList from '../../components/services/services-list'
+import Map from '../../components/services/map'
+import { MOBILE_DEVICE_LAYOUT_TRASHOLD } from '../../constants/layout'
 
-const ZOOM = 11
-const defaultCenter = [
-  50.4851493,
-  30.4721233
-];
+const { TabPane } = Tabs;
 
 export default function Services() {
   const { allServicesJson: { edges } } = useStaticQuery(graphql`
@@ -69,115 +62,55 @@ export default function Services() {
     )
   })
 
-  const completedEnchancedServiceItems = filteredEnchancedServiceItems
-    .filter(o => !o.incomplete)
-    .sort((a, b) => {
-      return b.rank - a.rank
-    });
-  const incompletedEnchancedServiceItems = filteredEnchancedServiceItems
-    .filter(o => o.incomplete)
-    .sort((a, b) => {
-      return b.rank - a.rank
-    });
-
   const selectedService = useMemo(() => filteredEnchancedServiceItems.find(o => o.pagePath === selectedServiceId), [filteredEnchancedServiceItems, selectedServiceId]);
 
-  const mapCenter = useMemo(() => {
-    if (selectedService && selectedService.coordinates) {
-      const { lat, lng } = selectedService.coordinates;
-      return [lat, lng];
-    }
-
-    return defaultCenter
-  }, [selectedService]);
-
-  const onMarkerPress = useCallback(({ pagePath }) => {
-    setSelectedServiceId(pagePath);
-  }, []);
-  const onListItemPress = useCallback(({ pagePath }) => {
+  const onServicePress = useCallback(({ pagePath }) => {
     setSelectedServiceId(pagePath);
   }, []);
   const onFilterValuesChange = useCallback((a, b, allValues) => {
     setFilterSorting(allValues)
   }, []);
 
-  const FilterSortingForm = useMemo(() => CreateFilterSortingForm({ onValuesChange: onFilterValuesChange }), [onFilterValuesChange]);
-
-  useEffect(() => {
-    scroller.scrollTo(selectedServiceId, { containerId: 'servicesList', smooth: true })
-  }, [selectedServiceId]);
+  const servicesList = useMemo(() => (
+    <ServicesList
+      filteredEnchancedServiceItems={filteredEnchancedServiceItems}
+      onFilterValuesChange={onFilterValuesChange}
+      selectedServiceId={selectedServiceId}
+      onListItemPress={onServicePress}
+    />
+  ), [filteredEnchancedServiceItems, onFilterValuesChange, selectedServiceId, onServicePress]);
+  const map = useMemo(() => (
+    <Map
+      selectedService={selectedService}
+      selectedServiceId={selectedServiceId}
+      onMarkerPress={onServicePress}
+      filteredEnchancedServiceItems={filteredEnchancedServiceItems}
+    />
+  ), [filteredEnchancedServiceItems, selectedServiceId, selectedService, onServicePress]);
 
   return (
     <div>
-      <div style={styles.container}>
-        <div style={styles.listBlock}>
-          <Element style={styles.services} id="servicesList">
-            <div style={styles.header}>
-              <h1><a href="/" style={styles.title}>СТО Киева  <br/> сепциализирующиеся на ремонте АКПП</a></h1>
-            </div>
-            <div style={styles.actionsBlock}>
-              <FilterSortingForm />
-            </div>
-            {
-              completedEnchancedServiceItems.map(serviceItem => (
-                <Element key={serviceItem.pagePath} name={serviceItem.pagePath} style={{ width: '100%' }}>
-                  <ServiceItem {...serviceItem} onHeaderPress={onListItemPress} />
-                </Element>
-              ))
-            }
-            <p style={styles.listSeparator}>Далее представлены автосервисы по которым нет достаточно информации для точной оценки:</p>
-            {
-              incompletedEnchancedServiceItems.map(serviceItem => (
-                <Element key={serviceItem.pagePath} name={serviceItem.pagePath} style={{ width: '100%' }}>
-                  <ServiceItem {...serviceItem} onHeaderPress={onListItemPress} />
-                </Element>
-              ))
-            }
-          </Element>
-        </div>
-        <div style={styles.map}>
-          {
-            typeof window !== 'undefined' && (
-              <Map center={mapCenter} zoom={ZOOM} style={{ height: '100%', width: '100%' }}>
-                <TileLayer
-                  attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-                {
-                  filteredEnchancedServiceItems.map(({
-                                                       coordinates: { lat, lng },
-                                                       name,
-                                                       pagePath,
-                                                       address,
-                                                       rank,
-                                                       incomplete,
-                                                       workingHours,
-                    specialized
-                  }) => (
-                    <ExtendedMarker
-                      key={pagePath}
-                      isOpen={pagePath === selectedServiceId}
-                      position={[lat, lng]}
-                      onClick={() => onMarkerPress({ pagePath })}
-                    >
-                      <Popup>
-                        <p><b style={{ color: !incomplete ? rankToColor(rank) : 'gray' }}>{rank} из {MAX_RANK}</b></p>
-                        <p>{ incomplete && <span style={{ ...styles.infoText, ...styles.warningText }}><Icon type="warning" /> По данному автосервису нет достаточно информации для точной оценки!</span>}</p>
-                        <p>{ specialized.includes(AUTOMATIC_TRANSMISSION_REPAIR) && <span style={{ ...styles.infoText, ...styles.successText }}><Icon type="check" /> Узкопрофильное СТО по ремонту АКПП</span>}</p>
-                        <p><b>{name}</b></p>
-                        <p>{address}</p>
-                        {
-                          workingHours.map(({ day, time }) => <div key={`${day}${time}`}>{mapDayToLabel(day)}, {time}</div>)
-                        }
-                        <p><a href={pagePath} target="_blank">Детальнее</a></p>
-                      </Popup>
-                    </ExtendedMarker>
-                  ))
-                }
-              </Map>
-            )
-          }
-        </div>
+      <div css={styles.container}>
+        <Media query={`(max-width: ${MOBILE_DEVICE_LAYOUT_TRASHOLD}px)`} render={() =>
+          (
+            <Tabs tabPosition="bottom" size="large">
+              <TabPane tab={<div><Icon type="unordered-list" />Список СТО</div>} key="1">
+                {servicesList}
+              </TabPane>
+              <TabPane tab={<div><Icon type="global" />Карта</div>} key="2">
+                {map}
+              </TabPane>
+            </Tabs>
+          )}
+        />
+        <Media query={`(min-width: ${MOBILE_DEVICE_LAYOUT_TRASHOLD + 1}px)`} render={() =>
+          (
+            <>
+              {servicesList}
+              {map}
+            </>
+          )}
+        />
       </div>
     </div>
   )

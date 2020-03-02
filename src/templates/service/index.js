@@ -11,6 +11,7 @@ import RankBlockTitle from './RankBlockTitle'
 import { mapDayToLabel } from '../../helpers/days'
 import useEnchancedServices from '../../hooks/useEnchancedServices'
 import ExtendedMarker from '../../components/extended-marker'
+import { MOBILE_DEVICE_LAYOUT_TRASHOLD } from '../../constants/layout'
 
 const ZOOM = 15;
 
@@ -41,37 +42,36 @@ export default function Service(ar) {
     forumReviewsDirection,
     sideServicesRank,
   }), [fakeReviews, feedbackWithClientsDirection, forumReviewsDirection, sideServicesRank]);
-
   const rankData = useMemo(() => [
     {
-      title: <RankBlockTitle style={styles.ourRatingTitleStyle} title="Итоговый рейтинг СТО" strong description="Мы собираем данные по атосервису представленые в открытых источних и анлизируем их по различным факторам, на основе чего, выводим наш собственный рейтинг автосервиса" />,
+      title: <RankBlockTitle css={styles.ourRatingTitleStyle} title="Итоговый рейтинг СТО" strong description="Мы собираем данные по атосервису представленые в открытых источних и анлизируем их по различным факторам, на основе чего, выводим наш собственный рейтинг автосервиса" />,
       value: (
-        <span style={{ ...styles.ourRatingValueStyle, color: !incomplete ? rankToColor(rank) : 'gray' }}>
+        <span css={styles.ratingValue} style={{ color: !incomplete ? rankToColor(rank) : 'gray' }} css={styles.ourRatingValueStyle}>
           {rank}
         </span>
       ),
     },
     {
       title: <RankBlockTitle title="Решение спорных ситуаций" description="Как часто представители автосервиса реагируют и решают спорные ситуации с клиентами. Эта информация собирается с сайтов отзовиков" />,
-      value: <>
+      value: <span css={styles.ratingValue}>
         {feedbackWithClientsDirection === 2 && <ColoredText type="safe" strong>Всегда</ColoredText>}
         {feedbackWithClientsDirection === 1 && <ColoredText type="warning" strong>Выборочно</ColoredText>}
         {feedbackWithClientsDirection === 0 && <ColoredText type="danger" strong>Никогда</ColoredText>}
         {feedbackWithClientsDirection === -1 && <ColoredText disabled strong>Нет данных</ColoredText>}
-      </>,
+      </span>,
     },
     {
       title: <RankBlockTitle title="Отзывы авторитетных пользователей на форумах" description="Мы ищем отзывы от авторитетных пользователей на различных тематических форумах, таких как toyota-club.com.ua, drive2.ru и тд." />,
-      value: <>
+      value: <span css={styles.ratingValue}>
         {forumReviewsDirection === 2 && <ColoredText type="safe" strong>Положительные</ColoredText>}
         {forumReviewsDirection === 1 && <ColoredText type="warning" strong>Смешанные</ColoredText>}
         {forumReviewsDirection === 0 && <ColoredText type="danger" strong>Отрицательные</ColoredText>}
         {forumReviewsDirection === -1 && <ColoredText disabled strong>Отсутсвуют</ColoredText>}
-      </>,
+      </span>,
     },
     {
       title: <RankBlockTitle title="Накрутка положительных отзывов" description="Мы анализируем отзывы о сервисе на популярых сайтах-отзовиках по таким криетриям как релевантность комментария, дата создания аккаунта, время публикации отзыва и интервалы между публикациями и тд." />,
-      value: <>
+      value: <span css={styles.ratingValue}>
         {
           fakeReviews ? (
             <ColoredText type="danger" strong>Обнаружена</ColoredText>
@@ -79,11 +79,11 @@ export default function Service(ar) {
             <ColoredText type="safe" strong>Отсутсвует</ColoredText>
           )
         }
-      </>,
+      </span>,
     },
     ...sideServicesRank.map(o => ({
           title: <RankBlockTitle title={<a href={o.link} target="_blank">Рейтинг <span>{o.name}</span></a>} />,
-          value: <ColoredText type={rankToStatus(o.rank)} strong>{o.rank}</ColoredText>
+          value: <span css={styles.ratingValue}><ColoredText type={rankToStatus(o.rank)} strong>{o.rank}</ColoredText></span>
     }))
   ], [servicesJson]);
 
@@ -102,11 +102,24 @@ export default function Service(ar) {
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.title}>
+      <h1 css={styles.title}>
         <div style={styles.titleText}>{name}</div>
       </h1>
-      <div style={styles.content}>
-        <div style={{ ...styles.contentSide}}>
+      <div css={styles.content}>
+        <div css={[styles.contentSide, styles.rankBlock ]}>
+          <div>
+            <a style={styles.goBack} href="/services"><Button type="link"><Icon type="left" />Назад к списку</Button></a>
+          </div>
+          <div css={[styles.listWrapper, styles.rankListWrapper]}>
+            {
+              incomplete && (
+                <p style={styles.textUnderTable}>По данному автосервису нет достаточно информации для точной оценки!</p>
+              )
+            }
+            <Table dataSource={rankData} columns={rankColumns} showHeader={false} pagination={false} />
+          </div>
+        </div>
+        <div css={[styles.contentSide, styles.servicesBlock]}>
           <section style={styles.addressBlock}>
             <h3 className="list-heading">Вебсайт:</h3>
             <div>
@@ -174,19 +187,6 @@ export default function Service(ar) {
                 />
               </div>
             </section>
-          </div>
-        </div>
-        <div style={{ ...styles.contentSide, ...styles.rankBlock }}>
-          <div>
-            <a style={styles.goBack} href="/services"><Button type="primary"><Icon type="left" /> Назад к списку</Button></a>
-          </div>
-          <div style={{ ...styles.listWrapper, ...styles.rankListWrapper }}>
-            {
-              incomplete && (
-                <p style={styles.textUnderTable}>По данному автосервису нет достаточно информации для точной оценки!</p>
-              )
-            }
-            <Table dataSource={rankData} columns={rankColumns} showHeader={false} pagination={false} />
           </div>
         </div>
       </div>

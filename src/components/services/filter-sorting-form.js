@@ -3,7 +3,7 @@ import { Form, Input, Switch } from 'antd'
 
 const FilterSortingForm = ({ form: { getFieldDecorator }}) => {
   return (
-    <Form onSubmit={() => {}}>
+    <Form>
       <Form.Item label="Поиск по названию">
         {
           getFieldDecorator('search', {

@@ -26,7 +26,7 @@ export const ServiceItem = ({
     <div>
       <Card
         style={{ width: '100%', marginBottom: 20 }}
-        title={<span>{name}<span style={styles.cardHeadLink} onClick={onHeaderPressCb} /></span>}
+        title={<span css={styles.cardTitle}>{name}<span style={styles.cardHeadLink} onClick={onHeaderPressCb} /></span>}
         bordered={false}
         actions={[
           <a href={pagePath} target="_blank" style={styles.detailsBtn}>Датеальнее</a>,
