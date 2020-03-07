@@ -10,6 +10,7 @@ export default function ServicesList({
   selectedServiceId,
   onListItemPress,
   onContactServicePress,
+   setSelectedTab
 }) {
   const completedEnchancedServiceItems = filteredEnchancedServiceItems
     .filter(o => !o.incomplete)
@@ -40,7 +41,7 @@ export default function ServicesList({
         {
           completedEnchancedServiceItems.map(serviceItem => (
             <Element key={serviceItem.pagePath} name={serviceItem.pagePath} css={styles.scrollItem}>
-              <ServiceItem {...serviceItem} onHeaderPress={onListItemPress} onContactServicePress={onContactServicePress} />
+              <ServiceItem {...serviceItem} onHeaderPress={onListItemPress} onContactServicePress={onContactServicePress} setSelectedTab={setSelectedTab} />
             </Element>
           ))
         }
@@ -48,7 +49,7 @@ export default function ServicesList({
         {
           incompletedEnchancedServiceItems.map(serviceItem => (
             <Element key={serviceItem.pagePath} name={serviceItem.pagePath} css={styles.scrollItem}>
-              <ServiceItem {...serviceItem} onHeaderPress={onListItemPress} onContactServicePress={onContactServicePress} />
+              <ServiceItem {...serviceItem} onHeaderPress={onListItemPress} onContactServicePress={onContactServicePress} setSelectedTab={setSelectedTab} />
             </Element>
           ))
         }

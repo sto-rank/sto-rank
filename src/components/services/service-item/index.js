@@ -18,9 +18,11 @@ export const ServiceItem = ({
   incomplete,
   specialized,
   onContactServicePress,
+                              setSelectedTab,
 }) => {
   const onHeaderPressCb = useCallback(() => {
     onHeaderPress({ pagePath });
+    setSelectedTab('map');
   }, [onHeaderPress, pagePath]);
   const color = useMemo(() => !incomplete ? rankToColor(rank) : 'gray', [rank, incomplete]);
   const onContactServicePressCb = useCallback(() => {

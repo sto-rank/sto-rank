@@ -48,6 +48,7 @@ export default function Services() {
     }
   `);
 
+  const [selectedTab, setSelectedTab] = useState('servicesList');
   const [selectedServiceId, setSelectedServiceId] = useState();
   const [contactServiceId, setContactServiceId] = useState();
   const [filterSorting, setFilterSorting] = useState({});
@@ -86,6 +87,7 @@ export default function Services() {
       selectedServiceId={selectedServiceId}
       onListItemPress={onServicePress}
       onContactServicePress={onContactServicePress}
+      setSelectedTab={setSelectedTab}
     />
   ), [filteredEnchancedServiceItems, onFilterValuesChange, selectedServiceId, onServicePress, onContactServicePress]);
   const map = useMemo(() => (
@@ -103,11 +105,11 @@ export default function Services() {
       <ContactForm selectedServiceName={contactService && contactService.name} onCancel={onContactServiceCancel} />
       {
         typeof window === 'undefined' || window.innerWidth <= MOBILE_DEVICE_LAYOUT_TRASHOLD && (
-          <Tabs tabPosition="bottom" size="large">
-            <TabPane tab={<div><Icon type="unordered-list" />Список СТО</div>} key="1">
+          <Tabs tabPosition="bottom" size="large" activeKey={selectedTab} onChange={setSelectedTab}>
+            <TabPane tab={<div><Icon type="unordered-list" />Список СТО</div>} key="servicesList">
               {servicesList}
             </TabPane>
-            <TabPane tab={<div><Icon type="global" />Карта</div>} key="2">
+            <TabPane tab={<div><Icon type="global" />Карта</div>} key="map">
               {map}
             </TabPane>
           </Tabs>
