@@ -20,6 +20,7 @@ export default ({ selectedServiceName, onCancel }) => {
       } else {
         setStatus('ERROR');
       }
+      onCancel();
     };
     xhr.send(data);
   }, []);
