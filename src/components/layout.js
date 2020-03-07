@@ -12,6 +12,7 @@ import { useStaticQuery, graphql } from "gatsby"
 import Header from "./header"
 import "./layout.css"
 import "./antd-customization.css"
+import ReCAPTCHA from 'react-google-recaptcha'
 
 const Layout = ({ children }) => {
   const data = useStaticQuery(graphql`
@@ -42,6 +43,9 @@ const Layout = ({ children }) => {
           <a href="https://www.gatsbyjs.org">Gatsby</a>
         </footer>
       </div>
+      <ReCAPTCHA
+        sitekey="6LecW98UAAAAAIY2BO3zu4IBUVpGw-OTl2ktkNMF"
+      />
     </>
   )
 }

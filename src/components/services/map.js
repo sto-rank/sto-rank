@@ -82,6 +82,7 @@ export default function MapComp ({
             {
               filteredEnchancedServiceItems.map((item) => (
                 <Item
+                  key={item.name}
                   {...item}
                   selectedServiceId={selectedServiceId}
                   onMarkerPress={onMarkerPress}
