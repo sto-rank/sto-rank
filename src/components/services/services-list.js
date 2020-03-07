@@ -5,11 +5,12 @@ import styles from '../../components/services/styles'
 import ServiceItem from '../../components/services/service-item'
 
 export default function ServicesList({
-                                   filteredEnchancedServiceItems,
-                                   onFilterValuesChange,
-                                   selectedServiceId,
-                                   onListItemPress
-                                 }) {
+  filteredEnchancedServiceItems,
+  onFilterValuesChange,
+  selectedServiceId,
+  onListItemPress,
+  onContactServicePress,
+}) {
   const completedEnchancedServiceItems = filteredEnchancedServiceItems
     .filter(o => !o.incomplete)
     .sort((a, b) => {
@@ -39,7 +40,7 @@ export default function ServicesList({
         {
           completedEnchancedServiceItems.map(serviceItem => (
             <Element key={serviceItem.pagePath} name={serviceItem.pagePath} css={styles.scrollItem}>
-              <ServiceItem {...serviceItem} onHeaderPress={onListItemPress} />
+              <ServiceItem {...serviceItem} onHeaderPress={onListItemPress} onContactServicePress={onContactServicePress} />
             </Element>
           ))
         }
@@ -47,7 +48,7 @@ export default function ServicesList({
         {
           incompletedEnchancedServiceItems.map(serviceItem => (
             <Element key={serviceItem.pagePath} name={serviceItem.pagePath} css={styles.scrollItem}>
-              <ServiceItem {...serviceItem} onHeaderPress={onListItemPress} />
+              <ServiceItem {...serviceItem} onHeaderPress={onListItemPress} onContactServicePress={onContactServicePress} />
             </Element>
           ))
         }

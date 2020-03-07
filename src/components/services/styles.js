@@ -9,9 +9,6 @@ export default {
   container: css`
     flex-direction: row;
     display: flex;
-    @media(max-width: ${MOBILE_DEVICE_LAYOUT_TRASHOLD}px) {
-      flex-direction: column;
-    }
   `,
   services: css`
     display: flex;

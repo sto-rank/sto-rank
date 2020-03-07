@@ -1,27 +1,31 @@
 import React, { useCallback, useMemo } from 'react'
-import { Card, Col, List, Progress, Row, Icon } from 'antd'
+import { Card, Col, List, Progress, Row, Icon, Button } from 'antd'
 import styles from './styles'
 import { mapDayToLabel } from '../../../helpers/days'
 import { MAX_RANK, rankToColor } from '../../../helpers/rank'
 import { AUTOMATIC_TRANSMISSION_REPAIR } from '../../../constants/specialized-keywords'
 
 export const ServiceItem = ({
-                              website,
-                              name,
-                              pagePath,
-                              address,
-                              workingHours,
-                              mainSpecialties,
-                              otherSpecialties,
-                              rank,
+  website,
+  name,
+  pagePath,
+  address,
+  workingHours,
+  mainSpecialties,
+  otherSpecialties,
+  rank,
   onHeaderPress,
-                              incomplete,
+  incomplete,
   specialized,
+  onContactServicePress,
 }) => {
   const onHeaderPressCb = useCallback(() => {
     onHeaderPress({ pagePath });
   }, [onHeaderPress, pagePath]);
   const color = useMemo(() => !incomplete ? rankToColor(rank) : 'gray', [rank, incomplete]);
+  const onContactServicePressCb = useCallback(() => {
+    onContactServicePress({ pagePath });
+  }, [onContactServicePress])
   return (
     <div>
       <Card
@@ -89,6 +93,7 @@ export const ServiceItem = ({
             />
           </div> : null
         }
+        <Button css={styles.contactBtn} onClick={onContactServicePressCb} block ghost type="primary">Записаться на СТО с гарантией</Button>
       </Card>
     </div>
   );

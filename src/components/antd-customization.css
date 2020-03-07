@@ -53,3 +53,13 @@ div.ant-card-head {
     background: white;
     z-index: 9999999999999;
 }
+.ant-tabs-nav .ant-tabs-tab {
+    width: 50%;
+    text-align: center;
+}
+.ant-modal-title {
+   font-weight: bold !important;
+}
+.ant-modal-header {
+    background: yellow !important;
+}

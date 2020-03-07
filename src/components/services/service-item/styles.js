@@ -57,4 +57,7 @@ export default {
       font-size: 18px;
     }
   `,
+  contactBtn: css`
+    font-weight: bold;
+  `,
 }
