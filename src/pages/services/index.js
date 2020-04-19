@@ -19,20 +19,24 @@ export default function Services() {
         edges {
           node {
             specialized
+            mainSpecialties
+            otherSpecialties
             pagePath
             name
             description
-            address
             website
-            coordinates {
-              lat
-              lng
-            }
-            mainSpecialties
-            otherSpecialties
-            workingHours {
-              day
-              time
+            points {
+              address
+              title
+              phones
+              coordinates
+              workingHours {
+                day
+                time {
+                  from
+                  to
+                }
+              }
             }
             sideServicesRank {
               name
@@ -42,12 +46,18 @@ export default function Services() {
             fakeReviews
             feedbackWithClientsDirection
             forumReviewsDirection
+            sideForumsMentions {
+              link
+              textNodes {
+                text
+                messages
+              }
+            }
           }
         }
       }
     }
   `);
-
   const [selectedTab, setSelectedTab] = useState('servicesList');
   const [selectedServiceId, setSelectedServiceId] = useState();
   const [contactServiceId, setContactServiceId] = useState();
@@ -57,7 +67,7 @@ export default function Services() {
   const enchancedServices = useEnchancedServices({ serviceItems: edges.map(({ node }) => node) });
 
   const filteredEnchancedServiceItems = enchancedServices.filter(o => {
-    return (
+    return o.sideServicesRank.length && (
       !specialized || o.specialized.includes(AUTOMATIC_TRANSMISSION_REPAIR)
     ) && (
       !search || o.name.toLowerCase().includes(search.toLowerCase())
@@ -67,8 +77,8 @@ export default function Services() {
   const selectedService = useMemo(() => filteredEnchancedServiceItems.find(o => o.pagePath === selectedServiceId), [filteredEnchancedServiceItems, selectedServiceId]);
   const contactService = useMemo(() => filteredEnchancedServiceItems.find(o => o.pagePath === contactServiceId), [filteredEnchancedServiceItems, contactServiceId]);
 
-  const onServicePress = useCallback(({ pagePath }) => {
-    setSelectedServiceId(pagePath);
+  const onServicePress = useCallback(({ pagePath, address }) => {
+    setSelectedServiceId(`${pagePath}${address}`);
   }, []);
   const onContactServicePress = useCallback(({ pagePath }) => {
     setContactServiceId(pagePath);

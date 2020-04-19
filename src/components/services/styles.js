@@ -19,14 +19,14 @@ export default {
   `,
   map: css`
     height: 100vh;
-    width: 60%;
+    width: 50%;
     @media(max-width: ${MOBILE_DEVICE_LAYOUT_TRASHOLD}px) {
       width: 100%;
       height: 100vh;
     }
   `,
   listBlock: css`
-    width: 40%;
+    width: 50%;
     box-sizing: border-box;
     padding-left: 20px;
     padding-right: 20px;
@@ -97,5 +97,8 @@ export default {
   form: css`
     padding-left: 20px;
     padding-right: 20px;
+  `,
+  popupName: css`
+    text-transform: capitalize;
   `,
 }

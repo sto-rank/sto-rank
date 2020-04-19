@@ -1,6 +1,6 @@
 import { css } from '@emotion/core'
 
-import { ORANGE_COLOR } from '../../constants/colors'
+import { GRAY_COLOR, ORANGE_COLOR } from '../../constants/colors'
 import { MOBILE_DEVICE_LAYOUT_TRASHOLD } from '../../constants/layout'
 
 const MAX_WIDTH = 1200;
@@ -35,6 +35,7 @@ export default {
     @media(max-width: ${MOBILE_DEVICE_LAYOUT_TRASHOLD}px) {
       font-size: 25px;
       padding: 0 10px;
+      padding-bottom: 40px;
       line-height: 30px;
     }
   `,
@@ -53,6 +54,7 @@ export default {
     opacity: .2,
   },
   content: css`
+    position: relative;
     max-width: ${MAX_WIDTH}px;
     display: flex;
     width: 100%;
@@ -64,7 +66,6 @@ export default {
     }
   `,
   contentSide: css`
-    position: relative;
     flex-direction: column;
     display: flex;
     width: 50%;
@@ -102,11 +103,11 @@ export default {
     }
   `,
   listItemWithoutBorder: { border: 'none', margin: 0 },
-  listWithoutBorder: {
-    marginBottom: 20,
-  },
+  listWithoutBorder: css`
+    margin-bottom: 20;
+  `,
   addressBlock: {
-    marginBottom: 20,
+    marginBottom: 40,
   },
   specialtiesBlock: {
     marginTop: 20,
@@ -131,16 +132,17 @@ export default {
     alignSelf: 'flex-end',
     color: ORANGE_COLOR
   },
-  goBack: {
-    marginBottom: 50,
-    display: 'inline-block'
-  },
-  ratingTitle: css`
-    font-size: 15px;
-    vertical-align: 2px;
+  goBack: css`
+    margin-bottom: 50px;
     display: inline-block;
+    position: absolute;
+    top: -70px;
+    left: 0;
     @media(max-width: ${MOBILE_DEVICE_LAYOUT_TRASHOLD}px) {
-      font-size: 12px;
+      top: -50px;
+      display: inline-block;
+      width: 100%;
+      text-align: center;
     }
   `,
   ratingValue: css`
@@ -149,4 +151,10 @@ export default {
       font-size: 13px;
     }
   `,
+  itemTitle: css`
+    font-size: 15px;
+  `,
+  stat: css`
+    background-color: ${GRAY_COLOR}
+  `
 }

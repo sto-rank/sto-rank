@@ -1,7 +1,7 @@
 const DAY_TO_LABEL_MAP = {
   'monday': 'Понедельник',
-  'thusday': 'Вторник',
-  'wensday': 'Среда',
+  'tuesday': 'Вторник',
+  'wednesday': 'Среда',
   'thursday': 'Четверг',
   'friday': 'Пятница',
   'saturday': 'Суббота',

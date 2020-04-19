@@ -63,3 +63,12 @@ div.ant-card-head {
 .ant-modal-header {
     background: yellow !important;
 }
+.ant-table-tbody > tr {
+    vertical-align: bottom;
+}
+
+@media(max-width: 1200px ) {
+    .ant-card-body {
+        padding: 20px !important;
+    }
+}

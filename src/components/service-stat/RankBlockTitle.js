@@ -1,13 +1,11 @@
-import { Icon, Tooltip, Typography } from 'antd'
+import { Icon, Tooltip } from 'antd'
 import React from 'react'
 import styles from './styles'
 
-const { Title } = Typography;
-
-export default ({ title, description, css }) => (
-  <span style={{ lineHeight: '20px' }}>
-    <Title level={2}>
-      <span css={[styles.ratingTitle, css]}>
+export default ({ title, description, css, style }) => (
+  <span >
+    <h2 style={{ marginBottom: 0 }}>
+      <span css={[styles.ratingTitle, css]} style={style}>
         {title}
         {' '}
         {
@@ -18,6 +16,6 @@ export default ({ title, description, css }) => (
           )
         }
       </span>
-    </Title>
+    </h2>
   </span>
 )

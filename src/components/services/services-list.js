@@ -10,7 +10,7 @@ export default function ServicesList({
   selectedServiceId,
   onListItemPress,
   onContactServicePress,
-   setSelectedTab
+  setSelectedTab
 }) {
   const completedEnchancedServiceItems = filteredEnchancedServiceItems
     .filter(o => !o.incomplete)
@@ -39,19 +39,25 @@ export default function ServicesList({
           <FilterSortingForm />
         </div>
         {
-          completedEnchancedServiceItems.map(serviceItem => (
-            <Element key={serviceItem.pagePath} name={serviceItem.pagePath} css={styles.scrollItem}>
-              <ServiceItem {...serviceItem} onHeaderPress={onListItemPress} onContactServicePress={onContactServicePress} setSelectedTab={setSelectedTab} />
-            </Element>
-          ))
+          completedEnchancedServiceItems.map(serviceItem => {
+            const firstPoint = serviceItem.points.find(o => o.coordinates);
+            return (
+              <Element key={`${serviceItem.pagePath}`} name={`${serviceItem.pagePath}${firstPoint && firstPoint.address}`} css={styles.scrollItem}>
+                <ServiceItem {...serviceItem} onHeaderPress={onListItemPress} onContactServicePress={onContactServicePress} setSelectedTab={setSelectedTab} />
+              </Element>
+            )
+          })
         }
         <p css={styles.listSeparator}>Далее представлены автосервисы по которым нет достаточно информации для точной оценки:</p>
         {
-          incompletedEnchancedServiceItems.map(serviceItem => (
-            <Element key={serviceItem.pagePath} name={serviceItem.pagePath} css={styles.scrollItem}>
-              <ServiceItem {...serviceItem} onHeaderPress={onListItemPress} onContactServicePress={onContactServicePress} setSelectedTab={setSelectedTab} />
-            </Element>
-          ))
+          incompletedEnchancedServiceItems.map(serviceItem => {
+            const firstPoint = serviceItem.points.find(o => o.coordinates);
+            return (
+              <Element key={`${serviceItem.pagePath}`} name={`${serviceItem.pagePath}${firstPoint && firstPoint.address}`} css={styles.scrollItem}>
+                <ServiceItem {...serviceItem} onHeaderPress={onListItemPress} onContactServicePress={onContactServicePress} setSelectedTab={setSelectedTab} />
+              </Element>
+            )
+          })
         }
       </Element>
     </div>

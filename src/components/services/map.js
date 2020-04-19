@@ -18,13 +18,11 @@ const Item = ({
                 onContactServicePress,
                 selectedServiceId,
                 onMarkerPress,
-                coordinates: { lat, lng },
+                points,
                 name,
                 pagePath,
-                address,
                 rank,
                 incomplete,
-                workingHours,
                 specialized,
               }) => {
   const onContactServicePressCb = useCallback(() => {
@@ -32,25 +30,35 @@ const Item = ({
   }, [onContactServicePress]);
 
   return (
-    <ExtendedMarker
-      key={pagePath}
-      isOpen={pagePath === selectedServiceId}
-      position={[lat, lng]}
-      onClick={() => onMarkerPress({ pagePath })}
-    >
-      <Popup>
-        <p><b css={{ color: !incomplete ? rankToColor(rank) : 'gray' }}>{rank} из {MAX_RANK}</b></p>
-        <p>{ incomplete && <span css={{ ...styles.infoText, ...styles.warningText }}><Icon type="warning" /> По данному автосервису нет достаточно информации для точной оценки!</span>}</p>
-        <p>{ specialized.includes(AUTOMATIC_TRANSMISSION_REPAIR) && <span css={{ ...styles.infoText, ...styles.successText }}><Icon type="check" /> Узкопрофильное СТО по ремонту АКПП</span>}</p>
-        <p><b>{name}</b></p>
-        <p>{address}</p>
-        {
-          workingHours.map(({ day, time }) => <div key={`${day}${time}`}>{mapDayToLabel(day)}, {time}</div>)
-        }
-        <p><a href={pagePath} target="_blank">Детальнее</a></p>
-        <Button css={styles.contactBtn} onClick={onContactServicePressCb} block ghost type="primary">Записаться на СТО с гарантией</Button>
-      </Popup>
-    </ExtendedMarker>
+    <>
+      {
+        points.filter(o => o.coordinates).map(({
+                      coordinates: [ lat, lng ],
+                      address,
+                      workingHours,
+                    }) => (
+          <ExtendedMarker
+            key={`${pagePath}${address}`}
+            isOpen={`${pagePath}${address}` === selectedServiceId}
+            position={[lat, lng]}
+            onClick={() => onMarkerPress({ pagePath, address })}
+          >
+            <Popup>
+              <p><b css={{ color: !incomplete ? rankToColor(rank) : 'gray' }}>{rank} из {MAX_RANK}</b></p>
+              <p>{ incomplete && <span css={{ ...styles.infoText, ...styles.warningText }}><Icon type="warning" /> По данному автосервису нет достаточно информации для точной оценки!</span>}</p>
+              <p>{ specialized.includes(AUTOMATIC_TRANSMISSION_REPAIR) && <span css={{ ...styles.infoText, ...styles.successText }}><Icon type="check" /> Узкопрофильное СТО по ремонту АКПП</span>}</p>
+              <p css={styles.popupName}><b>{name}</b></p>
+              <p>{address}</p>
+              {
+                workingHours.map(({ day, time }) => <div key={`${day}${time}`}>{mapDayToLabel(day)}, {time.map(({ from, to }) => <span key={`${from}${to}`}>{from} - {to}</span>)}</div>)
+              }
+              <p><a href={pagePath} target="_blank">Детальнее</a></p>
+              <Button css={styles.contactBtn} onClick={onContactServicePressCb} block ghost type="primary">Записаться на СТО с гарантией</Button>
+            </Popup>
+          </ExtendedMarker>
+        ))
+      }
+    </>
   )
 };
 
@@ -63,8 +71,7 @@ export default function MapComp ({
                                  }) {
   const mapCenter = useMemo(() => {
     if (selectedService && selectedService.coordinates) {
-      const { lat, lng } = selectedService.coordinates;
-      return [lat, lng];
+      return selectedService.coordinates;
     }
 
     return defaultCenter
@@ -82,7 +89,7 @@ export default function MapComp ({
             {
               filteredEnchancedServiceItems.map((item) => (
                 <Item
-                  key={item.name}
+                  key={JSON.stringify(item)}
                   {...item}
                   selectedServiceId={selectedServiceId}
                   onMarkerPress={onMarkerPress}
