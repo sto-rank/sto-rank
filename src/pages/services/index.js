@@ -19,8 +19,7 @@ export default function Services() {
         edges {
           node {
             specialized
-            mainSpecialties
-            otherSpecialties
+            specialties
             pagePath
             name
             description
@@ -42,9 +41,11 @@ export default function Services() {
               name
               link
               rank
+              reviewsAmount
             }
             fakeReviews
             feedbackWithClientsDirection
+            solveCustomerClaimsPercentage
             forumReviewsDirection
             sideForumsMentions {
               link

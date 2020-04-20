@@ -4,10 +4,11 @@ const INCOMPLETED_COEFFICIENT_TRESHOLD = 0.7
 
 export default ({ serviceItems }) => {
   const enchancedServiceItems = serviceItems.map(serviceItem => {
-    const { fakeReviews, feedbackWithClientsDirection, forumReviewsDirection, sideServicesRank } = serviceItem;
+    const { fakeReviews, feedbackWithClientsDirection, forumReviewsDirection, sideServicesRank, solveCustomerClaimsPercentage } = serviceItem;
     const rank = calcRank({
       fakeReviews,
       feedbackWithClientsDirection,
+      solveCustomerClaimsPercentage,
       forumReviewsDirection,
       sideServicesRank,
     });

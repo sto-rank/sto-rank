@@ -2,7 +2,7 @@ import { Icon, Tooltip } from 'antd'
 import React from 'react'
 import styles from './styles'
 
-export default ({ title, description, css, style }) => (
+export default React.memo(({ title, description, css, style }) => (
   <span >
     <h2 style={{ marginBottom: 0 }}>
       <span css={[styles.ratingTitle, css]} style={style}>
@@ -18,4 +18,4 @@ export default ({ title, description, css, style }) => (
       </span>
     </h2>
   </span>
-)
+))

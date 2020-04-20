@@ -1,7 +1,8 @@
 import { Table } from 'antd'
 import React, { useMemo } from 'react'
+import plural from 'plural-ru'
 
-import { calcRank, rankToStatus, rankToColor } from '../../helpers/rank'
+import { calcRank, calcSolveCustomerClaimsPercentage, rankToColor } from '../../helpers/rank'
 import ColoredText from '../../components/ColoredText'
 
 import RankBlockTitle from './RankBlockTitle'
@@ -9,8 +10,10 @@ import RankBlockTitle from './RankBlockTitle'
 import styles from './styles'
 
 const ServiceStat = ({
+  website,
                   fakeReviews,
                   feedbackWithClientsDirection,
+                       solveCustomerClaimsPercentage,
                   forumReviewsDirection,
                   sideServicesRank,
                   incomplete,
@@ -21,9 +24,11 @@ const ServiceStat = ({
                   ...rest
                 }) => {
   const rank = useMemo(() => calcRank({
+    website,
     fakeReviews,
     feedbackWithClientsDirection,
     forumReviewsDirection,
+    solveCustomerClaimsPercentage,
     sideServicesRank,
   }), [fakeReviews, feedbackWithClientsDirection, forumReviewsDirection, sideServicesRank]);
   const rankData = [
@@ -32,9 +37,9 @@ const ServiceStat = ({
         key: 'rank',
         title: <RankBlockTitle style={{ fontSize: titleFontSize }} title="Итоговый рейтинг СТО" strong description="Мы собираем данные по атосервису представленые в открытых источних и анлизируем их по различным факторам, на основе чего, выводим наш собственный рейтинг автосервиса" />,
         value: (
-          <span style={{ color: !incomplete ? rankToColor(rank) : 'gray', fontSize: valueFontSize }} css={styles.ratingValue}>
-          <b>{rank}</b>
-        </span>
+          <span style={{ color: !incomplete && rank !== null ? rankToColor(rank) : 'gray', fontSize: valueFontSize }} css={styles.ratingValue}>
+            <b>{rank !== null ? rank : 'Нет данных'}</b>
+          </span>
         ),
         color: 'yellow',
       }] : []
@@ -43,10 +48,9 @@ const ServiceStat = ({
       key: 'feedbackWithClientsDirection',
       title: <RankBlockTitle style={{ fontSize: titleFontSize }} title="Решение спорных ситуаций" description="Как часто представители автосервиса реагируют и решают спорные ситуации с клиентами. Эта информация собирается с сайтов отзовиков" />,
       value: <span css={styles.ratingValue} style={{ fontSize: valueFontSize }}>
-        {feedbackWithClientsDirection === 2 && <ColoredText type="safe" strong>Всегда</ColoredText>}
-        {feedbackWithClientsDirection === 1 && <ColoredText type="warning" strong>Выборочно</ColoredText>}
-        {feedbackWithClientsDirection === 0 && <ColoredText type="danger" strong>Никогда</ColoredText>}
-        {feedbackWithClientsDirection === -1 && <ColoredText disabled strong>Нет данных</ColoredText>}
+        {solveCustomerClaimsPercentage > 0 && <ColoredText type="safe" strong>{calcSolveCustomerClaimsPercentage({ percentage: solveCustomerClaimsPercentage})}%</ColoredText>}
+        {solveCustomerClaimsPercentage === -1 && <ColoredText disabled strong>Нет данных</ColoredText>}
+        {solveCustomerClaimsPercentage === 0 && <ColoredText type="danger" strong>Никогда</ColoredText>}
       </span>,
       color: rowColor,
     },
@@ -77,7 +81,19 @@ const ServiceStat = ({
     ...sideServicesRank.map(o => ({
       key: JSON.stringify(o),
       title: <RankBlockTitle style={{ fontSize: titleFontSize }} title={<a href={o.link} target="_blank">Рейтинг <span>{o.name}</span></a>} />,
-      value: <span css={styles.ratingValue} style={{ fontSize: valueFontSize }}><ColoredText type={rankToStatus(o.rank)} strong>{o.rank}</ColoredText></span>,
+      value: (
+        <span css={styles.ratingValue} style={{ fontSize: valueFontSize }}>
+          <b style={{ color: rankToColor(o.rank) }}>
+            {
+              o.rank !== null ? <>
+                <span css={styles.rankValue}>
+                  {o.rank.toFixed(1)}</span> <span css={styles.reviewsAmount}><a href={o.link} target="_blank">({o.reviewsAmount} {plural(o.reviewsAmount, 'отзыв', 'отзыва', 'отзывов')})</a>
+                </span>
+              </> : 'Нет данных'
+            }
+          </b>
+        </span>
+      ),
       color: rowColor,
     }))
   ];
@@ -128,4 +144,4 @@ const ServiceStat = ({
   />;
 }
 
-export default ServiceStat;
+export default React.memo(ServiceStat);

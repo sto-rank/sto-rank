@@ -1,19 +1,21 @@
-import { GREEN_COLOR, ORANGE_COLOR, RED_COLOR } from '../constants/colors'
+import { DARK_GRAY_COLOR, GREEN_COLOR, ORANGE_COLOR, RED_COLOR } from '../constants/colors'
 
 export const MAX_RANK = 5;
 const MIN_RANK = 1;
+const MIN_REVIEWS_AMOUNT = 15;
+
 const directionToRankMap = {
   '-1': 3,
-  '0': 1,
-  '1': 3,
-  '2': 5
+  '0': MIN_RANK,
+  '1': Math.round((MAX_RANK + MIN_RANK) / 2),
+  '2': MAX_RANK
 }
 const booleanToRankMap = {
   'true': MAX_RANK,
   'false': MIN_RANK,
 }
 const requiredSideServicesRank = [
-  'Vse Sto',
+  'Vse STO',
   'Google Maps'
 ]
 
@@ -21,29 +23,43 @@ const getRequiredSideServicesRankNotFound = ({ sideServicesRank }) => {
   return requiredSideServicesRank.filter(o => !sideServicesRank.map(o => o.name).includes(o));
 }
 
-export const calcRank = ({ fakeReviews, feedbackWithClientsDirection, forumReviewsDirection, sideServicesRank }) => {
-  let parameterCount = sideServicesRank.length;
+const isReviewsAmountTooLow = ({ sideServicesRank }) => {
+  return !!sideServicesRank.find(({ reviewsAmount }) => reviewsAmount < MIN_REVIEWS_AMOUNT);
+}
 
-  let rank = sideServicesRank.map(o => o.rank).reduce((prev, next) => prev + next, 0);
+export const calcSolveCustomerClaimsPercentage = ({ percentage }) => {
+  return percentage;
+  let result = percentage / 50 * 100;
+  if (result > 100) result = 100;
 
-  const requiredSideServicesRankNotFound = getRequiredSideServicesRankNotFound({ sideServicesRank });
+  return result;
+}
 
-  if (feedbackWithClientsDirection !== -1) {
-    rank += directionToRankMap[feedbackWithClientsDirection.toString()];
-    parameterCount++
+export const calcRank = ({ website, fakeReviews, feedbackWithClientsDirection, forumReviewsDirection, solveCustomerClaimsPercentage, sideServicesRank }) => {
+  let sideServicesRankFiltered = sideServicesRank.filter(o => o.rank != null);
+  let parameterCount = sideServicesRankFiltered.length;
+
+  let rank = sideServicesRankFiltered.map(o => o.rank).reduce((prev, next) => prev + next, 0);
+
+  if (solveCustomerClaimsPercentage !== -1) {
+    let percentage = calcSolveCustomerClaimsPercentage({ percentage: solveCustomerClaimsPercentage });
+
+    rank += MAX_RANK * ((percentage || 1) / 100);
+    parameterCount++;
   }
 
-  if (feedbackWithClientsDirection !== -1) {
-    rank += directionToRankMap[forumReviewsDirection.toString()];
-    parameterCount++
-  }
+  // if (forumReviewsDirection !== -1) {
+  //   rank += directionToRankMap[forumReviewsDirection.toString()];
+  //   parameterCount++
+  // }
 
+  const requiredSideServicesRankNotFound = getRequiredSideServicesRankNotFound({ sideServicesRank: sideServicesRankFiltered });
   if (requiredSideServicesRankNotFound.length < requiredSideServicesRank.length) {
     rank += booleanToRankMap[(!fakeReviews).toString()];
   } else {
     rank += directionToRankMap['-1'];
   }
-  parameterCount++
+  parameterCount++;
 
   return (rank / parameterCount).toFixed(1);
 };
@@ -54,6 +70,7 @@ export const rankToStatus = (rank) => {
 }
 
 export const rankToColor = (rank) => {
+  if (rank === null) return DARK_GRAY_COLOR
   if (rank < 3.5) return RED_COLOR
   if (rank < 4.3) return ORANGE_COLOR
   return GREEN_COLOR
@@ -68,11 +85,18 @@ export const calcIncomopleteCoefficient = ({ feedbackWithClientsDirection, forum
   }
 
   if (feedbackWithClientsDirection === -1) {
-    incomopleteCoefficient -= 0.2;
-  }
-  if (forumReviewsDirection === -1) {
     incomopleteCoefficient -= 0.1;
   }
+
+  const reviewsAmountTooLow = isReviewsAmountTooLow({ sideServicesRank });
+
+  if (reviewsAmountTooLow) {
+    incomopleteCoefficient -= 0.2;
+  }
+
+  // if (forumReviewsDirection === -1) {
+  //   incomopleteCoefficient -= 0.1;
+  // }
 
   return incomopleteCoefficient
 }

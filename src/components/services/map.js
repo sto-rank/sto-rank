@@ -14,7 +14,7 @@ const defaultCenter = [
   30.4721233
 ];
 
-const Item = ({
+const Item = React.memo(({
                 onContactServicePress,
                 selectedServiceId,
                 onMarkerPress,
@@ -60,9 +60,9 @@ const Item = ({
       }
     </>
   )
-};
+});
 
-export default function MapComp ({
+export default React.memo(function MapComp ({
                                    selectedService,
                                    filteredEnchancedServiceItems,
                                    onContactServicePress,
@@ -100,4 +100,4 @@ export default function MapComp ({
       }
     </div>
   )
-}
+})

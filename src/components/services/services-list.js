@@ -4,7 +4,7 @@ import CreateFilterSortingForm from '../../components/services/filter-sorting-fo
 import styles from '../../components/services/styles'
 import ServiceItem from '../../components/services/service-item'
 
-export default function ServicesList({
+export default React.memo(function ServicesList({
   filteredEnchancedServiceItems,
   onFilterValuesChange,
   selectedServiceId,
@@ -62,4 +62,4 @@ export default function ServicesList({
       </Element>
     </div>
   );
-}
+})

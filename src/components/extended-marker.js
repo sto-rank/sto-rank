@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { Marker } from 'react-leaflet'
 
-export default (props) => {
+export default React.memo((props) => {
   const { isOpen } = props;
   const ref = useRef(null);
 
@@ -10,4 +10,4 @@ export default (props) => {
   }, [isOpen]);
 
   return <Marker ref={ref} {...props} />
-}
+})

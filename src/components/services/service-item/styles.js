@@ -47,6 +47,7 @@ export default {
     align-items: flex-end;
     @media(max-width: ${MOBILE_DEVICE_LAYOUT_TRASHOLD}px) {
       width: 100%;
+      align-items: flex-start;
     }
   `,
   descriptionBlock: css`
@@ -68,12 +69,14 @@ export default {
     paddingVertical: 5,
     width: '100%',
     display: 'inline-block',
-    marginBottom: 30,
   },
   sideLinksWrapper: css`
     margin-top: 20px;
     max-width: 300px;
     padding-bottom: 40px;
+    @media(max-width: ${MOBILE_DEVICE_LAYOUT_TRASHOLD}px) {
+      text-align: left;
+    }
   `,
   sideLinksTitle: {
   },
@@ -106,5 +109,26 @@ export default {
   `,
   pointTitle: css`
     font-size: 15px;
+  `,
+  expandIcon: css`
+    font-size: 20px;
+    margin-top: 20px;
+  `,
+  pointItemLine: css`
+    margin-top: 30px;
+    @media(max-width: ${MOBILE_DEVICE_LAYOUT_TRASHOLD}px) {
+      margin-top: 20px;
+    }
+  `,
+  expandIconWrapper: css`
+    text-align: center;
+    display: none;
+     @media(max-width: ${MOBILE_DEVICE_LAYOUT_TRASHOLD}px) {
+      display: block;
+    }
+  `,
+  showHideSpecialities: css`
+    padding-left: 0px;
+    margin-top: 10px;
   `
 }

@@ -1,7 +1,7 @@
 import React, { useCallback, useRef, useState } from 'react'
 import { Modal, Input } from 'antd';
 
-export default ({ selectedServiceName, onCancel }) => {
+export default React.memo(({ selectedServiceName, onCancel }) => {
   const [status, setStatus] = useState('');
   const formRef = useRef();
 
@@ -61,4 +61,4 @@ export default ({ selectedServiceName, onCancel }) => {
       </form>
     </Modal>
   );
-}
+})

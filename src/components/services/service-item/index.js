@@ -1,19 +1,19 @@
-import React, { useCallback, useMemo } from 'react'
-import { Card, Col, List, Progress, Row, Icon, Button, Popover } from 'antd'
+import React, { useCallback, useMemo, useState} from 'react'
+import { Card, List, Progress, Icon, Button } from 'antd'
 import styles from './styles'
-import { mapDayToLabel } from '../../../helpers/days'
 import { MAX_RANK, rankToColor } from '../../../helpers/rank'
 import { AUTOMATIC_TRANSMISSION_REPAIR } from '../../../constants/specialized-keywords'
 import ServiceStat from '../../service-stat'
 import { GRAY_COLOR } from '../../../constants/colors'
+import PointItem from './point-item'
+import { Collapse } from 'react-collapse'
 
 export const ServiceItem = ({
   website,
   name,
   pagePath,
   points,
-  mainSpecialties,
-  otherSpecialties,
+  specialties,
   rank,
   onHeaderPress,
   incomplete,
@@ -23,9 +23,13 @@ export const ServiceItem = ({
   sideForumsMentions,
   fakeReviews,
   feedbackWithClientsDirection,
+                              solveCustomerClaimsPercentage,
   forumReviewsDirection,
   sideServicesRank,
 }) => {
+  const [expandSpecialities, setExpandSpecialities] = useState(false);
+  const toggleExpandSpecialities = useCallback(() => setExpandSpecialities(!expandSpecialities), [expandSpecialities]);
+
   const color = useMemo(() => !incomplete ? rankToColor(rank) : 'gray', [rank, incomplete]);
   const onContactServicePressCb = useCallback(() => {
     onContactServicePress({ pagePath });
@@ -72,43 +76,14 @@ export const ServiceItem = ({
                             title,
                           }) => (
                 <div key={`${address}${JSON.stringify(workingHours)}`} css={styles.point}>
-                  {
-                    title && points.length > 1 && (
-                      <div style={styles.line}>
-                        <i style={styles.label} css={styles.pointTitle}>{title}</i>
-                      </div>
-                    )
-                  }
-                  <div style={styles.line}>
-                    <label style={styles.label}>Адрес:</label>
-                    <br/>
-                    <div>
-                      {address}
-                    </div>
-                  </div>
-                  <div style={styles.line}>
-                    <label style={styles.label}>Телефоны для связи:</label>
-                    <br/>
-                    <div>{phones.map(phone => <div key={phone}>{phone}</div>)}</div>
-                  </div>
-                  {
-                    workingHours.length ? (
-                      <div style={styles.line}>
-                        <label style={styles.label}>Время работы:</label><br/><span>
-                     <List
-                       dataSource={workingHours}
-                       renderItem={({ day, time }) => (
-                         <List.Item style={styles.listItemWithoutBorder}>
-                           {mapDayToLabel(day)}: <b>{time.map(({ from, to }) => <span key={`${from}${to}`}>{from} - {to}</span>)}</b>
-                         </List.Item>
-                       )}
-                     />
-                    </span>
-                      </div>
-                    ) : null
-                  }
-                  <a onClick={() => onHeaderPressCb({ address })} style={styles.showOnMapBtn}>Показать на карте</a>
-                  <hr />
+                  <PointItem
+                    phones={phones}
+                    address={address}
+                    workingHours={workingHours}
+                    onHeaderPressCb={onHeaderPressCb}
+                    title={title && points.length > 1 ? title : null}
+                  />
+                  <hr css={styles.pointItemLine} />
                 </div>
               ))
             }
@@ -119,6 +94,7 @@ export const ServiceItem = ({
               <ServiceStat
                 fakeReviews={fakeReviews}
                 feedbackWithClientsDirection={feedbackWithClientsDirection}
+                solveCustomerClaimsPercentage={solveCustomerClaimsPercentage}
                 forumReviewsDirection={forumReviewsDirection}
                 sideServicesRank={sideServicesRank}
                 incomplete={incomplete}
@@ -146,30 +122,37 @@ export const ServiceItem = ({
               }
           </div>
         </div>
-        <div style={styles.line}>
-          <label style={styles.label}>Основные виды работ:</label>
-          <List
-            dataSource={mainSpecialties}
-            renderItem={item => (
-              <List.Item style={styles.listItemWithoutBorder}>
-                {item}
-              </List.Item>
-            )}
-          />
-        </div>
-        <br/>
         {
-          otherSpecialties.length ? <div style={styles.line}>
-            <label style={styles.label}>Так же выполняют:</label>
-            <List
-              dataSource={otherSpecialties}
-              renderItem={item => (
-                <List.Item style={styles.listItemWithoutBorder}>
-                  {item}
-                </List.Item>
-              )}
-            />
-          </div> : null
+          specialties.length ? (
+            <div style={styles.line}>
+              <label style={styles.label}>Выполняемые виды работ:</label>
+              <List
+                dataSource={specialties.slice(0, 5)}
+                renderItem={item => (
+                  <List.Item style={styles.listItemWithoutBorder}>
+                    {item}
+                  </List.Item>
+                )}
+              />
+              {
+                specialties.length > 5 && <>
+                  <Collapse isOpened={expandSpecialities}>
+                    <List
+                      dataSource={specialties.slice(5)}
+                      renderItem={item => (
+                        <List.Item style={styles.listItemWithoutBorder}>
+                          {item}
+                        </List.Item>
+                      )}
+                    />
+                  </Collapse>
+                  <Button type="link" css={styles.showHideSpecialities} onClick={toggleExpandSpecialities}>
+                    { !expandSpecialities ? <>Показать все</> : <>Скрыть</> }
+                  </Button>
+                </>
+              }
+            </div>
+          ) : null
         }
         <Button css={styles.contactBtn} onClick={onContactServicePressCb} block ghost type="primary">Записаться на СТО с гарантией</Button>
       </Card>

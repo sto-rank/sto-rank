@@ -14,21 +14,21 @@ import { LIGHT_GRAY } from '../../constants/colors'
 const ZOOM_FOR_ONE_POINT = 15;
 const ZOOM_FOR_FEW_POINTS = 10;
 
-export default function Service(props) {
+export default React.memo(function Service(props) {
 
   const { data: { servicesJson } } = props;
   const enchancedServices = useEnchancedServices({ serviceItems: [servicesJson] });
   const {
     name,
-    mainSpecialties,
-    otherSpecialties,
     sideServicesRank,
     fakeReviews,
     feedbackWithClientsDirection,
+    solveCustomerClaimsPercentage,
     forumReviewsDirection,
     points,
     website,
     incomplete,
+    specialties,
   } = enchancedServices[0];
   const centerPointsCoords = useMemo(() => {
     const averageCoord = averageGeolocation(points.filter(({ coordinates }) => coordinates)
@@ -58,6 +58,7 @@ export default function Service(props) {
             <ServiceStat
               fakeReviews={fakeReviews}
               feedbackWithClientsDirection={feedbackWithClientsDirection}
+              solveCustomerClaimsPercentage={solveCustomerClaimsPercentage}
               forumReviewsDirection={forumReviewsDirection}
               sideServicesRank={sideServicesRank}
               incomplete={incomplete}
@@ -117,23 +118,10 @@ export default function Service(props) {
           }
           <div style={styles.specialtiesBlock}>
             <section>
-              <h2 css={styles.itemTitle}>Основные виды работ:</h2>
+              <h2 css={styles.itemTitle}>Выполняемые виды работ:</h2>
               <div css={styles.listWrapper}>
                 <List
-                  dataSource={mainSpecialties}
-                  renderItem={item => (
-                    <List.Item>
-                      {item}
-                    </List.Item>
-                  )}
-                />
-              </div>
-            </section>
-            <section>
-              <h2 css={styles.itemTitle}>Так же выполняют:</h2>
-              <div css={styles.listWrapper}>
-                <List
-                  dataSource={otherSpecialties}
+                  dataSource={specialties}
                   renderItem={item => (
                     <List.Item>
                       {item}
@@ -173,13 +161,13 @@ export default function Service(props) {
       </div>
     </div>
   )
-}
+});
+
 export const pageQuery = graphql`
   query($path: String!) {
     servicesJson(pagePath: { eq: $path }) {
       specialized
-      mainSpecialties
-      otherSpecialties
+      specialties
       pagePath
       name
       description
@@ -201,9 +189,11 @@ export const pageQuery = graphql`
         name
         link
         rank
+        reviewsAmount
       }
       fakeReviews
       feedbackWithClientsDirection
+      solveCustomerClaimsPercentage
       forumReviewsDirection
     }
   }

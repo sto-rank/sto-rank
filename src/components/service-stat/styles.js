@@ -1,6 +1,7 @@
 import { css } from '@emotion/core'
 
 import { MOBILE_DEVICE_LAYOUT_TRASHOLD } from '../../constants/layout'
+import { DARK_GRAY_COLOR } from '../../constants/colors'
 
 export default {
   ratingValue: css`
@@ -17,4 +18,12 @@ export default {
       font-size: 12px;
     }
   `,
+  reviewsAmount: css`
+    font-size: 70%;
+    
+    white-space: nowrap;
+  `,
+  rankValue: css`
+    margin-right: 15px;
+  `
 }
