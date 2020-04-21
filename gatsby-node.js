@@ -10,10 +10,19 @@ exports.createPages = async ({ actions, graphql }) => {
   await serviceConfig({ graphql, actions });
   const { createRedirect } = actions;
 
-  await createRedirect({
-    fromPath: `/`,
-    toPath: `/services`,
-    redirectInBrowser: true,
-    isPermanent: true,
-  })
+  // await createRedirect({
+  //   fromPath: `/`,
+  //   toPath: `/services`,
+  //   redirectInBrowser: true,
+  //   isPermanent: true,
+  // })
+}
+exports.onCreatePage = ({ page, actions }) => {
+  const { createPage } = actions
+  // Make the front page match everything client side.
+  // Normally your paths should be a bit more judicious.
+  if (page.path.match(/^\/services/)) {
+    page.matchPath = "/services/*"
+    createPage(page)
+  }
 }

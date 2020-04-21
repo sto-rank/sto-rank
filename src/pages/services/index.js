@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { graphql, useStaticQuery } from 'gatsby'
 import { Tabs, Icon } from 'antd';
+import queryString from 'query-string';
 
 import styles from '../../components/services/styles'
 import useEnchancedServices from '../../hooks/useEnchancedServices'
@@ -9,6 +10,35 @@ import ServicesList from '../../components/services/services-list'
 import Map from '../../components/services/map'
 import ContactForm from '../../components/contact-form'
 import { MOBILE_DEVICE_LAYOUT_TRASHOLD } from '../../constants/layout'
+
+
+
+import { Router, Link } from '@reach/router'
+
+const App = () => (
+  <div className="app">
+    <nav className="nav">
+      <Link to="services/3?query=11">Page 3</Link>
+    </nav>
+
+    <Router>
+      <Page path="/services/:param" />
+    </Router>
+  </div>
+)
+
+const Page = props => (
+  <div
+    className="page"
+    style={{ background: `hsl(${props.page * 75}, 60%, 60%)` }}
+  >
+    {props.param}
+    {queryString.parse(props.location.search).query}
+  </div>
+)
+
+
+
 
 const { TabPane } = Tabs;
 
@@ -113,6 +143,7 @@ export default function Services() {
 
   return (
     <div>
+      <App />
       <ContactForm selectedServiceName={contactService && contactService.name} onCancel={onContactServiceCancel} />
       {
         typeof window === 'undefined' || window.innerWidth <= MOBILE_DEVICE_LAYOUT_TRASHOLD && (

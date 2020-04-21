@@ -25,6 +25,7 @@
     "lodash": "^4.17.15",
     "plural-ru": "^2.0.2",
     "prop-types": "^15.7.2",
+    "query-string": "^6.12.1",
     "react": "^16.12.0",
     "react-collapse": "^5.0.1",
     "react-dom": "^16.12.0",
@@ -32,6 +33,7 @@
     "react-helmet": "^5.2.1",
     "react-leaflet": "^2.6.1",
     "react-scroll": "^1.7.16",
+    "react-transition-group": "^4.3.0",
     "reactjs-popup": "^1.5.0"
   },
   "devDependencies": {
