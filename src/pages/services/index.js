@@ -1,7 +1,8 @@
-import React, { useCallback, useMemo, useState } from 'react'
-import { graphql, useStaticQuery } from 'gatsby'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { graphql,  useStaticQuery } from 'gatsby'
 import { Tabs, Icon } from 'antd';
 import queryString from 'query-string';
+import { withGraphql } from 'gatsby-source-graphql-universal';
 
 import styles from '../../components/services/styles'
 import useEnchancedServices from '../../hooks/useEnchancedServices'
@@ -38,57 +39,61 @@ const Page = props => (
 )
 
 
-
-
-const { TabPane } = Tabs;
-
-export default function Services() {
-  const { allServicesJson: { edges } } = useStaticQuery(graphql`
-    {
-      allServicesJson {
-        edges {
-          node {
-            specialized
-            specialties
-            pagePath
+const query = graphql`
+  query {
+    allServicesJson {
+      edges {
+        node {
+          specialized
+          specialties
+          pagePath
+          name
+          description
+          website
+          points {
+            address
+            title
+            phones
+            coordinates
+            workingHours {
+              day
+              time {
+                from
+                to
+              }
+            }
+          }
+          sideServicesRank {
             name
-            description
-            website
-            points {
-              address
-              title
-              phones
-              coordinates
-              workingHours {
-                day
-                time {
-                  from
-                  to
-                }
-              }
-            }
-            sideServicesRank {
-              name
-              link
-              rank
-              reviewsAmount
-            }
-            fakeReviews
-            feedbackWithClientsDirection
-            solveCustomerClaimsPercentage
-            forumReviewsDirection
-            sideForumsMentions {
-              link
-              textNodes {
-                text
-                messages
-              }
+            link
+            rank
+            reviewsAmount
+          }
+          fakeReviews
+          feedbackWithClientsDirection
+          solveCustomerClaimsPercentage
+          forumReviewsDirection
+          sideForumsMentions {
+            link
+            textNodes {
+              text
+              messages
             }
           }
         }
       }
     }
-  `);
+  }
+`
+
+const { TabPane } = Tabs;
+
+export default withGraphql(function Services({ graphql: graphqlUniversal }) {
+
+  const { allServicesJson: { edges } } = useStaticQuery(query);
+
+  // const edges = [];
+
   const [selectedTab, setSelectedTab] = useState('servicesList');
   const [selectedServiceId, setSelectedServiceId] = useState();
   const [contactServiceId, setContactServiceId] = useState();
@@ -141,6 +146,15 @@ export default function Services() {
     />
   ), [filteredEnchancedServiceItems, selectedServiceId, selectedService, onServicePress]);
 
+  // useEffect(() => {
+  //   const a = graphqlUniversal('allServicesJson', {
+  //     query,
+  //     fetchPolicy: 'network-only',
+  //     variables: { page: 3 }
+  //   })
+  //   console.log(111, a)
+  // }, [])
+
   return (
     <div>
       <App />
@@ -167,4 +181,4 @@ export default function Services() {
       }
     </div>
   )
-}
+})
