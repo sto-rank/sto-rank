@@ -87,7 +87,7 @@ const ServiceStat = ({
             {
               o.rank !== null ? <>
                 <span css={styles.rankValue}>
-                  {o.rank.toFixed(1)}</span> <span css={styles.reviewsAmount}><a href={o.link} target="_blank">({o.reviewsAmount} {plural(o.reviewsAmount, 'отзыв', 'отзыва', 'отзывов')})</a>
+                  {parseFloat(o.rank).toFixed(1)}</span> <span css={styles.reviewsAmount}><a href={o.link} target="_blank">({o.reviewsAmount} {plural(o.reviewsAmount, 'отзыв', 'отзыва', 'отзывов')})</a>
                 </span>
               </> : 'Нет данных'
             }

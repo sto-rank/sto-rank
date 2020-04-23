@@ -39,7 +39,7 @@ export const calcRank = ({ website, fakeReviews, feedbackWithClientsDirection, f
   let sideServicesRankFiltered = sideServicesRank.filter(o => o.rank != null);
   let parameterCount = sideServicesRankFiltered.length;
 
-  let rank = sideServicesRankFiltered.map(o => o.rank).reduce((prev, next) => prev + next, 0);
+  let rank = sideServicesRankFiltered.map(o => parseInt(o.rank)).reduce((prev, next) => prev + next, 0);
 
   if (solveCustomerClaimsPercentage !== -1) {
     let percentage = calcSolveCustomerClaimsPercentage({ percentage: solveCustomerClaimsPercentage });

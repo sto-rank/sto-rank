@@ -163,38 +163,79 @@ export default React.memo(function Service(props) {
   )
 });
 
-export const pageQuery = graphql`
-  query($path: String!) {
-    servicesJson(pagePath: { eq: $path }) {
-      specialized
-      specialties
-      pagePath
-      name
-      description
-      website
-      points {
-        address
-        phones
-        coordinates
-        title
-        workingHours {
-          day
-          time {
-            from
-            to
-          }
-        }
-      }
-      sideServicesRank {
-        name
-        link
-        rank
-        reviewsAmount
-      }
-      fakeReviews
-      feedbackWithClientsDirection
-      solveCustomerClaimsPercentage
-      forumReviewsDirection
-    }
-  }
-`
+// export const pageQuery = graphql`
+//   query($path: String!) {
+//     list(pagePath: { eq: $path }) {
+//       _id
+//       list {
+//         specialized
+//         specialties
+//         pagePath
+//         name
+//         description
+//         website
+//         points {
+//           address
+//           title
+//           phones
+//           coordinates
+//           workingHours {
+//             day
+//             time {
+//               from
+//               to
+//             }
+//           }
+//         }
+//         sideServicesRank {
+//           name
+//           link
+//           rank
+//           reviewsAmount
+//         }
+//         fakeReviews
+//         feedbackWithClientsDirection
+//         solveCustomerClaimsPercentage
+//         forumReviewsDirection
+//         sideForumsMentions {
+//           link
+//         }
+//       }
+//     }
+//   }
+// `
+
+// const a = `
+//   query($path: String!) {
+//     servicesJson(pagePath: { eq: $path }) {
+//       specialized
+//       specialties
+//       pagePath
+//       name
+//       description
+//       website
+//       points {
+//         address
+//         phones
+//         coordinates
+//         title
+//         workingHours {
+//           day
+//           time {
+//             from
+//             to
+//           }
+//         }
+//       }
+//       sideServicesRank {
+//         name
+//         link
+//         rank
+//         reviewsAmount
+//       }
+//       fakeReviews
+//       feedbackWithClientsDirection
+//       solveCustomerClaimsPercentage
+//       forumReviewsDirection
+//     }
+//   }`

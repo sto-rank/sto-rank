@@ -1,8 +1,7 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { graphql,  useStaticQuery } from 'gatsby'
 import { Tabs, Icon } from 'antd';
 import queryString from 'query-string';
-import { withGraphql } from 'gatsby-source-graphql-universal';
 
 import styles from '../../components/services/styles'
 import useEnchancedServices from '../../hooks/useEnchancedServices'
@@ -11,8 +10,6 @@ import ServicesList from '../../components/services/services-list'
 import Map from '../../components/services/map'
 import ContactForm from '../../components/contact-form'
 import { MOBILE_DEVICE_LAYOUT_TRASHOLD } from '../../constants/layout'
-
-
 
 import { Router, Link } from '@reach/router'
 
@@ -41,9 +38,9 @@ const Page = props => (
 
 const query = graphql`
   query {
-    allServicesJson {
-      edges {
-        node {
+    services {
+      list {
+        list {
           specialized
           specialties
           pagePath
@@ -76,8 +73,8 @@ const query = graphql`
           sideForumsMentions {
             link
             textNodes {
-              text
               messages
+              text
             }
           }
         }
@@ -88,11 +85,8 @@ const query = graphql`
 
 const { TabPane } = Tabs;
 
-export default withGraphql(function Services({ graphql: graphqlUniversal }) {
-
-  const { allServicesJson: { edges } } = useStaticQuery(query);
-
-  // const edges = [];
+export default function Services() {
+  const services = useStaticQuery(query).services.list.list;
 
   const [selectedTab, setSelectedTab] = useState('servicesList');
   const [selectedServiceId, setSelectedServiceId] = useState();
@@ -100,7 +94,7 @@ export default withGraphql(function Services({ graphql: graphqlUniversal }) {
   const [filterSorting, setFilterSorting] = useState({});
 
   const { specialized, search } = filterSorting;
-  const enchancedServices = useEnchancedServices({ serviceItems: edges.map(({ node }) => node) });
+  const enchancedServices = useEnchancedServices({ serviceItems: services });
 
   const filteredEnchancedServiceItems = enchancedServices.filter(o => {
     return o.sideServicesRank.length && (
@@ -146,15 +140,6 @@ export default withGraphql(function Services({ graphql: graphqlUniversal }) {
     />
   ), [filteredEnchancedServiceItems, selectedServiceId, selectedService, onServicePress]);
 
-  // useEffect(() => {
-  //   const a = graphqlUniversal('allServicesJson', {
-  //     query,
-  //     fetchPolicy: 'network-only',
-  //     variables: { page: 3 }
-  //   })
-  //   console.log(111, a)
-  // }, [])
-
   return (
     <div>
       <App />
@@ -181,4 +166,4 @@ export default withGraphql(function Services({ graphql: graphqlUniversal }) {
       }
     </div>
   )
-})
+}

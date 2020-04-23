@@ -5,6 +5,7 @@
   "version": "0.1.0",
   "author": "Kyle Mathews <mathews.kyle@gmail.com>",
   "dependencies": {
+    "@apollo/client": "^3.0.0-beta.44",
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
     "antd": "^3.26.7",
@@ -21,6 +22,7 @@
     "gatsby-plugin-schema-snapshot": "^1.0.0",
     "gatsby-plugin-sharp": "^2.3.5",
     "gatsby-source-filesystem": "^2.1.46",
+    "gatsby-source-graphql": "^2.4.2",
     "gatsby-source-graphql-universal": "^3.1.11",
     "gatsby-transformer-json": "^2.2.25",
     "gatsby-transformer-remark": "^2.6.48",
