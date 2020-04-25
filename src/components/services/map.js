@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import { Map, Popup, TileLayer } from 'react-leaflet'
 
 import ExtendedMarker from '../../components/extended-marker'
@@ -45,8 +45,8 @@ const Item = React.memo(({
           >
             <Popup>
               <p><b css={{ color: !incomplete ? rankToColor(rank) : 'gray' }}>{rank} из {MAX_RANK}</b></p>
-              <p>{ incomplete && <span css={{ ...styles.infoText, ...styles.warningText }}><Icon type="warning" /> По данному автосервису нет достаточно информации для точной оценки!</span>}</p>
-              <p>{ specialized.includes(AUTOMATIC_TRANSMISSION_REPAIR) && <span css={{ ...styles.infoText, ...styles.successText }}><Icon type="check" /> Узкопрофильное СТО по ремонту АКПП</span>}</p>
+              <p>{ incomplete ? <span css={{ ...styles.infoText, ...styles.warningText }}><Icon type="warning" /> По данному автосервису нет достаточно информации для точной оценки!</span> : null}</p>
+              <p>{ specialized.includes(AUTOMATIC_TRANSMISSION_REPAIR) ? <span css={{ ...styles.infoText, ...styles.successText }}><Icon type="check" /> Узкопрофильное СТО по ремонту АКПП</span> : null}</p>
               <p css={styles.popupName}><b>{name}</b></p>
               <p>{address}</p>
               {
@@ -64,11 +64,13 @@ const Item = React.memo(({
 
 export default React.memo(function MapComp ({
                                    selectedService,
-                                   filteredEnchancedServiceItems,
+                                              services: servicesArr = [],
                                    onContactServicePress,
                                    selectedServiceId,
                                    onMarkerPress
                                  }) {
+  const services = useMemo(() => servicesArr, [servicesArr.length])
+
   const mapCenter = useMemo(() => {
     if (selectedService && selectedService.coordinates) {
       return selectedService.coordinates;
@@ -80,14 +82,14 @@ export default React.memo(function MapComp ({
   return (
     <div css={styles.map}>
       {
-        typeof window !== 'undefined' && (
+        typeof window !== 'undefined' ? (
           <Map center={mapCenter} zoom={ZOOM} css={styles.mapElem}>
             <TileLayer
               attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             {
-              filteredEnchancedServiceItems.map((item) => (
+              services.map((item) => (
                 <Item
                   key={JSON.stringify(item)}
                   {...item}
@@ -96,7 +98,7 @@ export default React.memo(function MapComp ({
                   onContactServicePress={onContactServicePress} />))
             }
           </Map>
-        )
+        ) : null
       }
     </div>
   )

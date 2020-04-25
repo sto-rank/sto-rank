@@ -9,11 +9,11 @@ export default React.memo(({ title, description, css, style }) => (
         {title}
         {' '}
         {
-          description && (
+          description ? (
             <Tooltip title={description}>
               <Icon type="info-circle" theme="twoTone" />
             </Tooltip>
-          )
+          ) : null
         }
       </span>
     </h2>

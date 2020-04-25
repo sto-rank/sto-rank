@@ -89,8 +89,8 @@ export const ServiceItem = ({
             }
           </div>
           <div css={styles.rankBlock}>
-            { incomplete && <p style={{ ...styles.infoText, ...styles.warningText }}><Icon type="warning" /> По данному автосервису нет достаточно информации для точной оценки!</p>}
-            { specialized.includes(AUTOMATIC_TRANSMISSION_REPAIR) && <p style={{ ...styles.infoText, ...styles.successText }}><Icon type="check" /> Узкопрофильное СТО по ремонту АКПП</p>}
+            { incomplete ? <p style={{ ...styles.infoText, ...styles.warningText }}><Icon type="warning" /> По данному автосервису нет достаточно информации для точной оценки!</p> : null}
+            { specialized.includes(AUTOMATIC_TRANSMISSION_REPAIR) ? <p style={{ ...styles.infoText, ...styles.successText }}><Icon type="check" /> Узкопрофильное СТО по ремонту АКПП</p> : null}
               <ServiceStat
                 fakeReviews={fakeReviews}
                 feedbackWithClientsDirection={feedbackWithClientsDirection}
@@ -135,7 +135,7 @@ export const ServiceItem = ({
                 )}
               />
               {
-                specialties.length > 5 && <>
+                specialties.length > 5 ? <>
                   <Collapse isOpened={expandSpecialities}>
                     <List
                       dataSource={specialties.slice(5)}
@@ -149,7 +149,7 @@ export const ServiceItem = ({
                   <Button type="link" css={styles.showHideSpecialities} onClick={toggleExpandSpecialities}>
                     { !expandSpecialities ? <>Показать все</> : <>Скрыть</> }
                   </Button>
-                </>
+                </> : null
               }
             </div>
           ) : null

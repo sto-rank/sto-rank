@@ -56,8 +56,8 @@ export default React.memo(({ selectedServiceName, onCancel }) => {
         <br />
         <label>Комментарий (не обязательно):</label>
         <Input.TextArea type="text" name="message" />
-        {status === "SUCCESS" && <p>Thanks!</p>}
-        {status === "ERROR" && <p>Ooops! There was an error.</p>}
+        {status === "SUCCESS" ? <p>Thanks!</p> : null}
+        {status === "ERROR" ? <p>Ooops! There was an error.</p> : null}
       </form>
     </Modal>
   );

@@ -48,9 +48,9 @@ const ServiceStat = ({
       key: 'feedbackWithClientsDirection',
       title: <RankBlockTitle style={{ fontSize: titleFontSize }} title="Решение спорных ситуаций" description="Как часто представители автосервиса реагируют и решают спорные ситуации с клиентами. Эта информация собирается с сайтов отзовиков" />,
       value: <span css={styles.ratingValue} style={{ fontSize: valueFontSize }}>
-        {solveCustomerClaimsPercentage > 0 && <ColoredText type="safe" strong>{calcSolveCustomerClaimsPercentage({ percentage: solveCustomerClaimsPercentage})}%</ColoredText>}
-        {solveCustomerClaimsPercentage === -1 && <ColoredText disabled strong>Нет данных</ColoredText>}
-        {solveCustomerClaimsPercentage === 0 && <ColoredText type="danger" strong>Никогда</ColoredText>}
+        {solveCustomerClaimsPercentage > 0 ? <ColoredText type="safe" strong>{calcSolveCustomerClaimsPercentage({ percentage: solveCustomerClaimsPercentage})}%</ColoredText> : null}
+        {solveCustomerClaimsPercentage === -1 ? <ColoredText disabled strong>Нет данных</ColoredText> : null}
+        {solveCustomerClaimsPercentage === 0 ? <ColoredText type="danger" strong>Никогда</ColoredText> : null}
       </span>,
       color: rowColor,
     },

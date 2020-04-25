@@ -41,7 +41,7 @@ module.exports = {
       resolve: 'gatsby-source-graphql',
       options: {
         // This type will contain remote schema Query type
-        typeName: "List",
+        typeName: "Services",
         // This is field under which it's accessible
         fieldName: "services",
         url: "https://stitch.mongodb.com/api/client/v2.0/app/services-zwfve/graphql",

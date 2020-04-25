@@ -18,13 +18,13 @@ const PointItem = ({
 
   return <>
     {
-      title && (
+      title ? (
         <CollapsibleForMobile expanded={expanded}>
           <div style={styles.line}>
             <i style={styles.label} css={styles.pointTitle}>{title}</i>
           </div>
         </CollapsibleForMobile>
-      )
+      ) : null
     }
     <div style={styles.line}>
       <label style={styles.label}>Адрес:</label>

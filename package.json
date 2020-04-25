@@ -27,6 +27,7 @@
     "gatsby-transformer-json": "^2.2.25",
     "gatsby-transformer-remark": "^2.6.48",
     "gatsby-transformer-sharp": "^2.3.7",
+    "history": "^4.10.1",
     "leaflet": "^1.6.0",
     "lodash": "^4.17.15",
     "node-fetch": "^2.6.0",
@@ -34,6 +35,7 @@
     "prop-types": "^15.7.2",
     "query-string": "^6.12.1",
     "react": "^16.12.0",
+    "react-addons-perf": "^15.4.2",
     "react-collapse": "^5.0.1",
     "react-dom": "^16.12.0",
     "react-google-recaptcha": "^2.0.1",
@@ -52,6 +54,7 @@
   "license": "MIT",
   "scripts": {
     "build": "gatsby build",
+    "build-with-profile": "gatsby build --profile",
     "develop": "gatsby develop",
     "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
     "start": "npm run develop",

@@ -1,29 +1,39 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo, useCallback } from 'react'
 import { Element, scroller } from 'react-scroll'
+import { Link } from '@reach/router'
+import { Pagination } from 'antd'
+
 import CreateFilterSortingForm from '../../components/services/filter-sorting-form'
 import styles from '../../components/services/styles'
 import ServiceItem from '../../components/services/service-item'
 
 export default React.memo(function ServicesList({
-  filteredEnchancedServiceItems,
+  services,
   onFilterValuesChange,
   selectedServiceId,
   onListItemPress,
   onContactServicePress,
-  setSelectedTab
+  setSelectedTab,
+  totalServicesItemsLength,
+  navigate,
+                                                  currentPage,
 }) {
-  const completedEnchancedServiceItems = filteredEnchancedServiceItems
+  const completedServices = services
     .filter(o => !o.incomplete)
     .sort((a, b) => {
       return b.rank - a.rank
     });
-  const incompletedEnchancedServiceItems = filteredEnchancedServiceItems
+  const incompletedServices = services
     .filter(o => o.incomplete)
     .sort((a, b) => {
       return b.rank - a.rank
     });
 
   const FilterSortingForm = useMemo(() => CreateFilterSortingForm({ onValuesChange: onFilterValuesChange }), [onFilterValuesChange]);
+
+  const onPageChange = useCallback((page) => {
+    navigate(`/kyiv/remont-akpp${page === 1 ? '' : '/' + page}`)
+  }, []);
 
   useEffect(() => {
     scroller.scrollTo(selectedServiceId, { containerId: 'servicesList', smooth: true })
@@ -39,26 +49,31 @@ export default React.memo(function ServicesList({
           <FilterSortingForm />
         </div>
         {
-          completedEnchancedServiceItems.map(serviceItem => {
+          completedServices.map(serviceItem => {
             const firstPoint = serviceItem.points.find(o => o.coordinates);
             return (
-              <Element key={`${serviceItem.pagePath}`} name={`${serviceItem.pagePath}${firstPoint && firstPoint.address}`} css={styles.scrollItem}>
+              <Element key={`${serviceItem.pagePath}`} name={`${serviceItem.pagePath}${firstPoint ? firstPoint.address : undefined}`} css={styles.scrollItem}>
                 <ServiceItem {...serviceItem} onHeaderPress={onListItemPress} onContactServicePress={onContactServicePress} setSelectedTab={setSelectedTab} />
               </Element>
             )
           })
         }
-        <p css={styles.listSeparator}>Далее представлены автосервисы по которым нет достаточно информации для точной оценки:</p>
         {
-          incompletedEnchancedServiceItems.map(serviceItem => {
+          incompletedServices.length ? (
+            <p css={styles.listSeparator}>Далее представлены автосервисы по которым нет достаточно информации для точной оценки:</p>
+          ) : null
+        }
+        {
+          incompletedServices.map(serviceItem => {
             const firstPoint = serviceItem.points.find(o => o.coordinates);
             return (
-              <Element key={`${serviceItem.pagePath}`} name={`${serviceItem.pagePath}${firstPoint && firstPoint.address}`} css={styles.scrollItem}>
+              <Element key={`${serviceItem.pagePath}`} name={`${serviceItem.pagePath}${firstPoint ? firstPoint.address : undefined}`} css={styles.scrollItem}>
                 <ServiceItem {...serviceItem} onHeaderPress={onListItemPress} onContactServicePress={onContactServicePress} setSelectedTab={setSelectedTab} />
               </Element>
             )
           })
         }
+        <Pagination current={currentPage + 1} total={totalServicesItemsLength} onChange={onPageChange} />
       </Element>
     </div>
   );

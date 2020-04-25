@@ -4,8 +4,8 @@ const { Text } = Typography;
 
 export default React.memo(({ type, ...rest }) => (
   <Text
-    type={ type !== 'safe' && type }
+    type={ type !== 'safe' ? type : undefined }
     {...rest}
-    style={{ color: type === 'safe' && 'green', ...rest.styles }}
+    style={{ color: type === 'safe' ? 'green' : undefined, ...rest.styles }}
   />
 ))

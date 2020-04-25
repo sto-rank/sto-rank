@@ -9,6 +9,17 @@ export default {
   container: css`
     flex-direction: row;
     display: flex;
+    position: relative;
+    z-index: 1111;
+    @media(max-width: ${MOBILE_DEVICE_LAYOUT_TRASHOLD}px) {
+      display: none;
+    }
+  `,
+  mobileContainer: css`
+    display: none;
+    @media(max-width: ${MOBILE_DEVICE_LAYOUT_TRASHOLD}px) {
+      display: block;
+    }
   `,
   services: css`
     display: flex;

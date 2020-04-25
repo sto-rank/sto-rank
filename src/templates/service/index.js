@@ -5,7 +5,6 @@ import { Map, TileLayer, Popup } from 'react-leaflet'
 
 import styles from './styles'
 import { mapDayToLabel } from '../../helpers/days'
-import useEnchancedServices from '../../hooks/useEnchancedServices'
 import ExtendedMarker from '../../components/extended-marker'
 import { averageGeolocation } from '../../helpers/coordinates'
 import ServiceStat from '../../components/service-stat'
@@ -16,9 +15,7 @@ const ZOOM_FOR_FEW_POINTS = 10;
 
 export default React.memo(function Service(props) {
 
-  const { data: { servicesJson } } = props;
-  const enchancedServices = useEnchancedServices({ serviceItems: [servicesJson] });
-  const {
+  const { data: { services: { service: {
     name,
     sideServicesRank,
     fakeReviews,
@@ -29,7 +26,8 @@ export default React.memo(function Service(props) {
     website,
     incomplete,
     specialties,
-  } = enchancedServices[0];
+  } } } } = props;
+
   const centerPointsCoords = useMemo(() => {
     const averageCoord = averageGeolocation(points.filter(({ coordinates }) => coordinates)
       .map(({ coordinates: [latitude, longitude] }) => ({
@@ -51,9 +49,9 @@ export default React.memo(function Service(props) {
         <div css={[styles.contentSide, styles.rankBlock ]}>
           <div css={[styles.listWrapper, styles.rankListWrapper]}>
             {
-              incomplete && (
+              incomplete ? (
                 <p style={styles.textUnderTable}>По данному автосервису нет достаточно информации для точной оценки!</p>
-              )
+              ) : null
             }
             <ServiceStat
               fakeReviews={fakeReviews}
@@ -135,7 +133,7 @@ export default React.memo(function Service(props) {
       </div>
       <div style={styles.map}>
         {
-          typeof window !== 'undefined' && (
+          typeof window !== 'undefined' ? (
             <Map center={centerPointsCoords} zoom={points.length === 1 ? ZOOM_FOR_ONE_POINT : ZOOM_FOR_FEW_POINTS} style={{ height: 250 }}>
               <TileLayer
                 attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -156,86 +154,49 @@ export default React.memo(function Service(props) {
                 ))
               }
             </Map>
-          )
+          ) : null
         }
       </div>
     </div>
   )
 });
 
-// export const pageQuery = graphql`
-//   query($path: String!) {
-//     list(pagePath: { eq: $path }) {
-//       _id
-//       list {
-//         specialized
-//         specialties
-//         pagePath
-//         name
-//         description
-//         website
-//         points {
-//           address
-//           title
-//           phones
-//           coordinates
-//           workingHours {
-//             day
-//             time {
-//               from
-//               to
-//             }
-//           }
-//         }
-//         sideServicesRank {
-//           name
-//           link
-//           rank
-//           reviewsAmount
-//         }
-//         fakeReviews
-//         feedbackWithClientsDirection
-//         solveCustomerClaimsPercentage
-//         forumReviewsDirection
-//         sideForumsMentions {
-//           link
-//         }
-//       }
-//     }
-//   }
-// `
-
-// const a = `
-//   query($path: String!) {
-//     servicesJson(pagePath: { eq: $path }) {
-//       specialized
-//       specialties
-//       pagePath
-//       name
-//       description
-//       website
-//       points {
-//         address
-//         phones
-//         coordinates
-//         title
-//         workingHours {
-//           day
-//           time {
-//             from
-//             to
-//           }
-//         }
-//       }
-//       sideServicesRank {
-//         name
-//         link
-//         rank
-//         reviewsAmount
-//       }
-//       fakeReviews
-//       feedbackWithClientsDirection
-//       solveCustomerClaimsPercentage
-//       forumReviewsDirection
-//     }
-//   }`
+export const pageQuery = graphql`
+  query($path: String!) {
+    services {
+      service(query: { pagePath: $path }) {
+        specialized
+        specialties
+        pagePath
+        name
+        description
+        website
+        points {
+          address
+          phones
+          coordinates
+          title
+          workingHours {
+            day
+            time {
+              from
+              to
+            }
+          }
+        }
+        sideServicesRank {
+          name
+          link
+          rank
+          reviewsAmount
+        }
+        fakeReviews
+        feedbackWithClientsDirection
+        solveCustomerClaimsPercentage
+        forumReviewsDirection
+        rank
+        incomplete
+      }
+    }
+  }
+`
