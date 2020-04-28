@@ -16,6 +16,7 @@ const defaultCenter = [
 
 const Item = React.memo(({
                 onContactServicePress,
+                           onPopupClose,
                 selectedServiceId,
                 onMarkerPress,
                 points,
@@ -43,7 +44,7 @@ const Item = React.memo(({
             position={[lat, lng]}
             onClick={() => onMarkerPress({ pagePath, address })}
           >
-            <Popup>
+            <Popup onClose={onPopupClose}>
               <p><b css={{ color: !incomplete ? rankToColor(rank) : 'gray' }}>{rank} из {MAX_RANK}</b></p>
               <p>{ incomplete ? <span css={{ ...styles.infoText, ...styles.warningText }}><Icon type="warning" /> По данному автосервису нет достаточно информации для точной оценки!</span> : null}</p>
               <p>{ specialized.includes(AUTOMATIC_TRANSMISSION_REPAIR) ? <span css={{ ...styles.infoText, ...styles.successText }}><Icon type="check" /> Узкопрофильное СТО по ремонту АКПП</span> : null}</p>
@@ -64,10 +65,11 @@ const Item = React.memo(({
 
 export default React.memo(function MapComp ({
                                    selectedService,
-                                              services: servicesArr = [],
+                                              services: servicesArr,
                                    onContactServicePress,
                                    selectedServiceId,
-                                   onMarkerPress
+                                   onMarkerPress,
+                                              onPopupClose
                                  }) {
   const services = useMemo(() => servicesArr, [servicesArr.length])
 
@@ -95,6 +97,7 @@ export default React.memo(function MapComp ({
                   {...item}
                   selectedServiceId={selectedServiceId}
                   onMarkerPress={onMarkerPress}
+                  onPopupClose={onPopupClose}
                   onContactServicePress={onContactServicePress} />))
             }
           </Map>

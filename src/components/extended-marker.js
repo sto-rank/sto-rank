@@ -7,6 +7,7 @@ export default React.memo((props) => {
 
   useEffect(() => {
     if (isOpen) ref.current.leafletElement.openPopup();
+    else ref.current.leafletElement.closePopup();
   }, [isOpen]);
 
   return <Marker ref={ref} {...props} />

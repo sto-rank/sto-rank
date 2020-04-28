@@ -1,8 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Tabs, Icon } from 'antd';
-import { Link as GatsbyLink } from 'gatsby';
-
-import queryString from 'query-string';
 
 import styles from '../../components/services/styles'
 import { AUTOMATIC_TRANSMISSION_REPAIR } from '../../constants/specialized-keywords'
@@ -14,12 +11,12 @@ import { MOBILE_DEVICE_LAYOUT_TRASHOLD } from '../../constants/layout'
 import {
   Router,
   Link,
-  createMemorySource,
   createHistory,
   LocationProvider
 } from '@reach/router'
 
-let history = createHistory( typeof window !== 'undefined' ? window : createMemorySource("/"))
+
+const Provider = ({ children }) => typeof window !== 'undefined' ? <LocationProvider history={createHistory(window)}>{children}</LocationProvider> : <>{children}</>
 
 const Page = (props) => {
   const { services, navigate, page, limit } = props;
@@ -45,12 +42,15 @@ const Page = (props) => {
       )
     }).slice(skip, skip + limit)
   }, [currentPage, services, specialized, search]);
-  const selectedService = useMemo(() => servicesToRender.find(o => o.pagePath === selectedServiceId), [servicesToRender, selectedServiceId]);
-  const contactService = useMemo(() => servicesToRender.find(o => o.pagePath === contactServiceId), [servicesToRender, contactServiceId]);
+  const selectedService = useMemo(() => services.find(o => selectedServiceId && selectedServiceId.includes(o.pagePath)), [servicesToRender, selectedServiceId]);
+  const contactService = useMemo(() => services.find(o => contactServiceId && contactServiceId.includes(o.pagePath)), [servicesToRender, contactServiceId]);
 
 
   const onServicePress = useCallback(({ pagePath, address }) => {
     setSelectedServiceId(`${pagePath}${address}`);
+  }, []);
+  const onServiceClose = useCallback(() => {
+    setSelectedServiceId(null);
   }, []);
   const onContactServicePress = useCallback(({ pagePath }) => {
     setContactServiceId(pagePath);
@@ -66,13 +66,14 @@ const Page = (props) => {
     <ServicesList
       services={servicesToRender}
       onFilterValuesChange={onFilterValuesChange}
-      selectedServiceId={selectedServiceId}
+      selectedService={selectedService}
       onListItemPress={onServicePress}
       onContactServicePress={onContactServicePress}
       setSelectedTab={setSelectedTab}
       totalServicesItemsLength={services.length}
       navigate={navigate}
       currentPage={currentPage}
+      onServiceClose={onServiceClose}
     />
   ), [servicesToRender, onFilterValuesChange, selectedServiceId, onServicePress, onContactServicePress]);
   const map = useMemo(() => (
@@ -80,6 +81,7 @@ const Page = (props) => {
       selectedService={selectedService}
       selectedServiceId={selectedServiceId}
       onMarkerPress={onServicePress}
+      onPopupClose={onServiceClose}
       services={services}
       onContactServicePress={onContactServicePress}
     />
@@ -98,10 +100,14 @@ const Page = (props) => {
   return (
     <>
       <ContactForm selectedServiceName={contactService ? contactService.name : undefined} onCancel={onContactServiceCancel} />
-      <div css={styles.container}>
-        {servicesList}
-        {map}
-      </div>
+      {
+        isMobile === null || !isMobile ? (
+          <div css={styles.container}>
+            {servicesList}
+            {map}
+          </div>
+        ) : null
+      }
       {
         isMobile === null || isMobile ? (
           <div css={styles.mobileContainer}>
@@ -126,11 +132,11 @@ export default function Services(props) {
   const { pageContext: { data: { services }, requestedPage, limit } } = props;
   return (
     <div>
-      <LocationProvider history={history}>
+      <Provider>
         <Router>
           <Page path="/kyiv/remont-akpp/*page" services={services} requestedPage={requestedPage} limit={limit} />
         </Router>
-      </LocationProvider>
+      </Provider>
     </div>
   )
 }

@@ -64,7 +64,7 @@ module.exports = async ({ graphql, actions: { createPage } }) => {
       return b.rank - a.rank
     });
 
-  const services = [ ...completedServices, ...incompleteServices ];
+  const services = [ ...completedServices, ...incompleteServices ].filter(o => o.sideServicesRank.length);
 
   const itemsPerPage = 10;
   const numberOfPages = Math.ceil(services.length / itemsPerPage);

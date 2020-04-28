@@ -10,14 +10,6 @@ const servicesConfig = require('./src/gatsby-nodes/services')
 exports.createPages = async ({ actions, graphql }) => {
   await serviceConfig({ graphql, actions });
   await servicesConfig({ graphql, actions });
-  const { createRedirect } = actions;
-
-  // await createRedirect({
-  //   fromPath: `/`,
-  //   toPath: `/services`,
-  //   redirectInBrowser: true,
-  //   isPermanent: true,
-  // })
 }
 // exports.onCreatePage = ({ page, actions }) => {
 //   const { createPage } = actions

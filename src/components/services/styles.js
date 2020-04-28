@@ -1,5 +1,5 @@
 import { css } from '@emotion/core'
-import { GREEN_COLOR, ORANGE_COLOR } from '../../constants/colors'
+import { BLUE_COLOR, DARK_GRAY_COLOR, GRAY_COLOR, GREEN_COLOR, ORANGE_COLOR } from '../../constants/colors'
 import { MOBILE_DEVICE_LAYOUT_TRASHOLD } from '../../constants/layout'
 
 const HEADER_HEIGHT = 200;
@@ -37,10 +37,11 @@ export default {
     }
   `,
   listBlock: css`
+    position: relative;
     width: 50%;
     box-sizing: border-box;
-    padding-left: 20px;
-    padding-right: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
     display: flex;
     flex-direction: column;
     height: 100vh;
@@ -54,11 +55,18 @@ export default {
   header: css`
     height: ${HEADER_HEIGHT}px;
     background-color: white;
-    zIndex: 2222;
+    z-index: 2222;
     display: flex;
     align-items: center;
     padding-top: 50px;
     padding-bottom: 50px;
+  `,
+  selectedServiceHeader: css`
+    background: ${GRAY_COLOR};
+    margin-left: -20px;
+    margin-right: -20px;
+    padding: 20px 40px;
+    margin-bottom: 30px;
   `,
   title: css`
     width: 100%;
@@ -112,4 +120,34 @@ export default {
   popupName: css`
     text-transform: capitalize;
   `,
+  hideBlock: css`
+    opacity: 0;
+  `,
+  selectedService: css`
+    background: white;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    overflow: auto;
+  `,
+  list: css`
+    width: 100%;
+    background: white;
+    transition: opacity .5s;
+    opacity: 1;
+  `,
+  paginationWrapper: css`
+    text-align: center;
+  `,
+  selectedServiceTitle: css`
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-direction: row;
+  `,
+  closeBtn: css`
+    cursor: pointer;
+  `
 }
