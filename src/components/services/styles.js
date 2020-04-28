@@ -38,18 +38,14 @@ export default {
   `,
   listBlock: css`
     position: relative;
-    width: 50%;
     box-sizing: border-box;
-    margin-left: 20px;
-    margin-right: 20px;
     display: flex;
     flex-direction: column;
     height: 100vh;
+    width: 100%;
     @media(max-width: ${MOBILE_DEVICE_LAYOUT_TRASHOLD}px) {
       width: 100%;
       height: calc(100vh - ${TABS_OFFSET}px);
-      padding-left: 0;
-      padding-right: 0;
     }
   `,
   header: css`
@@ -149,5 +145,16 @@ export default {
   `,
   closeBtn: css`
     cursor: pointer;
+  `,
+  listWrapper: css`
+    padding-left: 20px;
+    padding-right: 20px;
+    width: 50%;
+    @media(max-width: ${MOBILE_DEVICE_LAYOUT_TRASHOLD}px) {
+      width: 100%;
+      height: calc(100vh - ${TABS_OFFSET}px);
+      padding-left: 0;
+      padding-right: 0;
+    }
   `
 }

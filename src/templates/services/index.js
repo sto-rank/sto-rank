@@ -3,6 +3,7 @@ import { Tabs, Icon } from 'antd';
 
 import styles from '../../components/services/styles'
 import { AUTOMATIC_TRANSMISSION_REPAIR } from '../../constants/specialized-keywords'
+import SEO from '../../components/seo'
 import ServicesList from '../../components/services/services-list'
 import Map from '../../components/services/map'
 import ContactForm from '../../components/contact-form'
@@ -10,7 +11,6 @@ import { MOBILE_DEVICE_LAYOUT_TRASHOLD } from '../../constants/layout'
 
 import {
   Router,
-  Link,
   createHistory,
   LocationProvider
 } from '@reach/router'
@@ -99,6 +99,7 @@ const Page = (props) => {
 
   return (
     <>
+      <SEO />
       <ContactForm selectedServiceName={contactService ? contactService.name : undefined} onCancel={onContactServiceCancel} />
       {
         isMobile === null || !isMobile ? (

@@ -5,12 +5,12 @@ import styles from './services/service-item/styles'
 
 const ExpandCollapseBtn = ({ expanded, toggle }) => {
   return (
-    <Button type="link" onClick={toggle}>
+    <Button type="link" onClick={toggle} css={styles.expandIcon} >
       {
         expanded ? (
-          <Icon type="up-circle" css={styles.expandIcon} />
+          <Icon type="up-circle" />
         ) : (
-          <Icon type="down-circle" css={styles.expandIcon} />
+          <Icon type="down-circle" />
         )
       }
     </Button>
