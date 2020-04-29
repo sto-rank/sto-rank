@@ -1,5 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Tabs, Icon } from 'antd';
+import { Helmet } from 'react-helmet'
+import {
+  Router,
+  createHistory,
+  LocationProvider
+} from '@reach/router'
 
 import styles from '../../components/services/styles'
 import { AUTOMATIC_TRANSMISSION_REPAIR } from '../../constants/specialized-keywords'
@@ -9,11 +15,7 @@ import Map from '../../components/services/map'
 import ContactForm from '../../components/contact-form'
 import { MOBILE_DEVICE_LAYOUT_TRASHOLD } from '../../constants/layout'
 
-import {
-  Router,
-  createHistory,
-  LocationProvider
-} from '@reach/router'
+
 
 
 const Provider = ({ children }) => typeof window !== 'undefined' ? <LocationProvider history={createHistory(window)}>{children}</LocationProvider> : <>{children}</>
@@ -33,15 +35,18 @@ const Page = (props) => {
 
   const { specialized, search } = filterSorting;
 
+  const filteredServices = useMemo(() => services.filter(o => {
+    return o.sideServicesRank.length && (
+      !specialized || o.specialized.includes(AUTOMATIC_TRANSMISSION_REPAIR)
+    ) && (
+      !search || o.name.toLowerCase().includes(search.toLowerCase())
+    )
+  }), [services, specialized, search])
+
   const servicesToRender = useMemo(() => {
-    return services.filter(o => {
-      return o.sideServicesRank.length && (
-        !specialized || o.specialized.includes(AUTOMATIC_TRANSMISSION_REPAIR)
-      ) && (
-        !search || o.name.toLowerCase().includes(search.toLowerCase())
-      )
-    }).slice(skip, skip + limit)
-  }, [currentPage, services, specialized, search]);
+    return filteredServices.slice(skip, skip + limit)
+  }, [skip, limit, filteredServices]);
+
   const selectedService = useMemo(() => services.find(o => selectedServiceId && selectedServiceId.includes(o.pagePath)), [servicesToRender, selectedServiceId]);
   const contactService = useMemo(() => services.find(o => contactServiceId && contactServiceId.includes(o.pagePath)), [servicesToRender, contactServiceId]);
 
@@ -70,7 +75,7 @@ const Page = (props) => {
       onListItemPress={onServicePress}
       onContactServicePress={onContactServicePress}
       setSelectedTab={setSelectedTab}
-      totalServicesItemsLength={services.length}
+      totalServicesItemsLength={filteredServices.length}
       navigate={navigate}
       currentPage={currentPage}
       onServiceClose={onServiceClose}
@@ -97,9 +102,13 @@ const Page = (props) => {
     }
   }, [typeof window === 'undefined']);
 
+  useEffect(() => {
+    navigate(`/kyiv/remont-akpp`)
+  }, [specialized, search])
+
   return (
     <>
-      <SEO />
+      <SEO title="СТО Киева сепциализирующиеся на ремонте АКПП" description="Список СТО по ремонту автоматических коробок передач в Киеве. Определение накрутки отзывов и решение спорных ситуаций" />
       <ContactForm selectedServiceName={contactService ? contactService.name : undefined} onCancel={onContactServiceCancel} />
       {
         isMobile === null || !isMobile ? (

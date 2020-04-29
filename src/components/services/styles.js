@@ -59,8 +59,6 @@ export default {
   `,
   selectedServiceHeader: css`
     background: ${GRAY_COLOR};
-    margin-left: -20px;
-    margin-right: -20px;
     padding: 20px 40px;
     margin-bottom: 30px;
   `,

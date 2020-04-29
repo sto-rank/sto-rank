@@ -73,7 +73,7 @@ export default {
   sideLinksWrapper: css`
     margin-top: 20px;
     max-width: 300px;
-    padding-bottom: 40px;
+    padding-bottom: 20px;
     @media(max-width: ${MOBILE_DEVICE_LAYOUT_TRASHOLD}px) {
       text-align: left;
     }
