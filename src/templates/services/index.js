@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Tabs, Icon } from 'antd';
-import { Helmet } from 'react-helmet'
 import {
   Router,
   createHistory,
@@ -8,15 +7,13 @@ import {
 } from '@reach/router'
 
 import styles from '../../components/services/styles'
+import useContactForm from '../../hooks/useContactForm'
 import { AUTOMATIC_TRANSMISSION_REPAIR } from '../../constants/specialized-keywords'
 import SEO from '../../components/seo'
 import ServicesList from '../../components/services/services-list'
 import Map from '../../components/services/map'
 import ContactForm from '../../components/contact-form'
 import { MOBILE_DEVICE_LAYOUT_TRASHOLD } from '../../constants/layout'
-
-
-
 
 const Provider = ({ children }) => typeof window !== 'undefined' ? <LocationProvider history={createHistory(window)}>{children}</LocationProvider> : <>{children}</>
 
@@ -29,7 +26,6 @@ const Page = (props) => {
 
   const [selectedTab, setSelectedTab] = useState('servicesList');
   const [selectedServiceId, setSelectedServiceId] = useState();
-  const [contactServiceId, setContactServiceId] = useState();
   const [filterSorting, setFilterSorting] = useState({});
   const [isMobile, setIsMobile] = useState(null);
 
@@ -47,9 +43,13 @@ const Page = (props) => {
     return filteredServices.slice(skip, skip + limit)
   }, [skip, limit, filteredServices]);
 
-  const selectedService = useMemo(() => services.find(o => selectedServiceId && selectedServiceId.includes(o.pagePath)), [servicesToRender, selectedServiceId]);
-  const contactService = useMemo(() => services.find(o => contactServiceId && contactServiceId.includes(o.pagePath)), [servicesToRender, contactServiceId]);
+  const {
+    onContactServiceCancel,
+    onContactServicePress,
+    contactService,
+  } = useContactForm({ services: filteredServices });
 
+  const selectedService = useMemo(() => services.find(o => selectedServiceId && selectedServiceId.includes(o.pagePath)), [servicesToRender, selectedServiceId]);
 
   const onServicePress = useCallback(({ pagePath, address }) => {
     setSelectedServiceId(`${pagePath}${address}`);
@@ -57,12 +57,7 @@ const Page = (props) => {
   const onServiceClose = useCallback(() => {
     setSelectedServiceId(null);
   }, []);
-  const onContactServicePress = useCallback(({ pagePath }) => {
-    setContactServiceId(pagePath);
-  }, []);
-  const onContactServiceCancel = useCallback(() => {
-    setContactServiceId('');
-  }, []);
+
   const onFilterValuesChange = useCallback((a, b, allValues) => {
     setFilterSorting(allValues)
   }, []);
@@ -87,7 +82,7 @@ const Page = (props) => {
       selectedServiceId={selectedServiceId}
       onMarkerPress={onServicePress}
       onPopupClose={onServiceClose}
-      services={services}
+      services={filteredServices}
       onContactServicePress={onContactServicePress}
     />
   ), [servicesToRender, selectedServiceId, selectedService, onServicePress]);
@@ -105,11 +100,12 @@ const Page = (props) => {
   useEffect(() => {
     navigate(`/kyiv/remont-akpp`)
   }, [specialized, search])
-
   return (
     <>
-      <SEO title="СТО Киева сепциализирующиеся на ремонте АКПП" description="Список СТО по ремонту автоматических коробок передач в Киеве. Определение накрутки отзывов и решение спорных ситуаций" />
-      <ContactForm selectedServiceName={contactService ? contactService.name : undefined} onCancel={onContactServiceCancel} />
+      <SEO
+        title="СТО Киева сепциализирующиеся на ремонте АКПП"
+        description="Список СТО по ремонту автоматических коробок передач в Киеве. Определение накрутки отзывов и решение спорных ситуаций"
+      />
       {
         isMobile === null || !isMobile ? (
           <div css={styles.container}>
@@ -132,6 +128,7 @@ const Page = (props) => {
           </div>
         ) : null
       }
+      <ContactForm selectedServiceName={contactService ? contactService.name : undefined} onCancel={onContactServiceCancel} />
     </>
   )
 }

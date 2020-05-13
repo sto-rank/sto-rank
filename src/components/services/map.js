@@ -54,7 +54,7 @@ const Item = React.memo(({
                 workingHours.map(({ day, time }) => <div key={`${day}${time}`}>{mapDayToLabel(day)}, {time.map(({ from, to }) => <span key={`${from}${to}`}>{from} - {to}</span>)}</div>)
               }
               <p><a href={pagePath} target="_blank">Детальнее</a></p>
-              <Button css={styles.contactBtn} onClick={onContactServicePressCb} block ghost type="primary">Записаться на СТО с гарантией</Button>
+              <Button css={styles.contactBtn} onClick={onContactServicePressCb} block ghost type="primary">Записаться на СТО</Button>
             </Popup>
           </ExtendedMarker>
         ))

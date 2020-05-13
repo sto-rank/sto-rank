@@ -154,7 +154,7 @@ export const ServiceItem = ({
             </div>
           ) : null
         }
-        <Button css={styles.contactBtn} onClick={onContactServicePressCb} block ghost type="primary">Записаться на СТО с гарантией</Button>
+        <Button css={styles.contactBtn} onClick={onContactServicePressCb} block ghost type="primary">Записаться на СТО</Button>
       </Card>
     </div>
   );

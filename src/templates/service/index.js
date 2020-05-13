@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { graphql } from 'gatsby'
-import { List } from 'antd';
+import { Button, List } from 'antd'
 import { Map, TileLayer, Popup } from 'react-leaflet'
 
 import styles from './styles'
@@ -9,13 +9,19 @@ import ExtendedMarker from '../../components/extended-marker'
 import { averageGeolocation } from '../../helpers/coordinates'
 import ServiceStat from '../../components/service-stat'
 import { LIGHT_GRAY } from '../../constants/colors'
+import SEO from '../../components/seo'
+import plural from "plural-ru"
+import ContactForm from '../../components/contact-form'
+import useContactForm from '../../hooks/useContactForm'
 
 const ZOOM_FOR_ONE_POINT = 15;
 const ZOOM_FOR_FEW_POINTS = 10;
 
 export default React.memo(function Service(props) {
 
-  const { data: { services: { service: {
+  const { data: { services: { service } } } = props;
+
+  const  {
     name,
     sideServicesRank,
     fakeReviews,
@@ -26,7 +32,14 @@ export default React.memo(function Service(props) {
     website,
     incomplete,
     specialties,
-  } } } } = props;
+    pagePath
+  } = service;
+
+  const {
+    onContactServiceCancel,
+    onContactServicePress,
+    contactService,
+  } = useContactForm({ services: [service] });
 
   const centerPointsCoords = useMemo(() => {
     const averageCoord = averageGeolocation(points.filter(({ coordinates }) => coordinates)
@@ -40,8 +53,18 @@ export default React.memo(function Service(props) {
 
   const pointsToRender = useMemo(() => points.filter(({ coordinates }) => coordinates), [points]);
 
+  const onContactServicePressCb = useCallback(() => {
+    onContactServicePress({ pagePath });
+  }, [onContactServicePress]);
+
+  const reviewsAmount = sideServicesRank.reduce((prev, o) => prev + o.reviewsAmount, 0)
+
   return (
     <div style={styles.container}>
+      <SEO
+        title={`${reviewsAmount} ${plural(reviewsAmount, 'отзыв', 'отзыва', 'отзывов')} об СТО "${name}"`}
+        description={`Киевский автосервис: ${name}. ${pointsToRender.map(o => o.address).join('. ')}`}
+      />
       <h1 css={styles.title}>
         <div style={styles.titleText}>{name}</div>
       </h1>
@@ -62,11 +85,14 @@ export default React.memo(function Service(props) {
               incomplete={incomplete}
               rowColor={LIGHT_GRAY}
             />
+            <div css={styles.contactBtn}>
+              <Button onClick={onContactServicePressCb} block ghost type="primary">Записаться на СТО</Button>
+            </div>
           </div>
         </div>
         <div css={[styles.contentSide, styles.servicesBlock]}>
           <div>
-            <a css={styles.goBack} href="/services"><b>К списку СТО</b></a>
+            <a css={styles.goBack} href="/"><b>К списку СТО</b></a>
           </div>
           <section style={styles.addressBlock}>
             <h2 css={styles.itemTitle}>Вебсайт:</h2>
@@ -157,6 +183,7 @@ export default React.memo(function Service(props) {
           ) : null
         }
       </div>
+      <ContactForm selectedServiceName={contactService ? contactService.name : undefined} onCancel={onContactServiceCancel} />
     </div>
   )
 });

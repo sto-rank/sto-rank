@@ -4,9 +4,8 @@ const fetch = require("node-fetch");
 
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Default Starter`,
-    description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
-    author: `@gatsbyjs`,
+    title: 'СТО Киева сепциализирующиеся на ремонте АКПП',
+    siteUrl: `https://sto-rank.com`
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
@@ -72,8 +71,28 @@ module.exports = {
     'gatsby-plugin-antd',
     'gatsby-plugin-emotion',
     'gatsby-plugin-extract-schema',
-    // this (optional) plugin enables Progressive Web App + Offline functionality
-    // To learn more, visit: https://gatsby.dev/offline
-    // `gatsby-plugin-offline`,
+    {
+      resolve: `gatsby-plugin-sitemap`,
+      options: {
+        serialize: ({ site: { siteMetadata: { siteUrl } }, allSitePage }) => allSitePage.edges.map(({ node }) => {
+          return {
+            url: `${siteUrl}${node.path}`,
+            changefreq: `weekly`,
+            priority: 0.7,
+          }
+        })
+      }
+    },
+    {
+      resolve: `gatsby-plugin-google-analytics`,
+      options: {
+        // The property ID; the tracking code won't be generated without it
+        trackingId: "UA-41563578-7",
+        // Defines where to place the tracking script - `true` in the head and `false` in the body
+        head: false,
+        // Setting this parameter is optional
+        defer: true,
+      },
+    },
   ],
 }

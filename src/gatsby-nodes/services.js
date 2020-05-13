@@ -1,5 +1,15 @@
 const path = require('path')
 
+const NOT_SERVICES = [
+  'ad-oil.com.ua',
+  'carservice.biz.ua',
+  'autobooking.com',
+  'offroadmaster.com',
+  'akpp-remont.kiev.ua',
+  'volvo.com.ua',
+  'lacetti.com.ua'
+]
+
 module.exports = async ({ graphql, actions: { createPage } }) => {
   const result = await graphql(`
     query {
@@ -51,12 +61,17 @@ module.exports = async ({ graphql, actions: { createPage } }) => {
     console.error(result.errors)
   }
 
-  const allServices = result.data.services.services;
+  const allServices = result.data.services.services.filter(o => !NOT_SERVICES.includes(o.website));
 
   const completedServices = allServices
     .filter(o => !o.incomplete)
     .sort((a, b) => {
-      return b.rank - a.rank
+      if (b.rank !== a.rank) return b.rank - a.rank
+
+      const aReviewsAmount = a.sideServicesRank.reduce((prev, next) => prev + next.reviewsAmount, 0);
+      const bReviewsAmount = b.sideServicesRank.reduce((prev, next) => prev + next.reviewsAmount, 0);
+
+      return bReviewsAmount - aReviewsAmount;
     });
   const incompleteServices = allServices
     .filter(o => o.incomplete)

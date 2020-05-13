@@ -33,6 +33,7 @@ export default React.memo(({ selectedServiceName, onCancel }) => {
       onCancel={onCancel}
       okText="Записаться"
       cancelText="Отмена"
+      zIndex={1111111111}
     >
       <form
         ref={formRef}

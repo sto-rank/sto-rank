@@ -156,5 +156,12 @@ export default {
   `,
   stat: css`
     background-color: ${GRAY_COLOR}
+  `,
+  contactBtn: css`
+    margin-bottom: 20px;
+    @media(max-width: ${MOBILE_DEVICE_LAYOUT_TRASHOLD}px) {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
   `
 }

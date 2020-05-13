@@ -154,5 +154,12 @@ export default {
       padding-left: 0;
       padding-right: 0;
     }
+  `,
+  bottomText: css`
+    margin-top: 20px;
+    @media(max-width: ${MOBILE_DEVICE_LAYOUT_TRASHOLD}px) {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
   `
 }
