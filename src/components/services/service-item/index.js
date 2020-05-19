@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState} from 'react'
-import { Card, List, Progress, Icon, Button } from 'antd'
+import { Card, Progress, Icon } from 'antd'
 import styles from './styles'
 import { MAX_RANK, rankToColor } from '../../../helpers/rank'
 import { AUTOMATIC_TRANSMISSION_REPAIR } from '../../../constants/specialized-keywords'

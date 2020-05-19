@@ -34,9 +34,6 @@ const PointItem = ({
       </div>
     </div>
     <a onClick={() => onHeaderPressCb({ address })} style={styles.showOnMapBtn}>Показать на карте</a>
-    <div css={styles.expandIconWrapper}>
-      <ExpandCollapseBtn toggle={toggleShowDetails} expanded={expanded} />
-    </div>
   </>;
 }
 
