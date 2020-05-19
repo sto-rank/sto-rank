@@ -15,7 +15,7 @@ export default {
     vertical-align: 2px;
     display: inline-block;
     @media(max-width: ${MOBILE_DEVICE_LAYOUT_TRASHOLD}px) {
-      font-size: 12px;
+      font-size: 11px;
     }
   `,
   reviewsAmount: css`
@@ -24,6 +24,6 @@ export default {
     white-space: nowrap;
   `,
   rankValue: css`
-    margin-right: 15px;
-  `
+    margin-right: 5px;
+  `,
 }

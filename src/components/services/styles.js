@@ -12,7 +12,7 @@ export default {
     position: relative;
     z-index: 1111;
     @media(max-width: ${MOBILE_DEVICE_LAYOUT_TRASHOLD}px) {
-      display: none;
+      flex-direction: column;
     }
   `,
   mobileContainer: css`

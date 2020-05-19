@@ -13,9 +13,15 @@ export default {
     marginBottom: 0,
     marginTop: 10,
   },
-  line: {
-    marginBottom: 20,
-  },
+  line: css`
+    margin-bottom: 20px;
+  `,
+  servicesLine: css`
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    margin-top: 10px;
+  `,
   questionWarning: {
     fontSize: 50,
     color: 'gray',
@@ -58,7 +64,6 @@ export default {
   `,
   detailsBtn: {
     color: BLUE_COLOR,
-    fontWeight: 'bold',
     paddingVertical: 5,
     width: '100%',
     display: 'inline-block',
@@ -67,7 +72,6 @@ export default {
     color: BLUE_COLOR,
     fontWeight: 'bold',
     paddingVertical: 5,
-    width: '100%',
     display: 'inline-block',
   },
   sideLinksWrapper: css`
@@ -98,6 +102,7 @@ export default {
   `,
   contactBtn: css`
     font-weight: bold;
+    color: ${BLUE_COLOR} !important;
   `,
   point: css`
     margin-bottom: 50px;

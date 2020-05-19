@@ -6,8 +6,16 @@ import { AUTOMATIC_TRANSMISSION_REPAIR } from '../../../constants/specialized-ke
 import ServiceStat from '../../service-stat'
 import { GRAY_COLOR } from '../../../constants/colors'
 import PointItem from './point-item'
-import { Collapse } from 'react-collapse'
 
+const getHighlightedText = (text, highlight) => {
+  // Split on highlight term and include term into parts, ignore case
+  const parts = text.split(new RegExp(`(${highlight})`, 'gi'));
+  return <span> { parts.map((part, i) =>
+    <span key={i} style={part.toLowerCase() === highlight.toLowerCase() ? { fontWeight: 'bold' } : {} }>
+            { part }
+        </span>)
+  } </span>;
+}
 export const ServiceItem = ({
   website,
   name,
@@ -26,6 +34,7 @@ export const ServiceItem = ({
                               solveCustomerClaimsPercentage,
   forumReviewsDirection,
   sideServicesRank,
+                              specializationSearch,
 }) => {
   const [expandSpecialities, setExpandSpecialities] = useState(false);
   const toggleExpandSpecialities = useCallback(() => setExpandSpecialities(!expandSpecialities), [expandSpecialities]);
@@ -41,14 +50,21 @@ export const ServiceItem = ({
     setSelectedTab('map');
   }, [onHeaderPress, pagePath]);
 
+  const specialitiesToRender = useMemo(() => {
+    if (!specializationSearch) return specialties;
+    return specialties.sort((a, b) => {
+      if (!a.toLowerCase().includes(specializationSearch.toLowerCase()) && b.toLowerCase().includes(specializationSearch.toLowerCase())) return 1;
+      return -1;
+    })
+  }, [specialties, specializationSearch])
+
   return (
     <div>
       <Card
         style={{ width: '100%', marginBottom: 20 }}
         title={<span css={styles.cardTitle}>
-          <span css={styles.cardTitleText}>{name}</span>
+          <span css={styles.cardTitleText}>Автосервис "{name}"</span>
           <Progress
-            css={styles.progressBar}
             strokeLinecap="square"
             strokeWidth={10}
             type="circle"
@@ -60,12 +76,13 @@ export const ServiceItem = ({
         </span>}
         bordered={false}
         actions={[
-          <a href={pagePath} target="_blank" style={styles.detailsBtn}>Датеальнее</a>
+          <a href={pagePath} target="_blank" style={styles.detailsBtn}>Датеальнее...</a>,
+          <a css={styles.contactBtn} onClick={onContactServicePressCb} >Записаться на СТО</a>
         ]}
       >
         <div css={styles.blockWrapper}>
           <div css={styles.descriptionBlock}>
-            <div style={styles.line}>
+            <div css={styles.line}>
               <label style={styles.label}>Вебсайт:</label><br/><span><a href={`http://${website}`} target="_blank">{website}</a></span>
             </div>
             {
@@ -101,6 +118,7 @@ export const ServiceItem = ({
                 hideRank
                 titleFontSize={12}
                 rowColor={GRAY_COLOR}
+                rank={rank}
               />
               {
                 sideForumsMentionsToRender.length ? (
@@ -123,38 +141,17 @@ export const ServiceItem = ({
           </div>
         </div>
         {
-          specialties.length ? (
-            <div style={styles.line}>
+          specialitiesToRender.length ? (
+            <div css={styles.line}>
               <label style={styles.label}>Выполняемые виды работ:</label>
-              <List
-                dataSource={specialties.slice(0, 5)}
-                renderItem={item => (
-                  <List.Item style={styles.listItemWithoutBorder}>
-                    {item}
-                  </List.Item>
-                )}
-              />
-              {
-                specialties.length > 5 ? <>
-                  <Collapse isOpened={expandSpecialities}>
-                    <List
-                      dataSource={specialties.slice(5)}
-                      renderItem={item => (
-                        <List.Item style={styles.listItemWithoutBorder}>
-                          {item}
-                        </List.Item>
-                      )}
-                    />
-                  </Collapse>
-                  <Button type="link" css={styles.showHideSpecialities} onClick={toggleExpandSpecialities}>
-                    { !expandSpecialities ? <>Показать все</> : <>Скрыть</> }
-                  </Button>
-                </> : null
-              }
+              <div css={styles.servicesLine}>
+                {
+                  getHighlightedText(specialitiesToRender.slice(0, 5).join(', '), specializationSearch || '')
+                }
+              </div>
             </div>
           ) : null
         }
-        <Button css={styles.contactBtn} onClick={onContactServicePressCb} block ghost type="primary">Записаться на СТО</Button>
       </Card>
     </div>
   );

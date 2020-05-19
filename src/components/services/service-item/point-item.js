@@ -20,42 +20,19 @@ const PointItem = ({
     {
       title ? (
         <CollapsibleForMobile expanded={expanded}>
-          <div style={styles.line}>
+          <div css={styles.line}>
             <i style={styles.label} css={styles.pointTitle}>{title}</i>
           </div>
         </CollapsibleForMobile>
       ) : null
     }
-    <div style={styles.line}>
+    <div css={styles.line}>
       <label style={styles.label}>Адрес:</label>
       <br/>
       <div>
         {address}
       </div>
     </div>
-    <CollapsibleForMobile expanded={expanded}>
-      <div style={styles.line}>
-        <label style={styles.label}>Телефоны для связи:</label>
-        <br/>
-        <div>{phones.map(phone => <div key={phone}>{phone}</div>)}</div>
-      </div>
-      {
-        workingHours.length ? (
-          <div style={styles.line}>
-            <label style={styles.label}>Время работы:</label><br/><span>
-                <List
-                  dataSource={workingHours}
-                  renderItem={({ day, time }) => (
-                    <List.Item style={styles.listItemWithoutBorder}>
-                      {mapDayToLabel(day)}: <b>{time.map(({ from, to }) => <span key={`${from}${to}`}>{from} - {to}</span>)}</b>
-                    </List.Item>
-                  )}
-                />
-            </span>
-          </div>
-        ) : null
-      }
-    </CollapsibleForMobile>
     <a onClick={() => onHeaderPressCb({ address })} style={styles.showOnMapBtn}>Показать на карте</a>
     <div css={styles.expandIconWrapper}>
       <ExpandCollapseBtn toggle={toggleShowDetails} expanded={expanded} />

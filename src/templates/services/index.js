@@ -14,6 +14,7 @@ import ServicesList from '../../components/services/services-list'
 import Map from '../../components/services/map'
 import ContactForm from '../../components/contact-form'
 import { MOBILE_DEVICE_LAYOUT_TRASHOLD } from '../../constants/layout'
+import { Helmet } from 'react-helmet'
 
 const Provider = ({ children }) => typeof window !== 'undefined' ? <LocationProvider history={createHistory(window)}>{children}</LocationProvider> : <>{children}</>
 
@@ -29,15 +30,17 @@ const Page = (props) => {
   const [filterSorting, setFilterSorting] = useState({});
   const [isMobile, setIsMobile] = useState(null);
 
-  const { specialized, search } = filterSorting;
+  const { specialized, search, specializationSearch } = filterSorting;
 
   const filteredServices = useMemo(() => services.filter(o => {
     return o.sideServicesRank.length && (
       !specialized || o.specialized.includes(AUTOMATIC_TRANSMISSION_REPAIR)
     ) && (
       !search || o.name.toLowerCase().includes(search.toLowerCase())
+    ) && (
+      !specializationSearch || specializationSearch.length < 3 || o.specialties.find(speciality => speciality.toLowerCase().includes(specializationSearch.toLowerCase()))
     )
-  }), [services, specialized, search])
+  }), [services, specialized, search, specializationSearch])
 
   const servicesToRender = useMemo(() => {
     return filteredServices.slice(skip, skip + limit)
@@ -74,6 +77,7 @@ const Page = (props) => {
       navigate={navigate}
       currentPage={currentPage}
       onServiceClose={onServiceClose}
+      specializationSearch={specializationSearch}
     />
   ), [servicesToRender, onFilterValuesChange, selectedServiceId, onServicePress, onContactServicePress]);
   const map = useMemo(() => (
@@ -106,6 +110,9 @@ const Page = (props) => {
         title="СТО Киева сепциализирующиеся на ремонте АКПП"
         description="Список СТО по ремонту автоматических коробок передач в Киеве. Определение накрутки отзывов и решение спорных ситуаций"
       />
+      <Helmet defer={false}>
+        <link rel="canonical" href="/kyiv/remont-akpp" />
+      </Helmet>
       {
         isMobile === null || !isMobile ? (
           <div css={styles.container}>
@@ -115,7 +122,7 @@ const Page = (props) => {
         ) : null
       }
       {
-        isMobile === null || isMobile ? (
+        isMobile !== null && isMobile ? (
           <div css={styles.mobileContainer}>
             <Tabs tabPosition="bottom" size="large" activeKey={selectedTab} onChange={setSelectedTab}>
               <TabPane tab={<div><Icon type="unordered-list" />Список СТО</div>} key="servicesList">

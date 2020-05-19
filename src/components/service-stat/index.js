@@ -1,50 +1,68 @@
-import { Table } from 'antd'
+import { Progress, Table } from 'antd'
 import React, { useMemo } from 'react'
 import plural from 'plural-ru'
 
-import { calcRank, calcSolveCustomerClaimsPercentage, rankToColor } from '../../helpers/rank'
+import { calcRank, calcSolveCustomerClaimsPercentage, MAX_RANK, rankToColor } from '../../helpers/rank'
 import ColoredText from '../../components/ColoredText'
 
 import RankBlockTitle from './RankBlockTitle'
 
 import styles from './styles'
 
+const REQUIRED_SIDE_SERVICES = [
+  'Vse STO',
+  'Google Maps'
+];
+
 const ServiceStat = ({
   website,
+  rank,
                   fakeReviews,
                   feedbackWithClientsDirection,
                        solveCustomerClaimsPercentage,
-                  forumReviewsDirection,
-                  sideServicesRank,
-                  incomplete,
-                  hideRank,
-                  titleFontSize,
-                  valueFontSize,
+  forumReviewsDirection,
+  sideServicesRank,
+  incomplete,
+  hideRank,
+  titleFontSize,
+  valueFontSize,
   rowColor,
                   ...rest
                 }) => {
-  const rank = useMemo(() => calcRank({
-    website,
-    fakeReviews,
-    feedbackWithClientsDirection,
-    forumReviewsDirection,
-    solveCustomerClaimsPercentage,
-    sideServicesRank,
-  }), [fakeReviews, feedbackWithClientsDirection, forumReviewsDirection, sideServicesRank]);
+  const color = useMemo(() => !incomplete ? rankToColor(rank) : 'gray', [rank, incomplete]);
+  const sideServicesRankToRender = useMemo(() => {
+    const requiredSideServicesNotFound = REQUIRED_SIDE_SERVICES.filter(o => !sideServicesRank.find(oo => oo.name === o));
+    return [
+      ...sideServicesRank,
+      ...requiredSideServicesNotFound.map(o => ({
+        name: o,
+        rank: null,
+        link: null,
+        reviewsAmount: null,
+      }))
+    ]
+  },[sideServicesRank]);
+
   const rankData = [
     ...(
       !hideRank ? [{
         key: 'rank',
         title: <RankBlockTitle style={{ fontSize: titleFontSize }} title="Итоговый рейтинг СТО" strong description="Мы собираем данные по атосервису представленые в открытых источних и анлизируем их по различным факторам, на основе чего, выводим наш собственный рейтинг автосервиса" />,
         value: (
-          <span style={{ color: !incomplete && rank !== null ? rankToColor(rank) : 'gray', fontSize: valueFontSize }} css={styles.ratingValue}>
-            <b>{rank !== null ? rank : 'Нет данных'}</b>
-          </span>
+          <Progress
+            strokeLinecap="square"
+            strokeWidth={10}
+            type="circle"
+            percent={rank / MAX_RANK * 100}
+            width={50}
+            format={() => <b style={{ color }}>{rank}</b>}
+            strokeColor={color}
+          />
         ),
         color: 'yellow',
       }] : []
     ),
-    {
+      ...(solveCustomerClaimsPercentage === -1 ? [] : [{
       key: 'feedbackWithClientsDirection',
       title: <RankBlockTitle style={{ fontSize: titleFontSize }} title="Решение спорных ситуаций" description="Как часто представители автосервиса реагируют и решают спорные ситуации с клиентами. Эта информация собирается с сайтов отзовиков" />,
       value: <span css={styles.ratingValue} style={{ fontSize: valueFontSize }}>
@@ -53,7 +71,7 @@ const ServiceStat = ({
         {solveCustomerClaimsPercentage === 0 ? <ColoredText type="danger" strong>Никогда</ColoredText> : null}
       </span>,
       color: rowColor,
-    },
+    }]),
     // {
     //   key: 'forumReviewsDirection',
     //   title: <RankBlockTitle title="Отзывы авторитетных пользователей на форумах" description="Мы ищем отзывы от авторитетных пользователей на различных тематических форумах, таких как toyota-club.com.ua, drive2.ru и тд." />,
@@ -78,7 +96,7 @@ const ServiceStat = ({
       </span>,
       color: rowColor,
     },
-    ...sideServicesRank.map(o => ({
+    ...sideServicesRankToRender.map(o => ({
       key: JSON.stringify(o),
       title: <RankBlockTitle style={{ fontSize: titleFontSize }} title={<a href={o.link} target="_blank">Рейтинг <span>{o.name}</span></a>} />,
       value: (

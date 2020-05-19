@@ -32,7 +32,8 @@ export default React.memo(function Service(props) {
     website,
     incomplete,
     specialties,
-    pagePath
+    pagePath,
+    rank
   } = service;
 
   const {
@@ -70,7 +71,7 @@ export default React.memo(function Service(props) {
       </h1>
       <div css={styles.content}>
         <div css={[styles.contentSide, styles.rankBlock ]}>
-          <div css={[styles.listWrapper, styles.rankListWrapper]}>
+          <div css={[styles.listWrapper, styles.rankListWrapper]} className="service-stat">
             {
               incomplete ? (
                 <p style={styles.textUnderTable}>По данному автосервису нет достаточно информации для точной оценки!</p>
@@ -84,6 +85,7 @@ export default React.memo(function Service(props) {
               sideServicesRank={sideServicesRank}
               incomplete={incomplete}
               rowColor={LIGHT_GRAY}
+              rank={rank}
             />
             <div css={styles.contactBtn}>
               <Button onClick={onContactServicePressCb} block ghost type="primary">Записаться на СТО</Button>

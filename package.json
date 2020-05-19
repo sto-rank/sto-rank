@@ -20,6 +20,7 @@
     "gatsby-plugin-offline": "^3.0.27",
     "gatsby-plugin-react-helmet": "^3.1.16",
     "gatsby-plugin-react-leaflet": "^2.0.11",
+    "gatsby-plugin-robots-txt": "^1.5.0",
     "gatsby-plugin-schema-snapshot": "^1.0.0",
     "gatsby-plugin-sharp": "^2.3.5",
     "gatsby-plugin-sitemap": "^2.4.2",

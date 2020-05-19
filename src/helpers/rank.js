@@ -35,34 +35,6 @@ export const calcSolveCustomerClaimsPercentage = ({ percentage }) => {
   return result;
 }
 
-export const calcRank = ({ website, fakeReviews, feedbackWithClientsDirection, forumReviewsDirection, solveCustomerClaimsPercentage, sideServicesRank }) => {
-  let sideServicesRankFiltered = sideServicesRank.filter(o => o.rank != null);
-  let parameterCount = sideServicesRankFiltered.length;
-
-  let rank = sideServicesRankFiltered.map(o => parseInt(o.rank)).reduce((prev, next) => prev + next, 0);
-
-  if (solveCustomerClaimsPercentage !== -1) {
-    let percentage = calcSolveCustomerClaimsPercentage({ percentage: solveCustomerClaimsPercentage });
-
-    rank += MAX_RANK * ((percentage || 1) / 100);
-    parameterCount++;
-  }
-
-  // if (forumReviewsDirection !== -1) {
-  //   rank += directionToRankMap[forumReviewsDirection.toString()];
-  //   parameterCount++
-  // }
-
-  const requiredSideServicesRankNotFound = getRequiredSideServicesRankNotFound({ sideServicesRank: sideServicesRankFiltered });
-  if (requiredSideServicesRankNotFound.length < requiredSideServicesRank.length) {
-    rank += booleanToRankMap[(!fakeReviews).toString()];
-  } else {
-    rank += directionToRankMap['-1'];
-  }
-  parameterCount++;
-
-  return (rank / parameterCount).toFixed(1);
-};
 export const rankToStatus = (rank) => {
   if (rank <= 3.5) return 'danger'
   if (rank <= 4.5) return 'warning'

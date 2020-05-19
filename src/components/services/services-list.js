@@ -16,6 +16,7 @@ export default React.memo(function ServicesList({
   navigate,
   currentPage,
   onServiceClose,
+                                                  specializationSearch
 }) {
   const completedServices = services
     .filter(o => !o.incomplete)
@@ -54,7 +55,7 @@ export default React.memo(function ServicesList({
             {
               completedServices.map(serviceItem => {
                 return (
-                  <ServiceItem {...serviceItem} key={`${serviceItem.pagePath}`} onHeaderPress={onListItemPress} onContactServicePress={onContactServicePress} setSelectedTab={setSelectedTab} />
+                  <ServiceItem {...serviceItem} key={`${serviceItem.pagePath}`} specializationSearch={specializationSearch} onHeaderPress={onListItemPress} onContactServicePress={onContactServicePress} setSelectedTab={setSelectedTab} />
                 )
               })
             }
@@ -66,7 +67,7 @@ export default React.memo(function ServicesList({
             {
               incompletedServices.map(serviceItem => {
                 return (
-                  <ServiceItem {...serviceItem} key={`${serviceItem.pagePath}`} onHeaderPress={onListItemPress} onContactServicePress={onContactServicePress} setSelectedTab={setSelectedTab} />
+                  <ServiceItem {...serviceItem} key={`${serviceItem.pagePath}`} specializationSearch={specializationSearch} onHeaderPress={onListItemPress} onContactServicePress={onContactServicePress} setSelectedTab={setSelectedTab} />
                 )
               })
             }

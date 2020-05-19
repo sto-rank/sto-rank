@@ -92,7 +92,14 @@ module.exports = {
         head: false,
         // Setting this parameter is optional
         defer: true,
+        anonymize: false,
       },
     },
+    {
+      resolve: 'gatsby-plugin-robots-txt',
+      options: {
+        policy: [{ userAgent: '*', allow: '/' }]
+      }
+    }
   ],
 }

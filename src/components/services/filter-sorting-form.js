@@ -11,6 +11,13 @@ const FilterSortingForm = ({ form: { getFieldDecorator }}) => {
           })(<Input placeholder="Введите название СТО" />)
         }
       </Form.Item>
+      <Form.Item label="Поиск по услугам">
+        {
+          getFieldDecorator('specializationSearch', {
+            rules: [],
+          })(<Input placeholder="Введите название услуги" />)
+        }
+      </Form.Item>
       <Form.Item label="Только узкопрофильные СТО специализирующиеся исключительно на ремонте АКПП">
         {
           getFieldDecorator('specialized', {

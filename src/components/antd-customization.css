@@ -72,3 +72,7 @@ div.ant-card-head {
         padding: 20px !important;
     }
 }
+
+.service-stat .ant-table-tbody > tr:first-child > td:last-child {
+    text-align: right;
+}

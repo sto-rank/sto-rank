@@ -7,7 +7,9 @@ const NOT_SERVICES = [
   'offroadmaster.com',
   'akpp-remont.kiev.ua',
   'volvo.com.ua',
-  'lacetti.com.ua'
+  'lacetti.com.ua',
+  'totax.com.ua',
+  'remspectex.kiev.ua'
 ]
 
 module.exports = async ({ graphql, actions: { createPage } }) => {
