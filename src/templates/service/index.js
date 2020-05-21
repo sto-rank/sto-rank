@@ -1,11 +1,13 @@
 import React, { useCallback, useMemo } from 'react'
 import { graphql } from 'gatsby'
 import { Button, List } from 'antd'
+import moment from 'moment'
 import { Map, TileLayer, Popup } from 'react-leaflet'
 
 import styles from './styles'
 import { mapDayToLabel } from '../../helpers/days'
 import ExtendedMarker from '../../components/extended-marker'
+import SideForumMentions from '../../components/side-forum-mentions'
 import { averageGeolocation } from '../../helpers/coordinates'
 import ServiceStat from '../../components/service-stat'
 import { LIGHT_GRAY } from '../../constants/colors'
@@ -33,9 +35,9 @@ export default React.memo(function Service(props) {
     incomplete,
     specialties,
     pagePath,
-    rank
+    rank,
+    sideForumsMentions,
   } = service;
-
   const {
     onContactServiceCancel,
     onContactServicePress,
@@ -59,6 +61,12 @@ export default React.memo(function Service(props) {
   }, [onContactServicePress]);
 
   const reviewsAmount = sideServicesRank.reduce((prev, o) => prev + o.reviewsAmount, 0)
+
+  const reviewsToRender = useMemo(() => {
+    return sideServicesRank.reduce((prev, { reviews }) => [ ...prev, ...reviews ], [])
+      .filter(o => o.comment)
+      .sort((a, b) => a.date > b.date ? -1 : 1);
+  }, [sideServicesRank])
 
   return (
     <div style={styles.container}>
@@ -90,13 +98,25 @@ export default React.memo(function Service(props) {
             <div css={styles.contactBtn}>
               <Button onClick={onContactServicePressCb} block ghost type="primary">Записаться на СТО</Button>
             </div>
+            <SideForumMentions sideForumsMentions={sideForumsMentions} website={website} />
+            <section css={[styles.addressBlock, styles.reviewsBlock]}>
+              <h2 css={styles.itemTitle}>Последние отзывы:</h2>
+              {
+                reviewsToRender.map(({ comment, date, link }) => (
+                  <div css={styles.review}>
+                    <div css={styles.reviewDate}>{moment(date).format('DD.MM.YYYY')}</div>
+                    <div css={styles.reviewComment}>{comment}</div>
+                  </div>
+                ))
+              }
+            </section>
           </div>
         </div>
         <div css={[styles.contentSide, styles.servicesBlock]}>
           <div>
             <a css={styles.goBack} href="/"><b>К списку СТО</b></a>
           </div>
-          <section style={styles.addressBlock}>
+          <section css={styles.addressBlock}>
             <h2 css={styles.itemTitle}>Вебсайт:</h2>
             <div>
               <a href={website} rel="noopener noreferrer" target="_blank">{website}</a>
@@ -108,7 +128,7 @@ export default React.memo(function Service(props) {
               phones,
               workingHours,
             }) => <div key={address}>
-              <section style={styles.addressBlock}>
+              <section css={styles.addressBlock}>
                 <h2 css={styles.itemTitle}>Адрес:</h2>
                 <div>
                   {address}
@@ -122,7 +142,7 @@ export default React.memo(function Service(props) {
               </section>
                 {
                   workingHours.length ? (
-                    <section style={styles.addressBlock}>
+                    <section css={styles.addressBlock}>
                       <h2 css={styles.itemTitle}>Время работы:</h2>
                       <div>
                         <div css={[styles.listWrapper, styles.listWithoutBorder]}>
@@ -218,6 +238,11 @@ export const pageQuery = graphql`
           link
           rank
           reviewsAmount
+          reviews {
+            comment
+            date
+            rank
+          }
         }
         fakeReviews
         feedbackWithClientsDirection
@@ -225,6 +250,13 @@ export const pageQuery = graphql`
         forumReviewsDirection
         rank
         incomplete
+        sideForumsMentions {
+          link
+          textNodes {
+            messages
+            text
+          }
+        }
       }
     }
   }

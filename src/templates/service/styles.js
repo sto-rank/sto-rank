@@ -93,22 +93,22 @@ export default {
     display: 'block'
   },
   listWrapper: css`
-    display: flex;
-    flex-direction: column;
   `,
   rankListWrapper: css`
+    max-width: 500px;
     align-self: flex-end;
+    width: 100%;
     @media(max-width: ${MOBILE_DEVICE_LAYOUT_TRASHOLD}px) {
       align-self: inherit;
     }
   `,
   listItemWithoutBorder: { border: 'none', margin: 0 },
   listWithoutBorder: css`
-    margin-bottom: 20;
+    margin-bottom: 20px;
   `,
-  addressBlock: {
-    marginBottom: 40,
-  },
+  addressBlock: css`
+    margin-bottom: 40px;
+  `,
   specialtiesBlock: {
     marginTop: 20,
   },
@@ -158,10 +158,24 @@ export default {
     background-color: ${GRAY_COLOR}
   `,
   contactBtn: css`
-    margin-bottom: 20px;
+    margin-bottom: 50px;
     @media(max-width: ${MOBILE_DEVICE_LAYOUT_TRASHOLD}px) {
       padding-left: 20px;
       padding-right: 20px;
     }
+  `,
+  reviewsBlock: css`
+    margin-top: 20px;
+    background: rgb(251, 251, 251);
+    padding: 20px;
+  `,
+  review: css`
+    margin-top: 20px;
+  `,
+  reviewDate: css`
+    font-size: 12px;
+  `,
+  reviewComment: css`
+    font-size: 12px;
   `
 }

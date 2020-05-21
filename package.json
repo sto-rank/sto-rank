@@ -33,6 +33,7 @@
     "history": "^4.10.1",
     "leaflet": "^1.6.0",
     "lodash": "^4.17.15",
+    "moment": "^2.26.0",
     "node-fetch": "^2.6.0",
     "plural-ru": "^2.0.2",
     "prop-types": "^15.7.2",
