@@ -66,7 +66,7 @@ export default React.memo(function Service(props) {
     return sideServicesRank.reduce((prev, { reviews }) => [ ...prev, ...reviews ], [])
       .filter(o => o.comment)
       .sort((a, b) => a.date > b.date ? -1 : 1);
-  }, [sideServicesRank])
+  }, [sideServicesRank]);
 
   return (
     <div style={styles.container}>

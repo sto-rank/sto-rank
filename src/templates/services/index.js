@@ -29,6 +29,7 @@ const Page = (props) => {
   const [selectedServiceId, setSelectedServiceId] = useState();
   const [filterSorting, setFilterSorting] = useState({});
   const [isMobile, setIsMobile] = useState(null);
+  const [wasMounted, setWasMounted] = useState(false);
 
   const { specialized, search, specializationSearch } = filterSorting;
 
@@ -102,8 +103,13 @@ const Page = (props) => {
   }, [typeof window === 'undefined']);
 
   useEffect(() => {
-    navigate(`/kyiv/remont-akpp`)
-  }, [specialized, search])
+    if (wasMounted) navigate(`/kyiv/remont-akpp`)
+  }, [specialized, search]);
+
+  useEffect(() => {
+    setWasMounted(true);
+  }, [])
+
   return (
     <>
       <SEO
