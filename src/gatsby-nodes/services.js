@@ -55,6 +55,9 @@ module.exports = async ({ graphql, actions: { createPage } }) => {
           }
           rank
           incomplete
+          blackListMarker {
+            description
+          }
         }
       }
     }

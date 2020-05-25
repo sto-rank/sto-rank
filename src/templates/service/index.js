@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
 import { graphql } from 'gatsby'
-import { Button, List } from 'antd'
+import { Button, List, Icon } from 'antd'
 import moment from 'moment'
 import { Map, TileLayer, Popup } from 'react-leaflet'
 
@@ -37,6 +37,7 @@ export default React.memo(function Service(props) {
     pagePath,
     rank,
     sideForumsMentions,
+    blackListMarker
   } = service;
   const {
     onContactServiceCancel,
@@ -75,14 +76,19 @@ export default React.memo(function Service(props) {
         description={`Киевский автосервис: ${name}. ${pointsToRender.map(o => o.address).join('. ')}`}
       />
       <h1 css={styles.title}>
-        <div style={styles.titleText}>{name}</div>
+        <div css={[styles.titleText, styles.dangerText]}>{name}</div>
       </h1>
       <div css={styles.content}>
         <div css={[styles.contentSide, styles.rankBlock ]}>
           <div css={[styles.listWrapper, styles.rankListWrapper]} className="service-stat">
             {
-              incomplete ? (
-                <p style={styles.textUnderTable}>По данному автосервису нет достаточно информации для точной оценки!</p>
+              blackListMarker ? (
+                <p css={[styles.textUnderTable, styles.dangerText]} dangerouslySetInnerHTML={{ __html: blackListMarker.description }} />
+              ) : null
+            }
+            {
+              incomplete && !blackListMarker ? (
+                <p css={styles.textUnderTable}>По данному автосервису нет достаточно информации для точной оценки!</p>
               ) : null
             }
             <ServiceStat
@@ -99,17 +105,21 @@ export default React.memo(function Service(props) {
               <Button onClick={onContactServicePressCb} block ghost type="primary">Записаться на СТО</Button>
             </div>
             <SideForumMentions sideForumsMentions={sideForumsMentions} website={website} />
-            <section css={[styles.addressBlock, styles.reviewsBlock]}>
-              <h2 css={styles.itemTitle}>Последние отзывы:</h2>
-              {
-                reviewsToRender.map(({ comment, date, link }) => (
-                  <div css={styles.review}>
-                    <div css={styles.reviewDate}>{moment(date).format('DD.MM.YYYY')}</div>
-                    <div css={styles.reviewComment}>{comment}</div>
-                  </div>
-                ))
-              }
-            </section>
+            {
+              reviewsToRender.length ? (
+                <section css={[styles.addressBlock, styles.reviewsBlock]}>
+                  <h2 css={styles.itemTitle}>Последние отзывы:</h2>
+                  {
+                    reviewsToRender.map(({ comment, date, link }) => (
+                      <div css={styles.review}>
+                        <div css={styles.reviewDate}>{moment(date).format('DD.MM.YYYY')}</div>
+                        <div css={styles.reviewComment}>{comment}</div>
+                      </div>
+                    ))
+                  }
+                </section>
+              ) : null
+            }
           </div>
         </div>
         <div css={[styles.contentSide, styles.servicesBlock]}>
@@ -119,7 +129,7 @@ export default React.memo(function Service(props) {
           <section css={styles.addressBlock}>
             <h2 css={styles.itemTitle}>Вебсайт:</h2>
             <div>
-              <a href={website} rel="noopener noreferrer" target="_blank">{website}</a>
+              <a href={`http://${website}`} rel="noopener noreferrer" target="_blank">{website}</a>
             </div>
           </section>
           {
@@ -134,7 +144,7 @@ export default React.memo(function Service(props) {
                   {address}
                 </div>
               </section>
-              <section style={styles.addressBlock}>
+              <section css={styles.addressBlock}>
                 <h2 css={styles.itemTitle}>Телефоны для связи:</h2>
                 <div>
                   {phones.map(phone => <div key={phone}>{phone}</div>)}
@@ -256,6 +266,9 @@ export const pageQuery = graphql`
             messages
             text
           }
+        }
+        blackListMarker {
+          description
         }
       }
     }

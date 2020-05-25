@@ -20,7 +20,7 @@ export const SideForumMentions = ({
             <div css={styles.sideLinksWrapper}>
               {
                 sideForumsMentionsToRender.map(({ link }) => (
-                  <div css={styles.sideLink}>
+                  <div css={styles.sideLink} key={link}>
                     <a target="_blank" href={link}>{link}</a>
                   </div>
                 ))

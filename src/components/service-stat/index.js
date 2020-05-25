@@ -55,7 +55,7 @@ const ServiceStat = ({
             type="circle"
             percent={rank / MAX_RANK * 100}
             width={50}
-            format={() => <b style={{ color }}>{rank}</b>}
+            format={() => <b style={{ color }}>{rank !== '0' ? rank : '?'}</b>}
             strokeColor={color}
           />
         ),
