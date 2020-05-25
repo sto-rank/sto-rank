@@ -1,6 +1,6 @@
 import { css } from '@emotion/core'
 
-import { GRAY_COLOR, ORANGE_COLOR } from '../../constants/colors'
+import { GRAY_COLOR, ORANGE_COLOR, RED_COLOR } from '../../constants/colors'
 import { MOBILE_DEVICE_LAYOUT_TRASHOLD } from '../../constants/layout'
 
 const MAX_WIDTH = 1200;
@@ -39,10 +39,10 @@ export default {
       line-height: 30px;
     }
   `,
-  titleText: {
-    maxWidth: MAX_WIDTH,
-    display: 'inline-block',
-  },
+  titleText: css`
+    max-width: ${MAX_WIDTH};
+    display: inline-block;
+  `,
   mapOverlay: {
     position: 'absolute',
     top: 0,
@@ -126,12 +126,14 @@ export default {
       font-size: 18px;
     }
   `,
-  textUnderTable: {
-    fontWeight: 'bold',
-    maxWidth: 300,
-    alignSelf: 'flex-end',
-    color: ORANGE_COLOR
-  },
+  textUnderTable: css`
+    font-weight: bold;
+    align-self: flex-end;
+    color: ${ORANGE_COLOR};
+  `,
+  dangerText: css`
+    color: ${RED_COLOR};
+  `,
   goBack: css`
     margin-bottom: 50px;
     display: inline-block;
