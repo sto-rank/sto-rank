@@ -10,7 +10,7 @@
     "@emotion/styled": "^10.0.27",
     "antd": "^3.26.7",
     "apollo-link-http": "^1.5.17",
-    "gatsby": "^2.20.28",
+    "gatsby": "^2.32.13",
     "gatsby-image": "^2.2.34",
     "gatsby-plugin-antd": "^2.1.0",
     "gatsby-plugin-emotion": "^4.1.23",
